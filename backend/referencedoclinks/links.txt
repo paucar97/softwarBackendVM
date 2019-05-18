@@ -1,0 +1,8 @@
+objeto columna
+https://docs.sqlalchemy.org/en/13/core/metadata.html#sqlalchemy.schema.Column
+
+objeto relationship
+https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/relationships.html
+
+constraints
+https://docs.sqlalchemy.org/en/13/core/constraints.html

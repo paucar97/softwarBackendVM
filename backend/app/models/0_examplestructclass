@@ -1,0 +1,13 @@
+from . import db
+
+class Table(db.Model):
+    #name of table in DB
+    __tablename__ = ''
+    #columns in DB
+
+    #constraints
+
+    #relationships
+
+    #methods
+
