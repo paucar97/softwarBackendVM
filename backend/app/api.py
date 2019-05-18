@@ -56,13 +56,14 @@ from app.resource.SRC_Auto_evaluacion import *
 from app.resource.SRC_Entregable import *
 from app.resource.SRC_Calificacion import *
 from app.resource import SRC_Alumno_actividad
+from app.resource.basic import Hello
 #from app.resource.basic import Hello
 #from app.resource.pet import PetListarSRC
 #from app.resource.pet_x_userSRC import listarPet_x_UserSRC
 
 #from app.resource.listUser import listuser
 
-#from app.add_resourceCarlos import *
+api.add_resource(Hello,'/api/hello')
 api.add_resource(Login,'/api/login')
 api.add_resource(Crear_auto_evaluacion,'/api/auto-evaluacion/creacion')
 
