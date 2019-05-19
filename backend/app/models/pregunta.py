@@ -5,8 +5,8 @@ class Pregunta(db.Model):
     id_pregunta = db.Column('ID_PREGUNTA',db.Integer,primary_key=True)
     descripcion = db.Column('DESCRIPCION',db.String(100))
     tipo_pregunta = db.Column('TIPO_PREGUNTA',db.Integer)
-     # si es checkbox(1) o texto(2)  o medidor de desempeño (3)
-    familia = db.Column('FAMILIA',db.String(25)) #sirve para la la coevaluación (APRENDIZAJE,PREPARACION)
+     # si es checkbox(1) o texto(2)  o medidor de desempeno (3)
+    familia = db.Column('FAMILIA',db.String(25)) #sirve para la la coevaluacion (APRENDIZAJE,PREPARACION)
 
 
     def addOne(self,obj):

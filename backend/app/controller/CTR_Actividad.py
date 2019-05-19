@@ -138,7 +138,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
 
     idActividad= Actividad().addOne(actividadObjeto)
 
-    #Cuando creamos el objeta, habrán alarmas predefinidas suponemos(?)
+    #Cuando creamos el objeta, habran alarmas predefinidas suponemos(?)
     #actividad_alarmaObjeto=Actividad_Alarma(
     #    id_actividad=idActividad,
     #    id_alarma=1,
@@ -152,7 +152,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
     for usuario in listaAlumnos:
         if usuario.id_permiso== 3: #Alumnos
             listaIdAlumnos.append(usuario.id_usuario)
-        if usuario.id_permiso == 2: #Jefe de Práctica
+        if usuario.id_permiso == 2: #Jefe de Practica
             idjp=usuario.id_usuario
         if usuario.id_permiso==1:
             idprofesor=usuario.id_usuario

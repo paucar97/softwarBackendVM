@@ -75,7 +75,7 @@ def listarObjetosAutoevaluacion(idActividad):
             d['familia']=q
             listaP.append(c)
             d['listaPregunta']=listaP
-            lista.append(d)#añades un json con nombre de la familia
+            lista.append(d)#anades un json con nombre de la familia
             listaFamilia.append(q)#lista solo con nombre de la familia
         else:# si ya se encuentra en la lista familia
             i=0
@@ -83,7 +83,7 @@ def listarObjetosAutoevaluacion(idActividad):
                 if pregunta.familia==familia:# encontro la familia
                     c={}
                     c["pregunta"]=pregunta.descripcion
-                    lista[i]['listaPregunta'].append(c)#añade pregunta a esa familia
+                    lista[i]['listaPregunta'].append(c)#anade pregunta a esa familia
                     break
                 else:
                     i=i+1

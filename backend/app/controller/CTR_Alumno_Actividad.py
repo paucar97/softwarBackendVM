@@ -11,7 +11,7 @@ def entregablesActividadXAlumno(idActividad):
     entregables = Entregable.query.join(alumns_act, and_(alumns_act.c.ID_ACTIVIDAD == Entregable.id_actividad, alumns_act.c.ID_ALUMNO == Entregable.id_alumno))  # .subquery()
 
     lst = []
-    # primera implementación, falta optimizar
+    # primera implementacion, falta optimizar
     for usr in Usuario.query.filter(Usuario.id_usuario == alumns_act.c.ID_ALUMNO):
         alaux = {}
         alaux['idAlumno'] = usr.id_usuario

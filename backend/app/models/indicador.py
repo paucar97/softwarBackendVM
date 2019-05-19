@@ -9,7 +9,7 @@ class Indicador(db.Model):
     tipo = db.Column('TIPO', db.String(100))
     #NOTA
     #COTEJO
-    #DESEMPEÑO
+    #DESEMPEnO
 
     def addOne(self,obj):
         db.session.add(obj)
