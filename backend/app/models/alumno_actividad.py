@@ -13,8 +13,6 @@ class Alumno_actividad(db.Model):
     id_jp = db.Column('ID_JP',db.Integer,nullable=True)
     
     nota  = db.Column('NOTA',db.Float,nullable= True)
-    flg_activo = db.Column('FLG_ACTIVO',db.Integer, default = 1)
-    etapa = db.Column('ETAPA',db.Integer)
     #Preguntar cual es la etapa
     flag_entregable = db.Column('FLG_ENTREGABLE',db.Integer)
     #Indica si el alumno subio el entregable o no

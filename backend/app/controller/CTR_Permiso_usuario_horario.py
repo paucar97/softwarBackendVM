@@ -20,7 +20,6 @@ def obtenerCursosActivosXAlumno(idAlumno):
             aux['id_curso'] = curso.id_curso
             aux['nombre'] = curso.nombre
             aux['codigo'] = curso.codigo
-            aux['tipo'] = curso.tipo_admin
             aux['nombre_horario'] = hor.nombre
             aux['id_horario'] = hor.id_horario
             res.append(aux)
@@ -47,7 +46,6 @@ def obtenerCursosActivosXProfesor(idProfesor):
             aux['id_curso'] = curso.id_curso
             aux['nombre_curso'] = curso.nombre
             aux['codigo'] = curso.codigo
-            aux['tipo'] = curso.tipo_admin
             res.append(aux)
 
     d = {}

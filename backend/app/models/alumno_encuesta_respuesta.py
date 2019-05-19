@@ -22,5 +22,4 @@ class Alumno_encuesta_respuesta(db.Model):
     id_alumno = db.Column('ID_ALUMNO',db.ForeignKey(Permiso_usuario_horario.id_usuario),primary_key=True)
     id_pregunta = db.Column('ID_PREGUNTA',db.ForeignKey(Encuesta_pregunta.id_pregunta),primary_key=True)
     respuesta = db.Column('RESPUESTA', db.String(500))
-    desempenho  = db.Column('DESEMPENHO',db.String(25))
-    
+    justificacion  = db.Column('JUSTIFICACION',db.String(500))

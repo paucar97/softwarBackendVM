@@ -9,7 +9,7 @@ class Actividad(db.Model):
     horario = db.relationship(Horario, backref = __tablename__, lazy=True)
     id_horario  = db.Column('ID_HORARIO',db.ForeignKey(Horario.id_horario),primary_key = True)
     rubrica = db.relationship(Rubrica, backref = __tablename__, lazy=True)
-    id_rubrica = db.Column('ID_RUBRICA',db.ForeignKey(Rubrica.id_rubrica),primary_key = True)
+    id_rubrica = db.Column('ID_RUBRICA',db.ForeignKey(Rubrica.id_rubrica), nullable = True)
 
     id_semestre = db.Column('ID_SEMESTRE', db.Integer, nullable = False)
     nombre = db.Column('NOMBRE',db.String(255))

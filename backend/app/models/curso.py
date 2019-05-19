@@ -16,7 +16,6 @@ class Curso(db.Model):
             [Semestre_especialidad.id_especialidad, Semestre_especialidad.id_semestre]
         ),
     )
-    tipo_admin = db.Column('TIPO_ADMIN', db.String(20))
     nombre = db.Column('NOMBRE', db.String(255))
     codigo = db.Column('CODIGO', db.String(15))
 

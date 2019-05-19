@@ -20,6 +20,7 @@ def Login_Controlador(email,clave):
             contJP = 1
     d = {}
     d['idUser'] = usuario.id_usuario
+    d['codigoPUCP'] = usuario.codigo_pucp
     d['nombre'] = usuario.nombre + ' ' + usuario.apellido_paterno
     d['superUsuario'] = usuario.flg_admin
     d['profesor'] = contProfesor

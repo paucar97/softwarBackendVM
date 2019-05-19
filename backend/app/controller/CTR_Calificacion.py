@@ -12,7 +12,7 @@ def obtenerAlumnosEntregableEntregado(idActividad):
         if entregable != None:
             d = {}
             d['idAlumno'] = alumno.id_alumno
-            d['codigoPUCP'] = alumno.id_alumno
+            d['codigoPUCP'] = alumno.codigo_pucp
             aux = Usuario().getOneId(alumno.id_alumno)
             d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
             d['entregables'] =[]
