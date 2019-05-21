@@ -9,16 +9,16 @@ def obtenerAlumnosEntregableEntregado(idActividad):
     alumnosEntregableEntregado = []
     for alumno in listaAlumnos:
         entregable = Entregable().getAll(idActividad,alumno.id_alumno)
+        d = {}
+        d['idAlumno'] = alumno.id_alumno
+        aux = Usuario().getOneId(alumno.id_alumno)
+        d['codigoPUCP'] = aux.codigo_pucp
+        d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+        d['entregables'] =[]
         if entregable != None:
-            d = {}
-            d['idAlumno'] = alumno.id_alumno
-            d['codigoPUCP'] = alumno.codigo_pucp
-            aux = Usuario().getOneId(alumno.id_alumno)
-            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
-            d['entregables'] =[]
             for e in entregable:
                 d['entregables'].append(e.json())
-            alumnosEntregableEntregado.append(d)
+        alumnosEntregableEntregado.append(d)
 
     rpta = {}
     rpta['lista']= alumnosEntregableEntregado
