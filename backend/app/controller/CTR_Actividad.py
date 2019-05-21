@@ -166,8 +166,10 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
             etapa=1,
             flag_entregable=flag_entregable1,
             comentario='')
-
-        Alumno_actividad().addOne(alumnoActividadObjeto)
+        try:
+            Alumno_actividad().addOne(alumnoActividadObjeto)
+        except:
+            pass
 
     #Feedback
     feedbackActividadObjeto=Feedback_actividad(

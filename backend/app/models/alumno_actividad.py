@@ -19,6 +19,8 @@ class Alumno_actividad(db.Model):
     fecha_modificado = db.Column('FECHA_MODIFICADO',db.DateTime)
     fecha_revisado = db.Column('FECHA_REVISADO',db.DateTime)
     comentario = db.Column('COMENTARIO',db.String(150),nullable = True)
+    comentarioJp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
+    comentarioProfesor = db.Column('COMENTARIO_PROFESOR',db.String(150),nullable = True)
 
     def addOne(self,obj):
         db.session.add(obj)
