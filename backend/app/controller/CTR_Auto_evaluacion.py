@@ -138,5 +138,8 @@ def eliminarAutoEvaluacion(idActividad):
         idpregunta=encuestapregunta.id_pregunta
         Pregunta().eliminarPregunta(idpregunta)
 
-    Encuesta().eliminarEncuesta(idencuesta)
+    flag=Encuesta().eliminarEncuesta(idencuesta)
     Horario_encuesta().eliminarHorarioEncuesta(idencuesta)
+
+    return flag
+
