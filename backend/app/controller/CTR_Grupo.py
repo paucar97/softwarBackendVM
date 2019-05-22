@@ -13,3 +13,5 @@ def crearGrupo(idActividad,grupos):
             objAlumnoInGrupo = Grupo_alumno_horario(id_grupo = idGrupo,id_horario = idHorario,id_usuario = alumno['idAlumno'])
             Grupo_alumno_horario().addOne(objAlumnoInGrupo)
             #MODULO ACTUALIZAR SUS ID GRUPOS EN ALUMNO ACTIVIDAD
+
+    return {"message": "realizado"}
