@@ -21,9 +21,17 @@ class Horario_encuesta(db.Model):
         db.session.add(obj)
         db.session.commit()
         return 
+    @classmethod
+    def getOne(self,idActividad):
+        return Horario_encuesta.query.filter_by(id_actividad=idActividad).first()
 
     @classmethod
     def getAll(self,idActividad):
         return Horario_encuesta.query.filter_by(id_actividad=idActividad).all()
+
+    @classmethod
+    def eliminarHorarioEncuesta(self,idEncuesta):
+        Horario_encuesta.query.filter_by(id_encuesta=idEncuesta).delete()
+        db.session.commit()
 
     

@@ -75,3 +75,5 @@ api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/en
 api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 api.add_resource(SRC_Alumno_actividad.Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 api.add_resource(SRC_Alumno_actividad.Obtener_alumnos_actividad,'/api/actividad/alumnos')
+api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
+api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
