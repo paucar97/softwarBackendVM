@@ -16,7 +16,7 @@ class Obtener_cursos_activos_alumno(Resource):
         return CTR_Permiso_usuario_horario.obtenerCursosActivosXAlumno(idAlumno)
 
 class Listar_cursos_dictando(Resource):
-    def get(self):
+    def post(self):
         data = request.get_json()
         idProfesor = data['idProfesor']  # ver si el nombre es ese o idusuario
 
