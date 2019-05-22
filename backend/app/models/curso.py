@@ -21,4 +21,4 @@ class Curso(db.Model):
 
     @classmethod
     def getCursosActivos(self, id_semestre_activo):
-        return Curso.query.filter_by(id_semestre=id_semestre_activo).subquery()
+        return Curso.query.filter_by(id_semestre=id_semestre_activo)
