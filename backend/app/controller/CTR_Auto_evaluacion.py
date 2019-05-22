@@ -93,3 +93,50 @@ def listarObjetosAutoevaluacion(idActividad):
 
     l['listaFamilia']=lista     
     return l
+
+def editarAutoEvaluacion(idActividad,listaFamilia):
+    horarioEncuesta= Horario_encuesta().getOne(idActividad)
+    idencuesta=horarioEncuesta.id_encuesta
+    listaEncuestaPregunta=Encuesta_pregunta().getAll(idencuesta)
+    Encuesta_pregunta().eliminarFilas(idencuesta)
+    for encuestapregunta in listaEncuestaPregunta:
+        idpregunta=encuestapregunta.id_pregunta
+        Pregunta().eliminarPregunta(idpregunta)
+    
+    listaIdPreguntas=[]
+    for familia in listaFamilia:
+        
+        nombreFamilia = familia['familia']
+
+        listaPregunta = familia['listaPregunta']
+
+        for pregunta in listaPregunta:
+            
+            auxPreguntaObjecto = Pregunta(
+                descripcion = pregunta['pregunta'],
+                tipo_pregunta = 3,
+                familia = nombreFamilia
+            )
+            aux = Pregunta().addOne(auxPreguntaObjecto)
+            listaIdPreguntas.append(aux)
+
+    for idPregunta in listaIdPreguntas:
+        Encuesta_preguntaObjecto = Encuesta_pregunta(
+            id_encuesta = idencuesta,
+            id_pregunta = idPregunta
+        ) 
+        Encuesta_pregunta().addOne(Encuesta_preguntaObjecto)
+    
+    return
+
+def eliminarAutoEvaluacion(idActividad):
+    horarioEncuesta= Horario_encuesta().getOne(idActividad)
+    idencuesta=horarioEncuesta.id_encuesta
+    listaEncuestaPregunta=Encuesta_pregunta().getAll(idencuesta)
+    Encuesta_pregunta().eliminarFilas(idencuesta)
+    for encuestapregunta in listaEncuestaPregunta:
+        idpregunta=encuestapregunta.id_pregunta
+        Pregunta().eliminarPregunta(idpregunta)
+
+    Encuesta().eliminarEncuesta(idencuesta)
+    Horario_encuesta().eliminarHorarioEncuesta(idencuesta)

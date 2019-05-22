@@ -10,5 +10,5 @@ if __name__ == '__main__':
     para saltar migracion
     heads
     current
-    stamp heads
+    stamp headsls
     """

@@ -17,3 +17,17 @@ class Pregunta(db.Model):
     @classmethod
     def getOne(self,idPregunta):
         return Pregunta.query.filter_by(id_pregunta=idPregunta).first()
+
+    @classmethod
+    def updateOne(self,idPregunta,descripcion,familia):
+        pregunta=Pregunta.query.filter_by(id_pregunta=idPregunta).first()
+        pregunta.descripcion=descripcion
+        pregunta.familia=familia
+        db.session.commit()
+        return
+
+    @classmethod
+    def eliminarPregunta(self,idPregunta):
+        Pregunta.query.filter_by(id_pregunta=idPregunta).delete()
+        db.session.commit()
+        return 
