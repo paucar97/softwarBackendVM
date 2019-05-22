@@ -184,3 +184,12 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
 def EditarActividad(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable):
     Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
+
+
+def listarActividad(idHorario):
+    listaActividad = Actividad().listar(idHorario).all()
+    rpta = []
+
+    for actividad in listaActividad:
+        rpta.append(actividad.json())
+    return rpta

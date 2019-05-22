@@ -22,6 +22,18 @@ class Actividad(db.Model):
     tipo = db.Column('TIPO', db.String(1))
     #tipo I de individual y G de grupal
 
+    def json(self):
+        d = {}
+        d['idActividad'] = self.id_actividad
+        d['idRubrica'] = self.id_rubrica
+        d['nombre'] = self.nombre
+        d['etapa'] = self.etapa
+        d['flgEntregable'] = self.flg_entregable
+        d['fechaInicio'] = self.fecha_inicio.__str__()
+        d['fechaFin'] = self.fecha_fin.__str__()
+        d['tipo'] = self.tipo
+        return d
+
     def addOne(self,obj):
         db.session.add(obj)
         db.session.flush()
@@ -48,3 +60,7 @@ class Actividad(db.Model):
     def obtenerRubricasXIdUsuario(self, idHorario, idUsuario):
         return db.session.query(Rubrica).join(Actividad).filter(and_(Actividad.id_horario == idHorario, Rubrica.id_usuario_creador == idUsuario)).all()
     
+
+    @classmethod
+    def listar(self,idHorario):
+        return Actividad.query.filter_by(id_horario = idHorario,flg_activo = 1)

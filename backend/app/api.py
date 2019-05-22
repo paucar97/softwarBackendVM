@@ -55,6 +55,7 @@ from app.resource.basic import Hello
 from app.resource.SRC_Permiso_usuario_horario import *
 from app.resource.SRC_Curso import *
 from app.resource.SRC_Actividad import *
+from app.resource.SRC_Grupo import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cursos_activos_alumno')
@@ -77,3 +78,5 @@ api.add_resource(SRC_Alumno_actividad.Obtener_entregables_actividad_por_alumno, 
 api.add_resource(SRC_Alumno_actividad.Obtener_alumnos_actividad,'/api/actividad/alumnos')
 api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
+api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR
+api.add_resource(Listar_Actividad,'/api/actividad/lista')

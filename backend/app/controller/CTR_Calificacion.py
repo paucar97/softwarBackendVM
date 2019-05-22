@@ -42,20 +42,20 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
         else:
             Alumno_nota_aspecto().addOne(notaAlumnoAspectoObjeto)
             notaTotal = 0
-                for indicador in aspecto['lista_indicadores']:
-                    idIndicador=indicador['id_indicador']
-                    nota =indicador['nota']
-                    comentario =indicador['comentario']
-                    notaAlumnoIndicadorObjeto = Alumno_nota_indicador(
-                            id_actividad = idActividad,
-                            id_alumno = idAlumno,
-                            id_rubrica = idRubrica,
-                            id_aspecto= idAspecto,
-                            id_indicador = idIndicador,
-                            nota = nota,
-                            comentario = comentario
-                    )
-                    Alumno_nota_indicador().addOne(notaAlumnoIndicadorObjeto)
-                    notaTotal = notaTotal + nota
-                notaAlumnoAspectoObjeto.updateNota(notaTotal)
+            for indicador in aspecto['lista_indicadores']:
+                idIndicador=indicador['id_indicador']
+                nota =indicador['nota']
+                comentario =indicador['comentario']
+                notaAlumnoIndicadorObjeto = Alumno_nota_indicador(
+                        id_actividad = idActividad,
+                        id_alumno = idAlumno,
+                        id_rubrica = idRubrica,
+                        id_aspecto= idAspecto,
+                        id_indicador = idIndicador,
+                        nota = nota,
+                        comentario = comentario
+                )
+                Alumno_nota_indicador().addOne(notaAlumnoIndicadorObjeto)
+                notaTotal = notaTotal + nota
+            notaAlumnoAspectoObjeto.updateNota(notaTotal)
     return {'message': 'termino'}

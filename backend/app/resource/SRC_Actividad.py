@@ -57,3 +57,9 @@ class Editar_Actividad(Resource):
         flag_entregable=data['flag_entregable']
 
         return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_mod,fecha_inicio,fecha_final,flag_entregable)
+
+class Listar_Actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idHorario = data['idhorario']
+        return listarActividad(idHorario)

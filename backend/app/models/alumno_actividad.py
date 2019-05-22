@@ -13,7 +13,7 @@ class Alumno_actividad(db.Model):
     id_actividad = db.Column('ID_ACTIVIDAD',db.ForeignKey(Actividad.id_actividad),primary_key=True)    
     id_alumno = db.Column('ID_ALUMNO',db.ForeignKey(Permiso_usuario_horario.id_usuario),primary_key=True)
     id_jp = db.Column('ID_JP',db.Integer,nullable=True)
-    id_jp = db.Column('ID_GRUPO',db.ForeignKey(Grupo.id_grupo), nullable=True)
+    id_grupo = db.Column('ID_GRUPO',db.ForeignKey(Grupo.id_grupo), nullable=True)
 
     nota  = db.Column('NOTA',db.Float,nullable= True)
     #Preguntar cual es la etapa
@@ -41,3 +41,10 @@ class Alumno_actividad(db.Model):
     @classmethod
     def getAllAlumnos(self,idActividad):
         return Alumno_actividad.query.filter_by(id_actividad = idActividad).all()
+
+    @classmethod
+    def updateGrupo(self,idActividad,idAlumno,idGrupo):
+        alumnoActividad=Alumno_actividad.query.filter_by(id_actividad = idActividad,id_alumno = idAlumno).first()
+        alumnoActividad.id_grupo = idGrupo
+        db.session.commit()
+        return
