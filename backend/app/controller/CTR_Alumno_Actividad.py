@@ -52,3 +52,14 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
 
     # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
     return d
+def listaAlumnos(idActividad):
+    listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
+    alumnos = []
+    for alumno in listaAlumnos:
+        d = {}
+        d['idAlumno'] = alumno.id_alumno
+        aux = Usuario().getOneId(alumno.id_alumno)
+        d['codigoPUCP'] = aux.codigo_pucp
+        d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+        alumnos.append(d)
+    return alumnos

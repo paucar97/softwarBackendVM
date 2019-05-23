@@ -16,3 +16,19 @@ class ListarObjetos(Resource):
         data = request.get_json()
         idActividad=data['idActividad']
         return listarObjetosAutoevaluacion(idActividad)
+
+class Editar_auto_evaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        listaFamilia  = data['listaFamilia']
+        # VALIDACION
+        #
+        #
+        return editarAutoEvaluacion(idActividad,listaFamilia)
+
+class Eliminar_auto_evaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad=data['idActividad']
+        return eliminarAutoEvaluacion(idActividad)

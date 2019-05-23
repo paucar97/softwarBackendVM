@@ -26,11 +26,12 @@ class Crear_rubrica(Resource):
         idFlgEspecial = data['flgRubricaEspecial']
         idUsuarioCreador = data['idUsuarioCreador']
         nombreRubrica = data['nombreRubrica']
+        idActividad = data['idActividad']
         listaAspectos = data['listaAspectos']
         # VALIDACION
         #
         #
-        return crearRubrica(idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
+        return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
 
 class Crear_Actividad(Resource):
     def post(self):
@@ -57,3 +58,9 @@ class Editar_Actividad(Resource):
         flag_entregable=data['flag_entregable']
 
         return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_mod,fecha_inicio,fecha_final,flag_entregable)
+
+class Listar_Actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idHorario = data['idhorario']
+        return listarActividad(idHorario)

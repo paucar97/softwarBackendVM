@@ -9,16 +9,16 @@ def obtenerAlumnosEntregableEntregado(idActividad):
     alumnosEntregableEntregado = []
     for alumno in listaAlumnos:
         entregable = Entregable().getAll(idActividad,alumno.id_alumno)
+        d = {}
+        d['idAlumno'] = alumno.id_alumno
+        aux = Usuario().getOneId(alumno.id_alumno)
+        d['codigoPUCP'] = aux.codigo_pucp
+        d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+        d['entregables'] =[]
         if entregable != None:
-            d = {}
-            d['idAlumno'] = alumno.id_alumno
-            d['codigoPUCP'] = alumno.codigo_pucp
-            aux = Usuario().getOneId(alumno.id_alumno)
-            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
-            d['entregables'] =[]
             for e in entregable:
                 d['entregables'].append(e.json())
-            alumnosEntregableEntregado.append(d)
+        alumnosEntregableEntregado.append(d)
 
     rpta = {}
     rpta['lista']= alumnosEntregableEntregado
@@ -33,23 +33,29 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
             id_alumno = idAlumno,
             id_rubrica = idRubrica,
             id_aspecto = idAspecto # CREO Q FALTA COMENTARIO DEL ASPECTO O ALGO ASI
+                
         )
-        Alumno_nota_aspecto().addOne(notaAlumnoAspectoObjeto)
-        notaTotal = 0
-        for indicador in aspecto['lista_indicadores']:
-            idIndicador=indicador['id_indicador']
-            nota =indicador['nota']
-            comentario =indicador['comentario']
-            notaAlumnoIndicadorObjeto = Alumno_nota_indicador(
-                    id_actividad = idActividad,
-                    id_alumno = idAlumno,
-                    id_rubrica = idRubrica,
-                    id_aspecto= idAspecto,
-                    id_indicador = idIndicador,
-                    nota = nota,
-                    comentario = comentario
-            )
-            Alumno_nota_indicador().addOne(notaAlumnoIndicadorObjeto)
-            notaTotal = notaTotal + nota
-        notaAlumnoAspectoObjeto.updateNota(notaTotal)
+        if len(aspecto['lista_indicadores']) == 0:
+            notaAlumnoAspectoObjeto.nota = aspecto['nota']
+            notaAlumnoAspectoObjeto.comentario = aspecto['comentario']
+            Alumno_nota_aspecto().addOne(notaAlumnoAspectoObjeto)
+        else:
+            Alumno_nota_aspecto().addOne(notaAlumnoAspectoObjeto)
+            notaTotal = 0
+            for indicador in aspecto['lista_indicadores']:
+                idIndicador=indicador['id_indicador']
+                nota =indicador['nota']
+                comentario =indicador['comentario']
+                notaAlumnoIndicadorObjeto = Alumno_nota_indicador(
+                        id_actividad = idActividad,
+                        id_alumno = idAlumno,
+                        id_rubrica = idRubrica,
+                        id_aspecto= idAspecto,
+                        id_indicador = idIndicador,
+                        nota = nota,
+                        comentario = comentario
+                )
+                Alumno_nota_indicador().addOne(notaAlumnoIndicadorObjeto)
+                notaTotal = notaTotal + nota
+            notaAlumnoAspectoObjeto.updateNota(notaTotal)
     return {'message': 'termino'}

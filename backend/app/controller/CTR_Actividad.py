@@ -75,7 +75,7 @@ def obtenerRubricasPasadas(idUsuario, idCurso):
     
     return d
 
-def crearRubrica(idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
+def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
         rubricaObjeto = Rubrica(
             flg_rubrica_especial = idFlgEspecial,
             id_usuario_creador = idUsuarioCreador,
@@ -119,6 +119,8 @@ def crearRubrica(idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
         d = {}
         d['idRubrica'] = idRubrica
 
+        Actividad().actualizarRubrica(idActividad, idRubrica)
+
         return d
 
 
@@ -127,7 +129,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
     idSemestre=semestre.id_semestre
     actividadObjeto=Actividad(
         id_horario=idhorario,
-        id_rubrica=1,
+        #id_rubrica=1, ##
         id_semestre = idSemestre,
         nombre=Nombre,
         flg_activo=1,
@@ -162,12 +164,12 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
             id_actividad=idActividad,
             id_alumno=idalumno,
             id_jp=idjp,
-            flg_activo=1,
-            etapa=1,
             flag_entregable=flag_entregable1,
             comentario='')
-
-        Alumno_actividad().addOne(alumnoActividadObjeto)
+        try:
+            Alumno_actividad().addOne(alumnoActividadObjeto)
+        except:
+            pass
 
     #Feedback
     feedbackActividadObjeto=Feedback_actividad(
@@ -182,3 +184,12 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
 def EditarActividad(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable):
     Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
+
+
+def listarActividad(idHorario):
+    listaActividad = Actividad().listar(idHorario).all()
+    rpta = []
+
+    for actividad in listaActividad:
+        rpta.append(actividad.json())
+    return rpta
