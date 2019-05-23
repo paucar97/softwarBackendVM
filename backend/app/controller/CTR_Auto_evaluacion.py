@@ -130,8 +130,17 @@ def editarAutoEvaluacion(idActividad,listaFamilia):
     return
 
 def eliminarAutoEvaluacion(idActividad):
-    horarioEncuesta= Horario_encuesta().getOne(idActividad)
-    idencuesta=horarioEncuesta.id_encuesta
+    listaEncuesta=Horario_encuesta().getAll(idActividad)
+    idencuesta=0
+    for horario_encuesta in listaEncuesta:
+        id=horario_encuesta.id_encuesta
+        encuesta=Encuesta().getOne(id)
+        if encuesta.tipo=='AUTOEVALUACION':
+            idencuesta=encuesta.id_encuesta
+            break
+    if idencuesta==0:
+        print('error')
+        return
     listaEncuestaPregunta=Encuesta_pregunta().getAll(idencuesta)
     Encuesta_pregunta().eliminarFilas(idencuesta)
     for encuestapregunta in listaEncuestaPregunta:
@@ -140,6 +149,6 @@ def eliminarAutoEvaluacion(idActividad):
 
     flag=Encuesta().eliminarEncuesta(idencuesta)
     Horario_encuesta().eliminarHorarioEncuesta(idencuesta)
-
+    
     return flag
 

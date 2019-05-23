@@ -40,10 +40,11 @@ class Crear_Actividad(Resource):
         nombre=data['nombre']
         tipo=data['tipo']
         descripcion=data['descripcion']
-        fecha=data['fecha']
+        fechaInicio=data['fecha_inicio']
+        fechaFin=data['fecha_fin']
         flag_entregable=data['flg_entregable']
 
-        return CrearActividad(idHorario,nombre,tipo,descripcion,fecha,flag_entregable)
+        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_entregable)
 
 class Editar_Actividad(Resource):
     def post(self):
