@@ -162,7 +162,6 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
             id_actividad=idActividad,
             id_alumno=idalumno,
             id_jp=idjp,
-            flg_activo=1,
             etapa=1,
             flag_entregable=flag_entregable1,
             comentario='')
