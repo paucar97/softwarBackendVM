@@ -15,3 +15,9 @@ class Encuesta_pregunta(db.Model):
 
     def getAll(self,idEncuesta):
         return Encuesta_pregunta.query.filter_by(id_encuesta=idEncuesta).all() 
+
+    @classmethod
+    def eliminarFilas(self,idEncuesta):
+        Encuesta_pregunta.query.filter_by(id_encuesta=idEncuesta).delete()
+        db.session.commit()
+        return
