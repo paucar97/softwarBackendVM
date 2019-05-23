@@ -15,7 +15,7 @@ def entregablesActividadXAlumno(idActividad):
     for usr in Usuario.query.filter(Usuario.id_usuario == alumns_act.c.ID_ALUMNO):
         alaux = {}
         alaux['idAlumno'] = usr.id_usuario
-        alaux['codigoPUCP'] = 0  # no se qu es esto
+        alaux['codigoPUCP'] = usr.codigo_pucp
         auxentreglst = []
         for entrg in entregables.query.filter(entregables.c.ID_ALUMNO == Usuario.id_usuario):
             auxentreg = {}
@@ -35,4 +35,20 @@ def entregablesActividadXAlumno(idActividad):
     d['lista'] = lst
     d['cantidad'] = len(lst)
 
+    return d
+
+def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
+    # test if exists
+    d = dict
+
+    reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
+    if reg_comment is None:
+        # TODO
+        pass  # send error msg ("alumno o actividad no válidas")
+        # TODO
+    else:
+        reg_comment.comentario = comentario
+        db.session.commit()
+
+    # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
     return d
