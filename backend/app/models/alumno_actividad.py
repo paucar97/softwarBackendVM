@@ -28,6 +28,7 @@ class Alumno_actividad(db.Model):
     def addOne(self,obj):
         db.session.add(obj)
         db.session.flush()
+        db.session.commit()
         return 
 
     @classmethod

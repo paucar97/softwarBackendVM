@@ -127,7 +127,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
     idSemestre=semestre.id_semestre
     actividadObjeto=Actividad(
         id_horario=idhorario,
-        id_rubrica=1,
+        #id_rubrica=1, ##
         id_semestre = idSemestre,
         nombre=Nombre,
         flg_activo=1,
