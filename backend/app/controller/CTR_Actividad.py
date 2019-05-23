@@ -75,7 +75,7 @@ def obtenerRubricasPasadas(idUsuario, idCurso):
     
     return d
 
-def crearRubrica(idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
+def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
         rubricaObjeto = Rubrica(
             flg_rubrica_especial = idFlgEspecial,
             id_usuario_creador = idUsuarioCreador,
@@ -118,6 +118,8 @@ def crearRubrica(idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
         
         d = {}
         d['idRubrica'] = idRubrica
+
+        Actividad().actualizarRubrica(idActividad, idRubrica)
 
         return d
 

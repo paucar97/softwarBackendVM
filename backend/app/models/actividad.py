@@ -52,6 +52,7 @@ class Actividad(db.Model):
         actividad.flg_entregable=flag_entregable
         db.session.commit()
         return
+
     @classmethod
     def getOne(self,idActividad):
         return Actividad.query.filter_by(id_actividad = idActividad).first()
@@ -60,6 +61,12 @@ class Actividad(db.Model):
     def obtenerRubricasXIdUsuario(self, idHorario, idUsuario):
         return db.session.query(Rubrica).join(Actividad).filter(and_(Actividad.id_horario == idHorario, Rubrica.id_usuario_creador == idUsuario)).all()
     
+    @classmethod
+    def actualizarRubrica(self, idActividad):
+        actividad = Actividad.query.filter_by(id_actividad = idActividad).first()
+        actividad.id_rubrica = idRubrica
+        db.session.commit()
+        return
 
     @classmethod
     def listar(self,idHorario):
