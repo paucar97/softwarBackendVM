@@ -21,8 +21,8 @@ class Encuesta(db.Model):
 
     @classmethod
     def eliminarEncuesta(self,idEncuesta):
-        t=Encuesta.query.filter_by(id_encuesta=idEncuesta).delete()
+        Encuesta.query.filter_by(id_encuesta=idEncuesta).delete()
         db.session.commit()
-        return t
+        return true
 
         

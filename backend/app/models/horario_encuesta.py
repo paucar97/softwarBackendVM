@@ -33,5 +33,6 @@ class Horario_encuesta(db.Model):
     def eliminarHorarioEncuesta(self,idEncuesta):
         Horario_encuesta.query.filter_by(id_encuesta=idEncuesta).delete()
         db.session.commit()
+        return
 
     

@@ -124,7 +124,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         return d
 
 
-def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
+def CrearActividad(idhorario,Nombre,tipo1,descripcion,fechaInicio,fechaFin,flag_entregable1):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     actividadObjeto=Actividad(
@@ -135,7 +135,8 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
         flg_activo=1,
         etapa=1,
         flg_entregable=flag_entregable1,
-        fecha_modificacion=fecha,
+        fecha_inicio=fechaInicio,
+        fecha_fin=fechaFin,
         tipo=tipo1)
 
     idActividad= Actividad().addOne(actividadObjeto)
@@ -172,6 +173,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
             pass
 
     #Feedback
+    #Cuando creen feedback solo deberan buscar el objeto creado y editar
     feedbackActividadObjeto=Feedback_actividad(
             id_profesor=idprofesor,
             id_actividad=idActividad,
@@ -181,8 +183,8 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
     Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable):
+    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
 
 
