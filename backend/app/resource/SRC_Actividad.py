@@ -35,16 +35,18 @@ class Crear_rubrica(Resource):
 
 class Crear_Actividad(Resource):
     def post(self):
-        data=request.get_json()
-        idHorario=data['idHorario']
-        nombre=data['nombre']
-        tipo=data['tipo']
-        #descripcion=data['descripcion']
-        fechaInicio=data['fechaInicio']
-        fechaFin=data['fechaFin']
-        flag_entregable=data['flgEntregable']
+        data = request.get_json()
+        idHorario = data['idHorario']
+        nombre = data['nombre']
+        tipo = data['tipo']
+        descripcion = data['descripcion']
+        fechaInicio = data['fechaInicio']
+        fechaFin = data ['fechaFin']
+        flag_confianza= data['flgConfianza'] 
+        flag_entregable = data['flgEntregable']
+        
 
-        return CrearActividad(idHorario,nombre,tipo,fechaInicio,fechaFin,flag_entregable)
+        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable)
 
 class Editar_Actividad(Resource):
     def post(self):
@@ -52,12 +54,13 @@ class Editar_Actividad(Resource):
         idActividad=data['idActividad']
         nombre=data['nombre']
         tipo=data['tipo']
-        #descripcion=data['descripcion']
+        descripcion=data['descripcion']
         fecha_inicio=data['fechaInicio']
         fecha_final=data['fechaFinal']
+        flag_confianza=data['flgConfianza']
         flag_entregable=data['flgEntregable']
 
-        return EditarActividad(idActividad,nombre,tipo,fecha_inicio,fecha_final,flag_entregable)
+        return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_inicio,fecha_final,flag_confianza,flag_entregable)
 
 class Listar_Actividad(Resource):
     def post(self):

@@ -124,7 +124,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         return d
 
 
-def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,flag_entregable1):
+def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     actividadObjeto = Actividad(
@@ -133,8 +133,8 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,f
         id_semestre = idSemestre,
         nombre=Nombre,
         flg_activo=1,
-        etapa=1,
         flg_entregable=flag_entregable1,
+        flg_confianza=flag_confianza,
         fecha_inicio=fechaInicio,
         fecha_fin=fechaFin,
         tipo=tipo1)
@@ -150,21 +150,20 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,f
 
     listaAlumnos= Permiso_usuario_horario().getAll(idSemestre,idhorario)
     listaIdAlumnos=[]
-    idjp= 0
+    idjp = 0
     idprofesor=0
     for usuario in listaAlumnos:
         if usuario.id_permiso== 3: #Alumnos
             listaIdAlumnos.append(usuario.id_usuario)
         if usuario.id_permiso == 2: #Jefe de Practica
-            idjp=usuario.id_usuario
+            idjp = usuario.id_usuario
         if usuario.id_permiso==1:
             idprofesor=usuario.id_usuario
 
     for idalumno in listaIdAlumnos:
         alumnoActividadObjeto=Alumno_actividad(
             id_actividad=idActividad,
-            id_alumno=idalumno,
-            flag_entregable=flag_entregable1)
+            id_alumno=idalumno)
         try:
             Alumno_actividad().addOne(alumnoActividadObjeto)
         except:
@@ -181,8 +180,8 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,f
     Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
+    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
     return
 

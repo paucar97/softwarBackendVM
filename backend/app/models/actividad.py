@@ -44,13 +44,14 @@ class Actividad(db.Model):
         return obj.id_actividad
     
     @classmethod
-    def updateOne(self,idActividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable):
+    def updateOne(self,idActividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
         actividad=Actividad.query.filter_by(id_actividad = idActividad).first()
         actividad.nombre=Nombre
         actividad.tipo=tipo1
         actividad.fecha_inicio=hora_inicio
         actividad.fecha_fin=hora_fin
         actividad.fecha_modificacion=func.current_timestamp()
+        actividad.flg_confianza = flag_confianza
         actividad.flg_entregable=flag_entregable
         db.session.commit()
         return
