@@ -124,7 +124,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         return d
 
 
-def CrearActividad(idhorario,Nombre,tipo1,descripcion,fechaInicio,fechaFin,flag_entregable1):
+def CrearActividad(idhorario,Nombre,tipo1,fechaInicio,fechaFin,flag_entregable1):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     actividadObjeto=Actividad(
@@ -183,8 +183,8 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fechaInicio,fechaFin,flag_
     Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
+    Actividad.updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
 
 

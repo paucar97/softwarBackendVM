@@ -55,9 +55,9 @@ class Editar_Actividad(Resource):
         #descripcion=data['descripcion']
         fecha_inicio=data['fechaInicio']
         fecha_final=data['fechaFinal']
-        flag_entregable=data['flagEntregable']
+        flag_entregable=data['flgEntregable']
 
-        return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_mod,fecha_inicio,fecha_final,flag_entregable)
+        return EditarActividad(idActividad,nombre,tipo,fecha_inicio,fecha_final,flag_entregable)
 
 class Listar_Actividad(Resource):
     def post(self):
