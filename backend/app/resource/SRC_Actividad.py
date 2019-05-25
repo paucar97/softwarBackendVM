@@ -39,10 +39,10 @@ class Crear_Actividad(Resource):
         idHorario=data['idHorario']
         nombre=data['nombre']
         tipo=data['tipo']
-        descripcion=data['descripcion']
-        fechaInicio=data['fecha_inicio']
-        fechaFin=data['fecha_fin']
-        flag_entregable=data['flg_entregable']
+        #descripcion=data['descripcion']
+        fechaInicio=data['fechaInicio']
+        fechaFin=data['fechaFin']
+        flag_entregable=data['flgEntregable']
 
         return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_entregable)
 
@@ -52,11 +52,10 @@ class Editar_Actividad(Resource):
         idActividad=data['idActividad']
         nombre=data['nombre']
         tipo=data['tipo']
-        descripcion=data['descripcion']
-        fecha_mod=data['fecha']
-        fecha_inicio=data['fecha_inicio']
-        fecha_final=data['fecha_final']
-        flag_entregable=data['flag_entregable']
+        #descripcion=data['descripcion']
+        fecha_inicio=data['fechaInicio']
+        fecha_final=data['fechaFinal']
+        flag_entregable=data['flagEntregable']
 
         return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_mod,fecha_inicio,fecha_final,flag_entregable)
 

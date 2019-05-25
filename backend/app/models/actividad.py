@@ -45,7 +45,6 @@ class Actividad(db.Model):
         actividad=Actividad.query.filter_by(id_actividad = idActividad).first()
         actividad.nombre=Nombre
         actividad.tipo=tipo1
-        actividad.descripcion=descripcion
         actividad.fecha_inicio=hora_inicio
         actividad.fecha_fin=hora_fin
         actividad.flg_entregable=flag_entregable
