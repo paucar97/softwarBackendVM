@@ -16,33 +16,33 @@ from app.models.semestre import Semestre
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
     d = {}
-    d['nombre_rubrica'] = nombreRubrica
+    d['nombreRubrica'] = nombreRubrica
 
     aspectos = []
     listaAspectos = Rubrica_aspecto.obtenerAspectos(idRubrica)
 
     for aspecto in listaAspectos:
         aux = {}
-        aux['id_aspecto'] = aspecto.id_aspecto
+        aux['idAspecto'] = aspecto.id_aspecto
         aux['descripcion'] = aspecto.descripcion
         aux['informacion'] = aspecto.informacion
-        aux['puntaje_max'] = aspecto.puntaje_max
-        aux['tipo_clasificacion'] = aspecto.tipo_clasificacion
+        aux['puntajeMax'] = aspecto.puntaje_max
+        aux['tipoClasificacion'] = aspecto.tipo_clasificacion
         indicadores = []
         listaIndicadores = Rubrica_aspecto_indicador.obtenerIndicadores(idRubrica, aspecto.id_aspecto)
         for indicador in listaIndicadores:
             aux2 = {}
-            aux2['id_indicador'] = indicador.id_indicador
+            aux2['idIndicador'] = indicador.id_indicador
             aux2['descripcion'] = indicador.descripcion
             aux2['informacion'] = indicador.informacion
-            aux2['puntaje_max'] = indicador.puntaje_max
+            aux2['puntajeMax'] = indicador.puntaje_max
             aux2['tipo'] = indicador.tipo
             indicadores.append(aux2)
-        aux['lista_indicadores'] = indicadores
-        aux['cant_indicadores'] = len(indicadores)
+        aux['listaIndicadores'] = indicadores
+        aux['cantIndicadores'] = len(indicadores)
         aspectos.append(aux)
-    d['lista_aspectos'] = aspectos
-    d['cant_aspectos'] = len(aspectos)
+    d['listaAspectos'] = aspectos
+    d['cantAspectos'] = len(aspectos)
 
     return d
 
@@ -163,9 +163,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
         alumnoActividadObjeto=Alumno_actividad(
             id_actividad=idActividad,
             id_alumno=idalumno,
-            id_jp=idjp,
-            flag_entregable=flag_entregable1,
-            comentario='')
+            flag_entregable=flag_entregable1)
         try:
             Alumno_actividad().addOne(alumnoActividadObjeto)
         except:
@@ -184,6 +182,7 @@ def CrearActividad(idhorario,Nombre,tipo1,descripcion,fecha,flag_entregable1):
 def EditarActividad(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable):
     Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,fecha,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
+    return
 
 
 def listarActividad(idHorario):

@@ -13,7 +13,7 @@ class Alumno_nota_aspecto(db.Model):
     id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key = True)
     id_rubrica = db.Column('ID_RUBRICA',db.Integer,primary_key = True)
     id_aspecto = db.Column('ID_ASPECTO',db.Integer,primary_key = True)
-   
+    
     __table_args__=(
         db.ForeignKeyConstraint(
             ['ID_ACTIVIDAD','ID_ALUMNO'],
@@ -40,7 +40,9 @@ class Alumno_nota_aspecto(db.Model):
         return 
 
     @classmethod
-    def updateNota(self,nota):
-        self.nota = nota
+    def updateNota(idActividad, idRubrica, idAspecto, idAlumno, nota, comentario):
+        alumnoAspectoNota = Alumno_nota_aspecto.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_rubrica = idRubrica, id_aspecto = idAspecto).first()
+        alumnoAspectoNota.nota = nota
+        alumnoAspectoNota.comentario = comentario
         db.session.commit()
         return

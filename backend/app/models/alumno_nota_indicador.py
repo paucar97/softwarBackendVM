@@ -35,3 +35,11 @@ class Alumno_nota_indicador(db.Model):
         db.session.add(obj)
         db.session.commit()
         return
+
+    @classmethod
+    def updateNota(idActividad, idRubrica, idAspecto, idAlumno, idIndicador, nota, comentario):
+        alumnoIndicadorNota = Alumno_nota_indicador.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_rubrica = idRubrica, id_aspecto = idAspecto, id_indicador = idIndicador).first()
+        alumnoIndicadorNota.nota = nota
+        alumnoIndicadorNota.comentario = comentario
+        db.session.commit()
+        return
