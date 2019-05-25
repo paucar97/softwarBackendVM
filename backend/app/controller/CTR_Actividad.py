@@ -16,6 +16,7 @@ from app.models.semestre import Semestre
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
     d = {}
+    d['idRubrica'] = idRubrica
     d['nombreRubrica'] = nombreRubrica
 
     aspectos = []
