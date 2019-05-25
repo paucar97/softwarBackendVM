@@ -13,6 +13,7 @@ class Actividad(db.Model):
 
     id_semestre = db.Column('ID_SEMESTRE', db.Integer, nullable = False)
     nombre = db.Column('NOMBRE',db.String(255))
+    descripcion = db.Column('DESCRIPCION', db.String(500), nullable = True)
     flg_activo = db.Column('FLG_ACTIVO',db.Integer, server_default = '1')
     etapa = db.Column('ETAPA',db.Integer)
     flg_entregable = db.Column('FLG_ENTREGABLE',db.Integer)
@@ -20,6 +21,8 @@ class Actividad(db.Model):
     fecha_fin = db.Column('FECHA_FIN',db.DateTime)
     fecha_modificacion = db.Column('FECHA_MODIFICACION',db.DateTime)
     tipo = db.Column('TIPO', db.String(1))
+    fecha_creacion = db.Column('FECHA_CREACION', db.DateTime, server_default = func.current_timestamp())
+    id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
     #tipo I de individual y G de grupal
 
     def json(self):
@@ -47,6 +50,7 @@ class Actividad(db.Model):
         actividad.tipo=tipo1
         actividad.fecha_inicio=hora_inicio
         actividad.fecha_fin=hora_fin
+        actividad.fecha_modificacion=func.current_timestamp()
         actividad.flg_entregable=flag_entregable
         db.session.commit()
         return
@@ -60,7 +64,7 @@ class Actividad(db.Model):
         return db.session.query(Rubrica).join(Actividad).filter(and_(Actividad.id_horario == idHorario, Rubrica.id_usuario_creador == idUsuario)).all()
     
     @classmethod
-    def actualizarRubrica(self, idActividad):
+    def actualizarRubrica(self, idActividad, idRubrica):
         actividad = Actividad.query.filter_by(id_actividad = idActividad).first()
         actividad.id_rubrica = idRubrica
         db.session.commit()

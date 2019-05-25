@@ -22,7 +22,7 @@ class Entregable(db.Model):
     url_entregable = db.Column('URL_ENTREGABLE',db.String(500),nullable = True)
     nombre_archivo = db.Column('NOMBRE_ARCHIVO',db.String(255),nullable = True)
     fecha_creado = db.Column('FECHA_CREADO', db.DateTime) # AQUI FALTO EL DEFAULT GG, LO PONDREMOS DENTRO DEL CODIGO
-    flg_activo = db.Column('FLG_ACTIVO',db.Integer, default = 1)
+    flg_activo = db.Column('FLG_ACTIVO',db.Integer, server_default = 1)
     path = db.Column('PATH',db.String(255),nullable = True)
     tipo = db.Column('TIPO',db.Integer,nullable = False)
     documento = db.Column('DOCUMENTO',db.LargeBinary(length=(2**32)-1))
