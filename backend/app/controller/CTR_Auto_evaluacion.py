@@ -51,12 +51,13 @@ def listarObjetosAutoevaluacion(idActividad):
         encuesta=Encuesta().getOne(id)
         if encuesta.tipo=='AUTOEVALUACION':
             idencuesta=encuesta.id_encuesta
-            break
             
+       
     if idencuesta==0:
         print('error')
         return
     encuesta=Encuesta().getOne(idencuesta)
+    
     l={}
     listaPregunta=[]
     listaFamilia=[]
@@ -91,7 +92,7 @@ def listarObjetosAutoevaluacion(idActividad):
                 else:
                     i=i+1
                     
-
+    print(lista)
     l={}
 
     l['listaFamilia']=lista     
@@ -105,7 +106,7 @@ def editarAutoEvaluacion(idActividad,listaFamilia):
         encuesta=Encuesta().getOne(id)
         if encuesta.tipo=='AUTOEVALUACION':
             idencuesta=encuesta.id_encuesta
-            break
+            
       
     if idencuesta==0:
         print('error')
@@ -151,7 +152,7 @@ def eliminarAutoEvaluacion(idActividad):
         encuesta=Encuesta().getOne(id)
         if encuesta.tipo=='AUTOEVALUACION':
             idencuesta=encuesta.id_encuesta
-            break
+            
     if idencuesta==0:
         print('error')
         return
