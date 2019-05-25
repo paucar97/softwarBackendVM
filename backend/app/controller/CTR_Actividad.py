@@ -181,8 +181,8 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,f
     Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
+    Actividad.updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
     Alumno_actividad.updateOne(idactividad,flag_entregable)
     return
 
