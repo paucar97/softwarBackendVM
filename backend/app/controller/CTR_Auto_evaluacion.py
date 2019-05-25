@@ -52,7 +52,7 @@ def listarObjetosAutoevaluacion(idActividad):
         if encuesta.tipo=='AUTOEVALUACION':
             idencuesta=encuesta.id_encuesta
             
-       
+    print(idencuesta)
     if idencuesta==0:
         print('error')
         return
