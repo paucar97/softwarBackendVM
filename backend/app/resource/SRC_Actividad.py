@@ -44,7 +44,7 @@ class Crear_Actividad(Resource):
         fechaFin=data['fechaFin']
         flag_entregable=data['flgEntregable']
 
-        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_entregable)
+        return CrearActividad(idHorario,nombre,tipo,fechaInicio,fechaFin,flag_entregable)
 
 class Editar_Actividad(Resource):
     def post(self):
