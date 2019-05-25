@@ -8,7 +8,11 @@ class Crear_grupo(Resource):
         grupos = data['grupos']
         return crearGrupo(idActividad,grupos)
 
-
+class Listar_grupos(Resource):
+    def post(self):
+        data = request.get_json()
+        ## FALTA 
+        return
 """
 {
     "idActividad" : "1",

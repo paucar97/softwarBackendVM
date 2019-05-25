@@ -2,7 +2,7 @@ from app.models.grupo import Grupo
 from app.models.actividad import Actividad
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.grupo_alumno_horario import Grupo_alumno_horario
-
+from app.commons.messages import *
 def crearGrupo(idActividad,grupos):
     idHorario = Actividad().getOne(idActividad).id_horario
     
