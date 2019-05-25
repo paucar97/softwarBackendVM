@@ -16,6 +16,7 @@ from app.models.semestre import Semestre
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
     d = {}
+    d['idRubrica'] = idRubrica
     d['nombreRubrica'] = nombreRubrica
 
     aspectos = []
@@ -180,9 +181,9 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
     Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable)
-    Alumno_actividad.updateOne(idactividad,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
+    Actividad().updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
+    Alumno_actividad().updateOne(idactividad,flag_entregable)
     return
 
 
