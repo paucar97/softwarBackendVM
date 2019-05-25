@@ -1,7 +1,9 @@
 from app.models import db
 from app.models.alumno_actividad import Alumno_actividad
+from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
+from app.models.grupo import Grupo
 from sqlalchemy import and_
 
 def entregablesActividadXAlumno(idActividad):
@@ -53,13 +55,24 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
     return d
 def listaAlumnos(idActividad):
-    listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
-    alumnos = []
-    for alumno in listaAlumnos:
-        d = {}
-        d['idAlumno'] = alumno.id_alumno
-        aux = Usuario().getOneId(alumno.id_alumno)
-        d['codigoPUCP'] = aux.codigo_pucp
-        d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
-        alumnos.append(d)
+    ## ver si es grupal o indiviual
+    tipoActividad = Actividad().getOne(idActividad).tipo
+    
+    if tipoActividad == 'I':
+        listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
+        alumnos = []
+        for alumno in listaAlumnos:
+            d = {}
+            d['idAlumno'] = alumno.id_alumno
+            aux = Usuario().getOneId(alumno.id_alumno)
+            d['codigoPUCP'] = aux.codigo_pucp
+            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+            alumnos.append(d)
+        return alumnos
+    else:
+        listarGrupos = Grupo().getAll(idActividad).all()
+        for grupo in listaAlumnos:
+            d=dict()
+            ## SE HACE EL DISTINCT 
+        ## LISTAR GRUPOS
     return alumnos

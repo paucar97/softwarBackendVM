@@ -2,9 +2,9 @@ from . import db
 
 class Grupo(db.Model):
     __tablename__ = 'grupo'
-    id_grupo = db.Column('ID_GRUPO',db.Integer,primary_key=True)
+    id_grupo = db.Column('ID_GRUPO',db.Integer,primary_key=True,autoincrement = True)
     nombre = db.Column('NOMBRE',db.String(255))
-    
+    flg_grupo_general = ('FLG_GRUPO_GENERAL',db.Integer)
     def addOne(self,obj):
         db.session.add(obj)
         db.session.flush()

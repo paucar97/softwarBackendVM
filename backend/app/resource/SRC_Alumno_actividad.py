@@ -25,5 +25,5 @@ class Obtener_alumnos_actividad(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
-
+        
         return controller.listaAlumnos(idActividad)
