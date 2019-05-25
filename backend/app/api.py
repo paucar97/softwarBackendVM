@@ -54,11 +54,8 @@ from app.resource.SRC_Alumno_actividad import *
 from app.resource.SRC_Permiso_usuario_horario import *
 from app.resource.SRC_Curso import *
 from app.resource.SRC_Actividad import *
-<<<<<<< HEAD
 from app.resource.basic import Hello
-=======
 from app.resource.SRC_Grupo import *
->>>>>>> 133ff5ae5a0715d7028e1c52ae46842253823b23
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cursos_activos_alumno')
@@ -77,14 +74,14 @@ api.add_resource(ListarObjetos,'/api/auto-evaluacion/listarPreguntas')
 api.add_resource(Listar_cursos_dictando, '/api/profesor/cursos')
 api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
 api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
-api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+#api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 
 # iter2 mod:comentarios
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario')
 # api.add_resource(, '/api/actividad/')
 # api.add_resource(, '/api/actividad/listar_comentarios')
-api.add_resource(SRC_Alumno_actividad.Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
-api.add_resource(SRC_Alumno_actividad.Obtener_alumnos_actividad,'/api/actividad/alumnos')
+api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
 api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
 api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR
