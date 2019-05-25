@@ -182,8 +182,8 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio,fechaFin,f
     return 
 
 def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
-    Actividad.updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
-    Alumno_actividad.updateOne(idactividad,flag_entregable)
+    Actividad().updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
+    Alumno_actividad().updateOne(idactividad,flag_entregable)
     return
 
 

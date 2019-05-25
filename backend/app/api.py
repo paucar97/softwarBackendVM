@@ -74,8 +74,10 @@ api.add_resource(Subir_entregable,'/api/entregable/entrega')
 api.add_resource(ListarObjetos,'/api/auto-evaluacion/listarPreguntas')
 api.add_resource(Listar_cursos_dictando, '/api/profesor/cursos')
 api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
-api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
+#api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+api.add.resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
+api.add.resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
 
 # iter2 mod:comentarios
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario')
