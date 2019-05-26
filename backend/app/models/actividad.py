@@ -31,7 +31,6 @@ class Actividad(db.Model):
         d['idActividad'] = self.id_actividad
         d['idRubrica'] = self.id_rubrica
         d['nombre'] = self.nombre
-        d['etapa'] = self.etapa
         d['flgEntregable'] = self.flg_entregable
         d['fechaInicio'] = self.fecha_inicio.__str__()
         d['fechaFin'] = self.fecha_fin.__str__()
