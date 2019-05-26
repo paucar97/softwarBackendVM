@@ -1,16 +1,19 @@
 from . import db
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.actividad import Actividad
+from sqlalchemy import *
 class Feedback_actividad(db.Model):
     __tablename__='feedback_actividad'
     id_feedback_actividad = db.Column('ID_FEDDBACK_ACTIVIDAD',db.Integer,primary_key=True, autoincrement=True)
 
-    permiso_usuario_horario = db.relationship(Permiso_usuario_horario,backref=__tablename__)
     actividad = db.relationship(Actividad, backref = __tablename__, lazy =True)
 
-    id_profesor = db.Column('ID_PROFESOR', db.ForeignKey(Permiso_usuario_horario.id_usuario), primary_key=True)
     id_actividad= db.Column('ID_ACTIVIDAD',db.ForeignKey(Actividad.id_actividad),primary_key = True)
     
+    id_profesor_aprobo = db.Column('ID_PROFESOR', db.Integer, nullable = True)
+    id_jp_reviso = db.Column('ID_JP_REVISO', db.Integer, nullable = False)
+    fecha_aprobado = db.Column('FECHA_APROBADO', db.DateTime, nullable = True)
+    fecha_creacion = db.Column('FECHA_CREACION', db.DateTime, nullable = False, server_default = func.current_timestamp())
     comentario = db.Column('COMENTARIO',db.String(100))
     flag_aprobado = db.Column('FLAG_APROBADO',db.Integer)
 

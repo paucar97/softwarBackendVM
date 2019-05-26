@@ -22,3 +22,7 @@ class Grupo_alumno_horario(db.Model):
         db.session.flush()
         db.session.commit()
         return 
+
+    @classmethod
+    def getAll(self,idGrupo):
+        return Grupo_alumno_horario.query.filter_by(id_grupo = idGrupo)
