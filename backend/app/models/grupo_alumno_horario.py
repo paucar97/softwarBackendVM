@@ -26,3 +26,8 @@ class Grupo_alumno_horario(db.Model):
     @classmethod
     def getAll(self,idGrupo):
         return Grupo_alumno_horario.query.filter_by(id_grupo = idGrupo)
+
+    @classmethod
+    def getAllGeneral(self,idHorario):
+        
+        return
