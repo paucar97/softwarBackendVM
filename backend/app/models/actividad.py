@@ -15,7 +15,7 @@ class Actividad(db.Model):
     nombre = db.Column('NOMBRE',db.String(255))
     descripcion = db.Column('DESCRIPCION', db.String(500), nullable = True)
     flg_activo = db.Column('FLG_ACTIVO',db.Integer, server_default = '1')
-    etapa = db.Column('ETAPA',db.Integer)
+    
     flg_entregable = db.Column('FLG_ENTREGABLE',db.Integer)
     fecha_inicio = db.Column('FECHA_INICIO',db.DateTime)
     fecha_fin = db.Column('FECHA_FIN',db.DateTime)
@@ -23,6 +23,7 @@ class Actividad(db.Model):
     tipo = db.Column('TIPO', db.String(1))
     fecha_creacion = db.Column('FECHA_CREACION', db.DateTime, server_default = func.current_timestamp())
     id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
+    flg_confianza = db.Column('FLG_CONFIANZA', db.Integer)
     #tipo I de individual y G de grupal
 
     def json(self):
