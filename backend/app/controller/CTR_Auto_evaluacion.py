@@ -135,7 +135,7 @@ def editarAutoEvaluacion(idActividad,listaFamilia):
             aux = Pregunta().addOne(auxPreguntaObjecto)
             listaIdPreguntas.append(aux)
 
-    print(listaIdPreguntas)
+    
     for idPregunta in listaIdPreguntas:
         Encuesta_preguntaObjecto = Encuesta_pregunta(
             id_encuesta = idencuesta,
