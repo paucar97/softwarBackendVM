@@ -35,4 +35,4 @@ def listarIntegrantes(idGrupo):
         rpta.append(d)
 
     return rpta 
-    
+

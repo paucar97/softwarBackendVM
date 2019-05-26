@@ -33,4 +33,6 @@ class Listar_integrantes(Resource):
 
 }
 """
-
+class Crear_grupo_general(Resource):
+    def post(self):
+        return 
