@@ -99,6 +99,8 @@ def listarObjetosAutoevaluacion(idActividad):
     return l
 
 def editarAutoEvaluacion(idActividad,listaFamilia):
+    print("="*20)
+    print(listaFamilia)
     listaEncuesta=Horario_encuesta().getAll(idActividad)
     idencuesta=0
     for horario_encuesta in listaEncuesta:

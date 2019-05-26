@@ -21,3 +21,9 @@ class Usuario(db.Model):
 
     def getOneId(self,idUsuario):
         return Usuario.query.filter_by(id_usuario = idUsuario).first()
+
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.flush()
+        db.session.commit()
+        return obj.id_usuario
