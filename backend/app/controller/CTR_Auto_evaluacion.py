@@ -34,9 +34,9 @@ def crearAutoEvaluacion(idActividad,listaFamilia):
             id_pregunta = idPregunta
         ) 
         Encuesta_pregunta().addOne(Encuesta_preguntaObjecto)
-    
+    idHorario = Actividad().getOne(idActividad).id_horario
     Horario_encuestaObjecto = Horario_encuesta(
-        id_horario = 1, # ESTO TIENE Q CAMIAR XQ DEBERIA SER NO OBLIGAROTIOR
+        id_horario = idHorario, # ESTO TIENE Q CAMIAR XQ DEBERIA SER NO OBLIGAROTIOR
         id_encuesta =idEncuesta,
         id_actividad = idActividad 
     )

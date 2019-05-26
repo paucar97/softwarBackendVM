@@ -73,12 +73,15 @@ def listaAlumnos(idActividad):
             alumnos.append(d)
         return alumnos
     else:
-        listarGrupos = Grupo().getAll(idActividad).all()
-        for grupo in listaAlumnos:
+        listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
+        lstGrupos=[]
+        for grupo in listarGrupos:
+            idGrupo = grupo.id_grupo
             d=dict()
-            ## SE HACE EL DISTINCT 
-        ## LISTAR GRUPOS
-    return alumnos
+            d['idGrupo']= idGrupo
+            d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
+            lstGrupos.append(d)
+        return lstGrupos
 
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos,flgFalta):
     aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
