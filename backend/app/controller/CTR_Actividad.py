@@ -136,8 +136,8 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
         flg_activo=1,
         flg_entregable=flag_entregable1,
         flg_confianza=flag_confianza,
-        fecha_inicio=fechaInicio,
-        fecha_fin=fechaFin,
+        fecha_inicio=fechaInicio.__str__(),
+        fecha_fin=fechaFin.__str__(),
         tipo=tipo1)
 
     idActividad= Actividad().addOne(actividadObjeto)
