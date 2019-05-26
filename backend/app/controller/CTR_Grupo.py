@@ -50,12 +50,16 @@ def crearGrupoGeneral(idHorario,grupos):
     return {"message": "realizado"}
 
 def listarGruposGeneral(idHorario):
-    listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario) ##SOLO SON LOS GENERALES
+    listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario).all() ##SOLO SON LOS GENERALES
+    print(listaGrupos)
+    lstIdGrupo=[]
     rpta = []
-    for g,grupo in listaGrupos:
-        d=dict()
-        d['idGrupo']= g.id_grupo
-        d['nombre'] = grupo.nombre
-        rpta.append(d)
+    for _,grupo in listaGrupos:
+        if grupo.id_grupo not in lstIdGrupo: 
+            d=dict()
+            d['idGrupo']= grupo.id_grupo
+            d['nombre'] = grupo.nombre
+            lstIdGrupo.append(grupo.id_grupo)
+            rpta.append(d)
 
     return rpta
