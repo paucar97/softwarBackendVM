@@ -157,9 +157,9 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
     idjp = 0
     idprofesor=0
     for usuario in listaAlumnos:
-        if usuario.id_permiso== 3: #Alumnos
+        if usuario.id_permiso== 2: #Alumnos
             listaIdAlumnos.append(usuario.id_usuario)
-        if usuario.id_permiso == 2: #Jefe de Practica
+        if usuario.id_permiso == 3: #Jefe de Practica
             idjp = usuario.id_usuario
         if usuario.id_permiso==1:
             idprofesor=usuario.id_usuario
