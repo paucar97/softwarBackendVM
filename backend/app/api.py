@@ -87,6 +87,7 @@ api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entre
 api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
 api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
-api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR
+api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR @INDIOKER
+api.add_resource(Crear_grupo_general,'/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Listar_integrantes,'/api/grupo/integrantes')

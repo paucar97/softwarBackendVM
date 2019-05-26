@@ -48,3 +48,6 @@ def crearGrupoGeneral(idHorario,grupos):
             # SE CREO EL GRUPO GENERAL 
 
     return {"message": "realizado"}
+
+def listarGruposGeneral(idHorario):
+    return 
