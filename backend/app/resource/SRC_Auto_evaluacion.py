@@ -32,3 +32,10 @@ class Eliminar_auto_evaluacion(Resource):
         data = request.get_json()
         idActividad=data['idActividad']
         return eliminarAutoEvaluacion(idActividad)
+
+
+class Existe_autoevaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        return existeAutoevaluacion(idActividad)

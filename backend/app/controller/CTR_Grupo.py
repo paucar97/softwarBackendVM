@@ -51,7 +51,7 @@ def crearGrupoGeneral(idHorario,grupos):
 
 def listarGruposGeneral(idHorario):
     listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario).all() ##SOLO SON LOS GENERALES
-    
+        
     lstIdGrupo=[]
     rpta = []
     for _,grupo in listaGrupos:

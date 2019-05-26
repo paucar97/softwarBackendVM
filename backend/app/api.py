@@ -96,3 +96,4 @@ api.add_resource(Crear_grupo_general,'/api/grupo/crear-general') # FALTA PROBAR 
 api.add_resource(Listar_grupo_general,'/api/grupo/listar-general') # se probo con pstman PROCEDE
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Listar_integrantes,'/api/grupo/integrantes')
+api.add_resource(Existe_autoevaluacion,'/api/autoevaluacion/existencia')
