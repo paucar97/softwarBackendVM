@@ -46,18 +46,47 @@ def entregablesActividadXAlumno(idActividad):
 def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
-    # TODO : try-catch for DB errors
-    reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
-    if reg_comment is None:
+    try:
+        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        if reg_comment is None:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "Alumno o actividad no válidas"
+        else:
+            reg_comment.comentario = comentario
+            db.session.commit()
+            d.message = "Comentario agregado correctamente"
+    except Exception as ex:
         d.opcode = 1
-        d.errcode = 1
-        d.message = "Alumno o actividad no válidas"
-    else:
-        reg_comment.comentario = comentario
-        db.session.commit()
-        d.message = "Comentario agregado correctamente"
+        d.errcode = 2
+        d.message = str(ex)
 
     # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+    return d.jsonify()
+
+def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
+    # test if exists
+    d = ResponseMessage()
+    try:
+        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        if reg_resp is None:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "Alumno o actividad no válidas"
+        elif reg_resp.id_jp != idProfesor:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "No tiene autoridad para responder el comentario."
+        else:
+            reg_resp.comentarioJp = respuesta
+            db.session.commit()
+            d.message = "Respuesta agregada correctamente"
+    except Exception as ex:
+        d.opcode = 1
+        d.errcode = 2
+        d.message = str(ex)
+#
+    # # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
     return d.jsonify()
 
 def listaAlumnos(idActividad):
@@ -72,7 +101,7 @@ def listaAlumnos(idActividad):
             d['idAlumno'] = alumno.id_alumno
             aux = Usuario().getOneId(alumno.id_alumno)
             d['codigoPUCP'] = aux.codigo_pucp
-            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+            d['nombre'] = aux.nombre + " " + aux.apellido_paterno
             alumnos.append(d)
         return alumnos
     else:

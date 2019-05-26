@@ -80,8 +80,8 @@ api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
 api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
 
 # iter2 mod:comentarios
-api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario')
-# api.add_resource(, '/api/actividad/')
+api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario_alumno')
+api.add_resource(Responder_comentario_alumno, '/api/actividad/responder_comentario_alumno')
 # api.add_resource(, '/api/actividad/listar_comentarios')
 api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
