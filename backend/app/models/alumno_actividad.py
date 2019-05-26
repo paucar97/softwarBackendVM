@@ -71,3 +71,7 @@ class Alumno_actividad(db.Model):
         alumnoActividad.flg_falta = flgFalta
         alumnoActividad.fecha_modificado = func.current_timestamp()
         
+
+    @classmethod
+    def getAllGrupos(self,idActividad):
+        return db.session.query(Alumno_actividad.id_grupo).filter_by(id_actividad = idActividad).distinct()
