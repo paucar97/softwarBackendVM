@@ -9,7 +9,7 @@ def crearGrupo(idActividad,grupos):
     idHorario = Actividad().getOne(idActividad).id_horario
     
     for grupo in grupos:
-        objGrupo = Grupo(nombre = grupo['nombre'])
+        objGrupo = Grupo(nombre = grupo['nombre'],flg_grupo_general = 0)
         idGrupo = Grupo().addOne(objGrupo) # agrego grupo a la bd
         for alumno in grupo['lstAlumnos']:
                 
@@ -36,3 +36,18 @@ def listarIntegrantes(idGrupo):
 
     return rpta 
 
+def crearGrupoGeneral(idHorario,grupos):
+
+    for grupo in grupos:
+        objGrupo = Grupo(nombre = grupo['nombre'],flg_grupo_general=1)
+        idGrupo = Grupo().addOne(objGrupo) # agrego grupo a la bd
+        for alumno in grupo['lstAlumnos']:
+                
+            objAlumnoInGrupo = Grupo_alumno_horario(id_grupo = idGrupo,id_horario = idHorario,id_usuario = alumno['idAlumno'])
+            Grupo_alumno_horario().addOne(objAlumnoInGrupo)
+            # SE CREO EL GRUPO GENERAL 
+
+    return {"message": "realizado"}
+
+def listarGruposGeneral(idHorario):
+    return 
