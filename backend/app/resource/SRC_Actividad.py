@@ -44,9 +44,9 @@ class Crear_Actividad(Resource):
         fechaFin = data ['fechaFin']
         flag_confianza= data['flgConfianza'] 
         flag_entregable = data['flgEntregable']
-        
+        idUsuarioCreador = data['idUsuarioCreador']
 
-        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable)
+        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable,idUsuarioCreador)
 
 class Editar_Actividad(Resource):
     def post(self):

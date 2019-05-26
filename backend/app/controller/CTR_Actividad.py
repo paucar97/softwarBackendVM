@@ -12,7 +12,7 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.semestre import Semestre
-
+from app.commons.utils import *
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
     d = {}
@@ -125,19 +125,22 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         return d
 
 
-def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1):
+def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
+
     actividadObjeto = Actividad(
         id_horario = idhorario,
         #id_rubrica=1, ##
+        descripcion = descripcion,
         id_semestre = idSemestre,
         nombre=Nombre,
         flg_activo=1,
         flg_entregable=flag_entregable1,
         flg_confianza=flag_confianza,
-        fecha_inicio=fechaInicio.__str__(),
-        fecha_fin=fechaFin.__str__(),
+        fecha_inicio= convertDatetime(fechaInicio),
+        fecha_fin=convertDatetime(fechaFin),
+        id_usuario_creador=idUsuarioCreador,
         tipo=tipo1)
 
     idActividad= Actividad().addOne(actividadObjeto)
