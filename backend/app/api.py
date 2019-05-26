@@ -57,6 +57,7 @@ from app.resource.SRC_Curso import *
 from app.resource.SRC_Actividad import *
 from app.resource.basic import Hello
 from app.resource.SRC_Grupo import *
+from app.resource.SRC_Co_evaluacion import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cursos_activos_alumno')
@@ -78,7 +79,8 @@ api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/en
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
 api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
-
+api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
+api.add_resource(ListarPreguntas,'/api/co-evaluacion/listarPreguntas')
 # iter2 mod:comentarios
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario')
 # api.add_resource(, '/api/actividad/')
