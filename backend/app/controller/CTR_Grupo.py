@@ -1,6 +1,7 @@
 from app.models.grupo import Grupo
 from app.models.actividad import Actividad
 from app.models.alumno_actividad import Alumno_actividad
+from app.models.usuario import Usuario
 from app.models.grupo_alumno_horario import Grupo_alumno_horario
 from app.commons.messages import *
 
@@ -25,7 +26,13 @@ def listarIntegrantes(idGrupo):
     rpta = []
     for integrante in listaIntegrante:
         d=dict()
-        d['nombre']= integrante.nombre
-        d['codigo']= integrante.codigo
-    return 
+        alumno = Usuario().getOneId(integrante.id_usuario)
+        d['nombre'] = alumno.nombre
+        d['codigoPucp'] = alumno.codigo_pucp
+        d['apellidoPaterno'] = alumno.apellido_paterno
+        d['apellidoMaterno'] = alumno.apellido_materno
+        d['idUsuario'] = alumno.id_usuario
+        rpta.append(d)
+
+    return rpta 
     

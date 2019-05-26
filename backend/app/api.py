@@ -89,3 +89,4 @@ api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
 api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
+api.add_resource(Listar_integrantes,'/api/grupo/integrantes')
