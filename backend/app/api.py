@@ -41,6 +41,7 @@ from app.models.alumno_actividad import Alumno_actividad
 from app.models.entregable import Entregable
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
+from app.models.notificacion import Notificacion
 ##########################################################################################################
 migrate = Migrate(app, db)
 manager = Manager(app)

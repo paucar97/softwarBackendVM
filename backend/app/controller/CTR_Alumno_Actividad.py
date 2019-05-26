@@ -72,11 +72,11 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         notaAspectoObjeto = Alumno_nota_aspecto(
-            id_actividad = idActividad
-            id_alumno = idAlumno
-            id_rubrica = idRubrica
-            id_aspecto = idAspecto
-            nota = notaAspecto['nota']
+            id_actividad = idActividad,
+            id_alumno = idAlumno,
+            id_rubrica = idRubrica,
+            id_aspecto = idAspecto,
+            nota = notaAspecto['nota'],
             comentario = notaAspecto['comentario']
         )
         Alumno_nota_aspecto().addOne(notaAspectoObjeto)
@@ -85,13 +85,13 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
         
         for notaIndicador in listaNotaIndicador:
             notaIndicadorObjeto = Alumno_nota_indicador(
-                id_actividad = idActividad
-                id_alumno = idAlumno
-                id_rubrica = idRubrica
-                id_aspecto = idAspecto
-                id_indicador = notaIndicador['idIndicador']
-                nota = notaIndicador['nota']
-                comentario = notaIndicador['comentario']
+                id_actividad = idActividad,
+                id_alumno = idAlumno,
+                id_rubrica = idRubrica,
+                id_aspecto = idAspecto,
+                id_indicador = notaIndicador['idIndicador'],
+                nota = notaIndicador['nota'],
+                comentario = notaIndicador['comentario'],
             )
             Alumno_nota_indicador().addOne(notaIndicadorObjeto)
 
