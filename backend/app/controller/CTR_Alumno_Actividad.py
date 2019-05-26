@@ -5,6 +5,9 @@ from app.models.entregable import Entregable
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
 from sqlalchemy import and_
+from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
+from app.models.alumno_nota_indicador import Alumno_nota_indicador
+from sqlalchemy import *
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
@@ -76,3 +79,51 @@ def listaAlumnos(idActividad):
             ## SE HACE EL DISTINCT 
         ## LISTAR GRUPOS
     return alumnos
+
+def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos,flgFalta):
+    aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
+    
+    for notaAspecto in listaNotaAspectos:
+        idAspecto = notaAspecto['idAspecto']
+        notaAspectoObjeto = Alumno_nota_aspecto(
+            id_actividad = idActividad,
+            id_alumno = idAlumno,
+            id_rubrica = idRubrica,
+            id_aspecto = idAspecto,
+            nota = notaAspecto['nota'],
+            comentario = notaAspecto['comentario']
+        )
+        Alumno_nota_aspecto().addOne(notaAspectoObjeto)
+        
+        listaNotaIndicador = notaAspecto['listaNotaIndicador']
+        
+        for notaIndicador in listaNotaIndicador:
+            notaIndicadorObjeto = Alumno_nota_indicador(
+                id_actividad = idActividad,
+                id_alumno = idAlumno,
+                id_rubrica = idRubrica,
+                id_aspecto = idAspecto,
+                id_indicador = notaIndicador['idIndicador'],
+                nota = notaIndicador['nota'],
+                comentario = notaIndicador['comentario'],
+            )
+            Alumno_nota_indicador().addOne(notaIndicadorObjeto)
+
+    d = {}
+    d['message'] = "succeed"
+    return d
+
+def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
+    aux = Alumno_actividad().editarNotaAlumno(idActividad, idAlumno, nota, flgFalta)
+    for notaAspecto in listaNotaAspectos:
+        idAspecto = notaAspecto['idAspecto']
+        Alumno_nota_aspecto().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaAspecto['nota'], notaAspecto['comentario'])
+        listaNotaIndicador = notaAspecto['listaNotaIndicador']
+        
+        for notaIndicador in listaNotaIndicador:
+            Alumno_nota_indicador().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaIndicador['idIndicador'], notaIndicador['nota'], notaIndicador['comentario'])
+
+    d = {}
+    d['message'] = "succeed"
+    return d
+

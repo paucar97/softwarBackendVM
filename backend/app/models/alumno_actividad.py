@@ -2,6 +2,7 @@ from . import db
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.actividad import Actividad
 from app.models.grupo import Grupo
+from sqlalchemy import *
 
 class Alumno_actividad(db.Model):
     __tablename__ = 'alumno_actividad'
@@ -23,7 +24,10 @@ class Alumno_actividad(db.Model):
     fecha_revisado = db.Column('FECHA_REVISADO',db.DateTime)
     comentario = db.Column('COMENTARIO',db.String(150),nullable = True)
     comentarioJp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
-    comentarioProfesor = db.Column('COMENTARIO_PROFESOR',db.String(150),nullable = True)
+    #comentarioProfesor = db.Column('COMENTARIO_PROFESOR',db.String(150),nullable = True)
+    flg_calificado = db.Column('FLG_CALIFICADO', db.Integer, default = 0)
+    #Verifica si el alumno falto a la sesion o no
+    flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
 
     def addOne(self, obj):
         db.session.add(obj)
@@ -48,3 +52,22 @@ class Alumno_actividad(db.Model):
         alumnoActividad.id_grupo = idGrupo
         db.session.commit()
         return
+    
+    @classmethod
+    def calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta):
+        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
+        alumnoActividad.id_jp = idJp
+        alumnoActividad.flg_falta = flgFalta
+        alumnoActividad.nota = nota
+        alumnoActividad.fecha_revisado = func.current_timestamp()
+        alumnoActividad.flg_calificado = 1
+        db.session.commit()
+        return
+
+    @classmethod
+    def editarNotaAlumno(idActividad, idAlumno, nota, flgFalta):
+        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
+        alumnoActividad.nota = nota
+        alumnoActividad.flg_falta = flgFalta
+        alumnoActividad.fecha_modificado = func.current_timestamp()
+        
