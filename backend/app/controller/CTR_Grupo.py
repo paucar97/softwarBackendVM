@@ -22,5 +22,10 @@ def crearGrupo(idActividad,grupos):
 
 def listarIntegrantes(idGrupo):
     listaIntegrante = Grupo_alumno_horario().getAll(idGrupo)
+    rpta = []
+    for integrante in listaIntegrante:
+        d=dict()
+        d['nombre']= integrante.nombre
+        d['codigo']= integrante.codigo
     return 
     
