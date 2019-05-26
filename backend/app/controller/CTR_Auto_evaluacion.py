@@ -64,7 +64,6 @@ def listarObjetosAutoevaluacion(idActividad):
     listaEP=[]
     id=encuesta.id_encuesta
     listaEP=Encuesta_pregunta().getAll(id)#Lista de todos los objetos preguntas para esa pregunta
-    print(listaEP)
     lista=[]
     for EncuestaPregunta in listaEP:
         idPregunta=EncuestaPregunta.id_pregunta
@@ -92,7 +91,6 @@ def listarObjetosAutoevaluacion(idActividad):
                 else:
                     i=i+1
                     
-    print(lista)
     l={}
 
     l['listaFamilia']=lista     
@@ -137,6 +135,7 @@ def editarAutoEvaluacion(idActividad,listaFamilia):
             aux = Pregunta().addOne(auxPreguntaObjecto)
             listaIdPreguntas.append(aux)
 
+    print(listaIdPreguntas)
     for idPregunta in listaIdPreguntas:
         Encuesta_preguntaObjecto = Encuesta_pregunta(
             id_encuesta = idencuesta,
@@ -164,8 +163,9 @@ def eliminarAutoEvaluacion(idActividad):
         idpregunta=encuestapregunta.id_pregunta
         Pregunta().eliminarPregunta(idpregunta)
 
-    flag=Encuesta().eliminarEncuesta(idencuesta)
     Horario_encuesta().eliminarHorarioEncuesta(idencuesta)
+    flag=Encuesta().eliminarEncuesta(idencuesta)
+    
 
     return flag
 

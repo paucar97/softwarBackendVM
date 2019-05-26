@@ -23,6 +23,6 @@ class Encuesta(db.Model):
     def eliminarEncuesta(self,idEncuesta):
         Encuesta.query.filter_by(id_encuesta=idEncuesta).delete()
         db.session.commit()
-        return true
+        return True
 
         
