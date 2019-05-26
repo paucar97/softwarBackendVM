@@ -21,11 +21,12 @@ class Ingresar_comentario_alumno(Resource):
         #
         #
         return controller.ingresarComentarioAlumno(idActividad, idAlumno, comentario)
+
 class Obtener_alumnos_actividad(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
-        
+
         return controller.listaAlumnos(idActividad)
 
 class Calificar_alumno_actividad(Resource):
