@@ -24,6 +24,7 @@ class Actividad(db.Model):
     fecha_creacion = db.Column('FECHA_CREACION', db.DateTime, server_default = func.current_timestamp())
     id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
     flg_confianza = db.Column('FLG_CONFIANZA', db.Integer)
+    flg_puede_revisar = db.Column('FLG_PUEDE_REVISAR', db.Integer)
     #tipo I de individual y G de grupal
 
     def json(self):

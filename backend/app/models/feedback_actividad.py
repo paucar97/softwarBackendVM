@@ -1,6 +1,8 @@
 from . import db
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.actividad import Actividad
+from sqlalchemy import *
+
 class Feedback_actividad(db.Model):
     __tablename__='feedback_actividad'
     id_feedback_actividad = db.Column('ID_FEDDBACK_ACTIVIDAD',db.Integer,primary_key=True, autoincrement=True)
