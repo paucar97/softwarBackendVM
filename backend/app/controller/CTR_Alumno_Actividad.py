@@ -4,9 +4,10 @@ from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
-from sqlalchemy import and_
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
+from app.commons.messages import ResponseMessage
+from sqlalchemy import and_
 from sqlalchemy import *
 
 def entregablesActividadXAlumno(idActividad):
@@ -44,23 +45,54 @@ def entregablesActividadXAlumno(idActividad):
 
 def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
-    d = dict
-
-    reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
-    if reg_comment is None:
-        # TODO
-        pass  # send error msg ("alumno o actividad no válidas")
-        # TODO
-    else:
-        reg_comment.comentario = comentario
-        db.session.commit()
+    d = ResponseMessage()
+    try:
+        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        if reg_comment is None:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "Alumno o actividad no válidas"
+        else:
+            reg_comment.comentario = comentario
+            db.session.commit()
+            d.message = "Comentario agregado correctamente"
+    except Exception as ex:
+        d.opcode = 1
+        d.errcode = 2
+        d.message = str(ex)
 
     # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
-    return d
+    return d.jsonify()
+
+def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
+    # test if exists
+    d = ResponseMessage()
+    try:
+        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        if reg_resp is None:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "Alumno o actividad no válidas"
+        elif reg_resp.id_jp != idProfesor:
+            d.opcode = 1
+            d.errcode = 1
+            d.message = "No tiene autoridad para responder el comentario."
+        else:
+            reg_resp.comentarioJp = respuesta
+            db.session.commit()
+            d.message = "Respuesta agregada correctamente"
+    except Exception as ex:
+        d.opcode = 1
+        d.errcode = 2
+        d.message = str(ex)
+#
+    # # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+    return d.jsonify()
+
 def listaAlumnos(idActividad):
     ## ver si es grupal o indiviual
     tipoActividad = Actividad().getOne(idActividad).tipo
-    
+
     if tipoActividad == 'I':
         listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
         alumnos = []
@@ -69,46 +101,46 @@ def listaAlumnos(idActividad):
             d['idAlumno'] = alumno.id_alumno
             aux = Usuario().getOneId(alumno.id_alumno)
             d['codigoPUCP'] = aux.codigo_pucp
-            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+            d['nombre'] = aux.nombre + " " + aux.apellido_paterno
             alumnos.append(d)
         return alumnos
     else:
         listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
-        lstGrupos=[]
+        lstGrupos = []
         for grupo in listarGrupos:
             idGrupo = grupo.id_grupo
-            d=dict()
+            d = dict()
             d['idGrupo']= idGrupo
             d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
             lstGrupos.append(d)
         return lstGrupos
 
-def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos,flgFalta):
+def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
     aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
-    
+
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         notaAspectoObjeto = Alumno_nota_aspecto(
-            id_actividad = idActividad,
-            id_alumno = idAlumno,
-            id_rubrica = idRubrica,
-            id_aspecto = idAspecto,
-            nota = notaAspecto['nota'],
-            comentario = notaAspecto['comentario']
+            id_actividad=idActividad,
+            id_alumno=idAlumno,
+            id_rubrica=idRubrica,
+            id_aspecto=idAspecto,
+            nota=notaAspecto['nota'],
+            comentario=notaAspecto['comentario']
         )
         Alumno_nota_aspecto().addOne(notaAspectoObjeto)
-        
+
         listaNotaIndicador = notaAspecto['listaNotaIndicador']
-        
+
         for notaIndicador in listaNotaIndicador:
             notaIndicadorObjeto = Alumno_nota_indicador(
-                id_actividad = idActividad,
-                id_alumno = idAlumno,
-                id_rubrica = idRubrica,
-                id_aspecto = idAspecto,
-                id_indicador = notaIndicador['idIndicador'],
-                nota = notaIndicador['nota'],
-                comentario = notaIndicador['comentario'],
+                id_actividad=idActividad,
+                id_alumno=idAlumno,
+                id_rubrica=idRubrica,
+                id_aspecto=idAspecto,
+                id_indicador=notaIndicador['idIndicador'],
+                nota=notaIndicador['nota'],
+                comentario=notaIndicador['comentario'],
             )
             Alumno_nota_indicador().addOne(notaIndicadorObjeto)
 
@@ -122,7 +154,7 @@ def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspe
         idAspecto = notaAspecto['idAspecto']
         Alumno_nota_aspecto().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaAspecto['nota'], notaAspecto['comentario'])
         listaNotaIndicador = notaAspecto['listaNotaIndicador']
-        
+
         for notaIndicador in listaNotaIndicador:
             Alumno_nota_indicador().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaIndicador['idIndicador'], notaIndicador['nota'], notaIndicador['comentario'])
 

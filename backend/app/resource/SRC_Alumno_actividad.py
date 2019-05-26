@@ -14,18 +14,31 @@ class Obtener_entregables_actividad_por_alumno(Resource):
 class Ingresar_comentario_alumno(Resource):
     def post(self):
         data = request.get_json()
-        idActividad = data['idActividad']
-        idAlumno = data['idAlumno']
+        idActividad = int(data['idActividad'])
+        idAlumno = int(data['idAlumno'])
         comentario = data['comentario']
         # VALIDACION
         #
         #
         return controller.ingresarComentarioAlumno(idActividad, idAlumno, comentario)
+
+class Responder_comentario_alumno(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = int(data['idActividad'])
+        idAlumno = int(data['idAlumno'])
+        idProfesor = int(data['idProfesor'])
+        respuesta = data['respuesta']
+        # VALIDACION
+        #
+        #
+        return controller.responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta)
+
 class Obtener_alumnos_actividad(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
-        
+
         return controller.listaAlumnos(idActividad)
 
 class Calificar_alumno_actividad(Resource):
