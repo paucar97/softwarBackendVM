@@ -144,7 +144,6 @@ def obtenerNotaAlumno(idAlumno, idActividad):
             e['idAspecto'] = notaAspecto.id_aspecto
             listaNotaInd = []
             aux3 = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_alumno == idActividad, Alumno_nota_indicador.id_aspecto == notaAspecto.id_aspecto)).all()
-            print(aux3)
             for notaIndicador in aux3:
                 f = {}
                 f['idIndicador'] = notaIndicador.id_indicador
