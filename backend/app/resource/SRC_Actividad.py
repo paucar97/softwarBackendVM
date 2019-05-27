@@ -36,7 +36,7 @@ class Crear_rubrica(Resource):
 class Editar_rubrica(Resource):
     def post(self):
         data = request.get_json()
-        idRubrica = data['idRubrica_Actual']
+        idRubrica = data['idRubricaActual']
         idFlgEspecial = data['flgRubricaEspecial']
         idUsuarioCreador = data['idUsuarioCreador']
         nombreRubrica = data['nombreRubrica']
