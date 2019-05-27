@@ -81,6 +81,7 @@ api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
 api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
 api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
 api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
+api.add_resource(Obtener_nota_alumno, '/api/actividad/alumnos/obtener_nota_alumno')
 
 api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
 api.add_resource(ListarPreguntas,'/api/co-evaluacion/listarPreguntas')
