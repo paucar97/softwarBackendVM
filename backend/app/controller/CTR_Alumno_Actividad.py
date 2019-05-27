@@ -4,6 +4,10 @@ from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
+from app.models.curso import Curso
+from app.models.horario import Horario
+from app.models.notificacion import Notificacion
+
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
 from app.commons.messages import ResponseMessage
@@ -161,4 +165,20 @@ def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspe
     d = {}
     d['message'] = "succeed"
     return d
+
+def publicarNotificacionesAlumnos(idActividad):
+    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0))
+    nombreCurso = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
+    print(nombreCurso.codigo)
+    return
+    
+def publicarParaRevision(idActividad, idJpReviso):
+    publicarNotificacionesAlumnos(idActividad)
+    return
+    #flgConfianza = Actividad().getOne(idActividad).flg_confianza
+    #
+    #if flgConfianza == 1:
+    #    publicarNotificacionesAlumnos(idActividad)
+    #else:
+    #    publicarNotificacionProfesor(idActividad, idJpReviso)
 

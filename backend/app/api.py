@@ -79,10 +79,14 @@ api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/en
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
 api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
+api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
+api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
+
 api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
 api.add_resource(ListarPreguntas,'/api/co-evaluacion/listarPreguntas')
 api.add_resource(Editar_co_evaluacion,'/api/co-evaluacion/editar')
 api.add_resource(Eliminar_co_evaluacion,'/api/co-evaluacion/eliminar')
+
 # iter2 mod:comentarios
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario_alumno')
 api.add_resource(Responder_comentario_alumno, '/api/actividad/responder_comentario_alumno')

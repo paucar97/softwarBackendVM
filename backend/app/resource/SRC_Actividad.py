@@ -33,6 +33,19 @@ class Crear_rubrica(Resource):
         #
         return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
 
+class Editar_rubrica(Resource):
+    def post(self):
+        data = request.get_json()
+        idRubrica = data['idRubrica_Actual']
+        idFlgEspecial = data['flgRubricaEspecial']
+        idUsuarioCreador = data['idUsuarioCreador']
+        nombreRubrica = data['nombreRubrica']
+        idActividad = data['idActividad']
+        listaAspectos = data['listaAspectos']
+        return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
+
+
+
 class Crear_Actividad(Resource):
     def post(self):
         data = request.get_json()
