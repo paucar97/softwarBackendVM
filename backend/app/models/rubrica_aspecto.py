@@ -22,6 +22,10 @@ class Rubrica_aspecto(db.Model):
 
     @classmethod
     def borrarAspectos(self, idRubrica):
+        listaAspectos = Rubrica_aspecto.query.filter_by(id_rubrica = idRubrica).all()
+        for aspecto in listaAspectos:
+            Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).delete()
+
         Rubrica_aspecto.query.filter_by(id_rubrica=idRubrica).delete()
         db.session.commit()
         return    
