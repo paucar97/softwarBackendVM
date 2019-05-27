@@ -119,6 +119,55 @@ def listaAlumnos(idActividad):
             lstGrupos.append(d)
         return lstGrupos
 
+def obtenerNotaAlumno(idAlumno, idActividad):
+    aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+    d = {}
+
+    if aux.flg_calificado == 1:
+        d['flgCalificado'] = 1
+        d['idActividad']= idActividad
+        d['idAlumno']= idAlumno
+        d['idJp']= aux.id_jp
+        d['idGrupo']= aux.id_grupo
+        d['nota']= aux.nota
+        d['flgEntregable']= aux.flag_entregable
+        d['comentario']= aux.comentario
+        d['comentarioJp']= aux.comentarioJp
+        d['flgFalta']= aux.flg_falta
+        listaNotaAsp = []
+        aux2 = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_alumno == idAlumno, Alumno_nota_aspecto.id_alumno == idActividad)).all()
+        for notaAspecto in aux2:
+            e = {}
+            e['nota'] = notaAspecto.nota
+            e['comentario'] = notaAspecto.comentario
+            e['idRubrica'] = notaAspecto.id_rubrica
+            e['idAspecto'] = notaAspecto.id_aspecto
+            listaNotaInd = []
+            aux3 = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_alumno == idActividad, Alumno_nota_indicador == notaAspecto.id_aspecto)).all()
+            for notaIndicador in aux3:
+                f = {}
+                f['idIndicador'] = notaIndicador.id_indicador
+                f['nota'] = notaIndicador.nota
+                f['comentario'] = notaIndicador.comentario
+                listaNotaInd.append(f)
+            e['listaNotaIndicador'] = listaNotaInd
+            listaNotaAsp.append(e)
+        d['listaNotaAspectos'] = listaNotaAsp
+        return d
+    else:
+        d['flgCalificado'] = 0
+        d['idActividad']= idActividad
+        d['idAlumno']= idAlumno
+        d['idJp']= aux.id_jp
+        d['idGrupo']= aux.id_grupo
+        d['nota']= aux.nota
+        d['flgEntregable']= aux.flag_entregable
+        d['comentario']= aux.comentario
+        d['comentarioJp']= aux.comentarioJp
+        d['flgFalta']= aux.flg_falta
+        return d
+
+
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
     aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
 

@@ -44,8 +44,6 @@ class Editar_rubrica(Resource):
         listaAspectos = data['listaAspectos']
         return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
 
-
-
 class Crear_Actividad(Resource):
     def post(self):
         data = request.get_json()

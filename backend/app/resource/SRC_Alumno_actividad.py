@@ -41,6 +41,13 @@ class Obtener_alumnos_actividad(Resource):
 
         return controller.listaAlumnos(idActividad)
 
+class Obtener_nota_alumno(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlumno = data['idAlumno']
+        idActividad = data['idActividad']
+        return controller.obtenerNotaAlumno(idAlumno, idActividad)
+
 class Calificar_alumno_actividad(Resource):
     def post(self):
         data = request.get_json()
