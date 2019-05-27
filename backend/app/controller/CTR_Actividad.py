@@ -14,6 +14,7 @@ from app.models.alumno_actividad import Alumno_actividad
 from app.models.semestre import Semestre
 from app.commons.utils import *
 from app.commons.messages import ResponseMessage
+from sqlalchemy import *
 
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
@@ -82,7 +83,7 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
     Rubrica().editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica)
     Rubrica_aspecto().borrarAspectos(idRubrica)
     Rubrica_aspecto_indicador().borrarIndicadores(idRubrica)
-    
+
     for aspecto in listaAspectos:
         aspectoObjeto = Aspecto(
             descripcion = aspecto['descripcion'],
