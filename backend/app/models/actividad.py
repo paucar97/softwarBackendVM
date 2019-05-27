@@ -33,6 +33,7 @@ class Actividad(db.Model):
         d['idRubrica'] = self.id_rubrica
         d['descripcion'] = self.descripcion
         d['flgConfianza'] = self.flg_confianza
+        d['flgPuedeRevisar'] = self.flg_puede_revisar
         d['nombre'] = self.nombre
         d['flgEntregable'] = self.flg_entregable
         d['fechaInicio'] = self.fecha_inicio.__str__()
