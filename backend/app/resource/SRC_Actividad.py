@@ -40,7 +40,6 @@ class Editar_rubrica(Resource):
         idFlgEspecial = data['flgRubricaEspecial']
         idUsuarioCreador = data['idUsuarioCreador']
         nombreRubrica = data['nombreRubrica']
-        idActividad = data['idActividad']
         listaAspectos = data['listaAspectos']
         return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
 
