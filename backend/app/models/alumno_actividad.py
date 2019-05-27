@@ -54,7 +54,7 @@ class Alumno_actividad(db.Model):
         return
     
     @classmethod
-    def calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta):
+    def calificarAlumno(self, idActividad, idAlumno, idJp, nota, flgFalta):
         alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
         alumnoActividad.id_jp = idJp
         alumnoActividad.flg_falta = flgFalta
@@ -65,7 +65,7 @@ class Alumno_actividad(db.Model):
         return True
 
     @classmethod
-    def editarNotaAlumno(idActividad, idAlumno, nota, flgFalta):
+    def editarNotaAlumno(self, idActividad, idAlumno, nota, flgFalta):
         alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
         alumnoActividad.nota = nota
         alumnoActividad.flg_falta = flgFalta
