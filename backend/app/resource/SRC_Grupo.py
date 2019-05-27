@@ -35,4 +35,13 @@ class Listar_integrantes(Resource):
 """
 class Crear_grupo_general(Resource):
     def post(self):
-        return 
+        data = request.get_json()
+        idHorario = data['idHorario']
+        grupos = data['grupos']       
+        return crearGrupoGeneral(idHorario,grupos)
+
+class Listar_grupo_general(Resource):
+    def post(self):
+        data = request.get_json()
+        idHorario = data['idHorario']
+        return listarGruposGeneral(idHorario)

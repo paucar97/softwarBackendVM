@@ -1,5 +1,6 @@
 from . import db
 from app.models.permiso_usuario_horario import Permiso_usuario_horario 
+from sqlalchemy import *
 from app.models.grupo import Grupo
 class Grupo_alumno_horario(db.Model):
     __tablename__ = 'grupo_alumno_horario'
@@ -26,3 +27,9 @@ class Grupo_alumno_horario(db.Model):
     @classmethod
     def getAll(self,idGrupo):
         return Grupo_alumno_horario.query.filter_by(id_grupo = idGrupo)
+
+    @classmethod
+    def getAllGeneral(self,idHorario):
+        l = db.session.query(Grupo_alumno_horario,Grupo).join(Grupo).filter( and_(Grupo_alumno_horario.id_horario == idHorario,Grupo.flg_grupo_general == 1) )
+        
+        return l

@@ -216,19 +216,10 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
         except:
             pass
 
-    #Feedback
-    #Cuando creen feedback solo deberan buscar el objeto creado y editar
-    feedbackActividadObjeto=Feedback_actividad(
-            id_profesor=idprofesor,
-            id_actividad=idActividad,
-            comentario='',
-            flag_aprobado=0)
-
-    Feedback_actividad().addOne(feedbackActividadObjeto)
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable):
-    Actividad().updateOne(idactividad,Nombre,tipo1,hora_inicio,hora_fin,flag_entregable)
+def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
+    Actividad().updateOne(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable)
     Alumno_actividad().updateOne(idactividad,flag_entregable)
     return
 

@@ -57,6 +57,7 @@ from app.resource.SRC_Curso import *
 from app.resource.SRC_Actividad import *
 from app.resource.basic import Hello
 from app.resource.SRC_Grupo import *
+from app.resource.SRC_Co_evaluacion import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cursos_activos_alumno')
@@ -81,14 +82,22 @@ api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_no
 api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
 api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
 
+api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
+api.add_resource(ListarPreguntas,'/api/co-evaluacion/listarPreguntas')
+api.add_resource(Editar_co_evaluacion,'/api/co-evaluacion/editar')
+api.add_resource(Eliminar_co_evaluacion,'/api/co-evaluacion/eliminar')
+
 # iter2 mod:comentarios
-api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario')
-# api.add_resource(, '/api/actividad/')
+api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario_alumno')
+api.add_resource(Responder_comentario_alumno, '/api/actividad/responder_comentario_alumno')
 # api.add_resource(, '/api/actividad/listar_comentarios')
 api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
 api.add_resource(Editar_auto_evaluacion,'/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion,'/api/auto-evaluacion/eliminar')
-api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR
+api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR @INDIOKER
+api.add_resource(Crear_grupo_general,'/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
+api.add_resource(Listar_grupo_general,'/api/grupo/listar-general') # se probo con pstman PROCEDE
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Listar_integrantes,'/api/grupo/integrantes')
+api.add_resource(Existe_autoevaluacion,'/api/autoevaluacion/existencia')
