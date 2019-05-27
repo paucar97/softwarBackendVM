@@ -48,7 +48,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = dict
 
-    reg_comment = Alumno_actividad.query.filter(_and(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
+    reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
     if reg_comment is None:
         # TODO
         pass  # send error msg ("alumno o actividad no válidas")
