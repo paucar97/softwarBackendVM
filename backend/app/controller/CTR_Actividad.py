@@ -13,6 +13,8 @@ from app.models.feedback_actividad import Feedback_actividad
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.semestre import Semestre
 from app.commons.utils import *
+from app.commons.messages import ResponseMessage
+
 def obtenerRubricaXidRubrica(idRubrica):
     nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
     d = {}
@@ -76,53 +78,94 @@ def obtenerRubricasPasadas(idUsuario, idCurso):
     
     return d
 
-def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
-        rubricaObjeto = Rubrica(
-            flg_rubrica_especial = idFlgEspecial,
-            id_usuario_creador = idUsuarioCreador,
-            nombre = nombreRubrica
+def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
+    Rubrica().editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica)
+    Rubrica_aspecto().borrarAspectos(idRubrica)
+    Rubrica_aspecto_indicador().borrarAspectos(idRubrica)
+    
+    for aspecto in listaAspectos:
+        aspectoObjeto = Aspecto(
+            descripcion = aspecto['descripcion'],
+            informacion  = aspecto['informacion'],
+            puntaje_max = aspecto['puntajeMax'],
+            tipo_clasificacion = aspecto['tipoClasificacion']
         )
+        listaIndicadores = aspecto['listaIndicadores']
+        idAspecto = Aspecto().addOne(aspectoObjeto)
 
-        idRubrica = Rubrica().addOne(rubricaObjeto)
+        rubricaAspectoObjeto = Rubrica_aspecto(
+            id_rubrica = idRubrica,
+            id_aspecto = idAspecto
+        )
+        aux = Rubrica_aspecto().addOne(rubricaAspectoObjeto)
 
-        for aspecto in listaAspectos:
-            aspectoObjeto = Aspecto(
-                descripcion = aspecto['descripcion'],
-                informacion  = aspecto['informacion'],
-                puntaje_max = aspecto['puntajeMax'],
-                tipo_clasificacion = aspecto['tipoClasificacion']
+        for indicador in listaIndicadores:
+            indicadorObjeto = Indicador(
+                descripcion = indicador['descripcion'],
+                informacion = indicador['informacion'],
+                puntaje_max = indicador['puntajeMax'],
+                tipo = indicador['tipo']
             )
-            listaIndicadores = aspecto['listaIndicadores']
-            idAspecto = Aspecto().addOne(aspectoObjeto)
+            idIndicador = Indicador().addOne(indicadorObjeto)
 
-            rubricaAspectoObjeto = Rubrica_aspecto(
+            rubricaAspectoIndicadorObj = Rubrica_aspecto_indicador(
                 id_rubrica = idRubrica,
-                id_aspecto = idAspecto
+                id_aspecto = idAspecto,
+                id_indicador = idIndicador
             )
-            aux = Rubrica_aspecto().addOne(rubricaAspectoObjeto)
+            aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
+    
+    d = {}
+    d['message'] = True
+    return d
 
-            for indicador in listaIndicadores:
-                indicadorObjeto = Indicador(
-                    descripcion = indicador['descripcion'],
-                    informacion = indicador['informacion'],
-                    puntaje_max = indicador['puntajeMax'],
-                    tipo = indicador['tipo']
-                )
-                idIndicador = Indicador().addOne(indicadorObjeto)
 
-                rubricaAspectoIndicadorObj = Rubrica_aspecto_indicador(
-                    id_rubrica = idRubrica,
-                    id_aspecto = idAspecto,
-                    id_indicador = idIndicador
-                )
-                aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
+def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
+    rubricaObjeto = Rubrica(
+        flg_rubrica_especial = idFlgEspecial,
+        id_usuario_creador = idUsuarioCreador,
+        nombre = nombreRubrica
+    )
+    idRubrica = Rubrica().addOne(rubricaObjeto)
+
+    for aspecto in listaAspectos:
+        aspectoObjeto = Aspecto(
+            descripcion = aspecto['descripcion'],
+            informacion  = aspecto['informacion'],
+            puntaje_max = aspecto['puntajeMax'],
+            tipo_clasificacion = aspecto['tipoClasificacion']
+        )
+        listaIndicadores = aspecto['listaIndicadores']
+        idAspecto = Aspecto().addOne(aspectoObjeto)
+
+        rubricaAspectoObjeto = Rubrica_aspecto(
+            id_rubrica = idRubrica,
+            id_aspecto = idAspecto
+        )
+        aux = Rubrica_aspecto().addOne(rubricaAspectoObjeto)
+
+        for indicador in listaIndicadores:
+            indicadorObjeto = Indicador(
+                descripcion = indicador['descripcion'],
+                informacion = indicador['informacion'],
+                puntaje_max = indicador['puntajeMax'],
+                tipo = indicador['tipo']
+            )
+            idIndicador = Indicador().addOne(indicadorObjeto)
+
+            rubricaAspectoIndicadorObj = Rubrica_aspecto_indicador(
+                id_rubrica = idRubrica,
+                id_aspecto = idAspecto,
+                id_indicador = idIndicador
+            )
+            aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
         
-        d = {}
-        d['idRubrica'] = idRubrica
+    d = {}
+    d['idRubrica'] = idRubrica
 
-        Actividad().actualizarRubrica(idActividad, idRubrica)
+    Actividad().actualizarRubrica(idActividad, idRubrica)
 
-        return d
+    return d
 
 
 def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador):

@@ -19,3 +19,9 @@ class Rubrica_aspecto(db.Model):
     @classmethod
     def obtenerAspectos(self, idRubrica):
         return db.session.query(Aspecto).join(Rubrica_aspecto).filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
+
+    @classmethod
+    def borrarAspectos(self, idRubrica):
+        Rubrica_aspecto.query.filter_by(id_rubrica=idRubrica).delete()
+        db.session.commit()
+        return    

@@ -4,8 +4,9 @@ from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
+from app.models.curso import Curso
+from app.models.horario import Horario
 from app.models.notificacion import Notificacion
-from sqlalchemy import and_
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
 from sqlalchemy import *
@@ -47,7 +48,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = dict
 
-    reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
+    reg_comment = Alumno_actividad.query.filter(_and(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad))
     if reg_comment is None:
         # TODO
         pass  # send error msg ("alumno o actividad no válidas")
@@ -131,14 +132,19 @@ def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspe
     d['message'] = "succeed"
     return d
 
-#def publicarNotificacionesAlumnos(idActividad):
-
-
-#def publicarParaRevision(idActividad, idJpReviso):
-    flgConfianza = Actividad().getOne(idActividad).flg_confianza
+def publicarNotificacionesAlumnos(idActividad):
+    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0))
+    nombreCurso = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
+    print(nombreCurso.codigo)
+    return
     
-    if flgConfianza == 1:
-        publicarNotificacionesAlumnos(idActividad)
-    else:
-        publicarNotificacionProfesor(idActividad, idJpReviso)
+def publicarParaRevision(idActividad, idJpReviso):
+    publicarNotificacionesAlumnos(idActividad)
+    return
+    #flgConfianza = Actividad().getOne(idActividad).flg_confianza
+    #
+    #if flgConfianza == 1:
+    #    publicarNotificacionesAlumnos(idActividad)
+    #else:
+    #    publicarNotificacionProfesor(idActividad, idJpReviso)
 
