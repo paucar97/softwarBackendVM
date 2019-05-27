@@ -62,7 +62,7 @@ class Alumno_actividad(db.Model):
         alumnoActividad.fecha_revisado = func.current_timestamp()
         alumnoActividad.flg_calificado = 1
         db.session.commit()
-        return
+        return True
 
     @classmethod
     def editarNotaAlumno(idActividad, idAlumno, nota, flgFalta):
