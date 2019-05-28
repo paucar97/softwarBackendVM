@@ -96,6 +96,7 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
 def listaAlumnos(idActividad):
     ## ver si es grupal o indiviual
     tipoActividad = Actividad().getOne(idActividad).tipo
+    print(idActividad)
     print(tipoActividad)
     if tipoActividad == 'I':
         listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
