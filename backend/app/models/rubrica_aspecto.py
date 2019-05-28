@@ -1,6 +1,7 @@
 from . import db
 from app.models.rubrica import Rubrica
 from app.models.aspecto import Aspecto
+from sqlalchemy import *
 
 class Rubrica_aspecto(db.Model):
     __tablename__='rubrica_aspecto'
@@ -19,3 +20,12 @@ class Rubrica_aspecto(db.Model):
     @classmethod
     def obtenerAspectos(self, idRubrica):
         return db.session.query(Aspecto).join(Rubrica_aspecto).filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
+
+    @classmethod
+    def borrarAspectos(self, idRubrica):
+        listaAspectos = Rubrica_aspecto.query.filter_by(id_rubrica = idRubrica).all()
+        Rubrica_aspecto.query.filter_by(id_rubrica = idRubrica).delete()
+        for aspecto in listaAspectos:
+            Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).delete()
+        db.session.commit()
+        return

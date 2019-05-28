@@ -41,6 +41,13 @@ class Obtener_alumnos_actividad(Resource):
 
         return controller.listaAlumnos(idActividad)
 
+class Obtener_nota_alumno(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlumno = data['idAlumno']
+        idActividad = data['idActividad']
+        return controller.obtenerNotaAlumno(idAlumno, idActividad)
+
 class Calificar_alumno_actividad(Resource):
     def post(self):
         data = request.get_json()
@@ -64,6 +71,20 @@ class Editar_nota_alumno_actividad(Resource):
         listaNotaAspectos = data['listaNotaAspectos']
 
         return controller.editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta)
+
+class Publicar_calificacion_para_revision(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idJpReviso = data['idJpReviso']
+        return controller.publicarParaRevision(idActividad, idJpReviso)
+class Listar_alumnos_destacados(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.listarAlumnosDestacados(idActividad)
+
 
 #class Enviar_notificacion_profesor(Resource):
 #    def post(self):

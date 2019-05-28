@@ -1,5 +1,6 @@
 from . import db
 from sqlalchemy import and_
+from sqlalchemy.ext.hybrid import hybrid_property
 
 class Usuario(db.Model):
     #name of table in DB
@@ -15,14 +16,22 @@ class Usuario(db.Model):
     flg_activo = db.Column('FLG_ACTIVO', db.Integer, default=1)
     flg_admin = db.Column('FLG_ADMIN', db.Integer)
 
+    #hybrid properties
+
+    @hybrid_property
+    def nombre_completo(self):
+        return self.nombre + " " + self.apellido_paterno + " " + self.apellido_materno
+
+    #methods
+
     @classmethod
     def getOne(self, emailC, claveC):
         return Usuario.query.filter(and_(Usuario.email == emailC, Usuario.clave == claveC)).first()
 
-    def getOneId(self,idUsuario):
-        return Usuario.query.filter_by(id_usuario = idUsuario).first()
+    def getOneId(self, idUsuario):
+        return Usuario.query.filter_by(id_usuario=idUsuario).first()
 
-    def addOne(self,obj):
+    def addOne(self, obj):
         db.session.add(obj)
         db.session.flush()
         db.session.commit()

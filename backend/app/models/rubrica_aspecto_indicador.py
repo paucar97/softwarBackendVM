@@ -29,3 +29,12 @@ class Rubrica_aspecto_indicador(db.Model):
     @classmethod
     def obtenerIndicadores(self,idRubrica, idAspecto):
         return db.session.query(Indicador).join(Rubrica_aspecto_indicador).filter(and_(Rubrica_aspecto_indicador.id_rubrica == idRubrica, Rubrica_aspecto_indicador.id_aspecto == idAspecto)).all()
+
+    @classmethod
+    def borrarIndicadores(self, idRubrica):
+        listaIndicador = Rubrica_aspecto_indicador.query.filter_by(id_rubrica = idRubrica).all()
+        Rubrica_aspecto_indicador.query.filter_by(id_rubrica=idRubrica).delete()
+        for indicador in listaIndicador:
+            Indicador.query.filter_by(id_indicador = indicador.id_indicador).delete()
+        db.session.commit()
+        return

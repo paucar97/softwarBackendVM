@@ -4,6 +4,10 @@ from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
+from app.models.curso import Curso
+from app.models.horario import Horario
+from app.models.notificacion import Notificacion
+
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
 from app.commons.messages import ResponseMessage
@@ -110,10 +114,59 @@ def listaAlumnos(idActividad):
         for grupo in listarGrupos:
             idGrupo = grupo.id_grupo
             d = dict()
-            d['idGrupo']= idGrupo
+            d['idGrupo'] = idGrupo
             d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
             lstGrupos.append(d)
         return lstGrupos
+
+def obtenerNotaAlumno(idAlumno, idActividad):
+    aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+    d = {}
+
+    if aux.flg_calificado == 1:
+        d['flgCalificado'] = 1
+        d['idActividad']= idActividad
+        d['idAlumno']= idAlumno
+        d['idJp']= aux.id_jp
+        d['idGrupo']= aux.id_grupo
+        d['nota']= aux.nota
+        d['flgEntregable']= aux.flag_entregable
+        d['comentario']= aux.comentario
+        d['comentarioJp']= aux.comentarioJp
+        d['flgFalta']= aux.flg_falta
+        listaNotaAsp = []
+        aux2 = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_alumno == idAlumno, Alumno_nota_aspecto.id_alumno == idActividad)).all()
+        for notaAspecto in aux2:
+            e = {}
+            e['nota'] = notaAspecto.nota
+            e['comentario'] = notaAspecto.comentario
+            e['idRubrica'] = notaAspecto.id_rubrica
+            e['idAspecto'] = notaAspecto.id_aspecto
+            listaNotaInd = []
+            aux3 = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_alumno == idActividad, Alumno_nota_indicador.id_aspecto == notaAspecto.id_aspecto)).all()
+            for notaIndicador in aux3:
+                f = {}
+                f['idIndicador'] = notaIndicador.id_indicador
+                f['nota'] = notaIndicador.nota
+                f['comentario'] = notaIndicador.comentario
+                listaNotaInd.append(f)
+            e['listaNotaIndicador'] = listaNotaInd
+            listaNotaAsp.append(e)
+        d['listaNotaAspectos'] = listaNotaAsp
+        return d
+    else:
+        d['flgCalificado'] = 0
+        d['idActividad']= idActividad
+        d['idAlumno']= idAlumno
+        d['idJp']= aux.id_jp
+        d['idGrupo']= aux.id_grupo
+        d['nota']= aux.nota
+        d['flgEntregable']= aux.flag_entregable
+        d['comentario']= aux.comentario
+        d['comentarioJp']= aux.comentarioJp
+        d['flgFalta']= aux.flg_falta
+        return d
+
 
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
     aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
@@ -162,3 +215,38 @@ def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspe
     d['message'] = "succeed"
     return d
 
+def publicarNotificacionesAlumnos(idActividad):
+    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0))
+    nombreCurso = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
+    print(nombreCurso.codigo)
+    return
+    
+def publicarParaRevision(idActividad, idJpReviso):
+    publicarNotificacionesAlumnos(idActividad)
+    return
+    #flgConfianza = Actividad().getOne(idActividad).flg_confianza
+    #
+    #if flgConfianza == 1:
+    #    publicarNotificacionesAlumnos(idActividad)
+    #else:
+    #    publicarNotificacionProfesor(idActividad, idJpReviso)
+
+def listarAlumnosDestacados(idActividad):
+    almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
+
+    #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, Usuario.id_usuario == Alumno_actividad.id_alumno).filter(almact_fltr.c.NOTA is not None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    print("message")
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+
+    d = {}
+    lst = []
+    for cod, nom, nota in data.all():
+        elem = {}
+        elem['codigo'] = cod
+        elem['nombre'] = nom
+        elem['nota'] = nota
+        lst.append(elem)
+
+    d['lista5Alumnos'] = lst
+
+    return d

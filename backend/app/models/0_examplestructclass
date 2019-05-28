@@ -9,5 +9,7 @@ class Table(db.Model):
 
     #relationships
 
+    hybrid properties
+
     #methods
 
