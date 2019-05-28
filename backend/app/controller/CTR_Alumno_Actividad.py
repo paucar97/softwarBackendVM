@@ -95,9 +95,20 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
 
 def listaAlumnos(idActividad):
     ## ver si es grupal o indiviual
-    tipoActividad = Actividad().getOne(idActividad).tipo
+    
     print(idActividad)
     print(tipoActividad)
+    listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
+    alumnos = []
+    for alumno in listaAlumnos:
+        d = {}
+        d['idAlumno'] = alumno.id_alumno
+        aux = Usuario().getOneId(alumno.id_alumno)
+        d['codigoPUCP'] = aux.codigo_pucp
+        d['nombre'] = aux.nombre + " " + aux.apellido_paterno
+        alumnos.append(d)
+    return alumnos
+    """
     if tipoActividad == 'I':
         listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
         alumnos = []
@@ -122,6 +133,7 @@ def listaAlumnos(idActividad):
             return lstGrupos
         except:
             return None 
+    """
 
 def obtenerNotaAlumno(idAlumno, idActividad):
     aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
