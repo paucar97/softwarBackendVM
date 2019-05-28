@@ -78,3 +78,16 @@ class Publicar_calificacion_para_revision(Resource):
         idActividad = data['idActividad']
         idJpReviso = data['idJpReviso']
         return controller.publicarParaRevision(idActividad, idJpReviso)
+class Listar_alumnos_destacados(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.listarAlumnosDestacados(idActividad)
+
+
+#class Enviar_notificacion_profesor(Resource):
+#    def post(self):
+#        data = request.get_json()
+
+

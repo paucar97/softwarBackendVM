@@ -114,7 +114,7 @@ def listaAlumnos(idActividad):
         for grupo in listarGrupos:
             idGrupo = grupo.id_grupo
             d = dict()
-            d['idGrupo']= idGrupo
+            d['idGrupo'] = idGrupo
             d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
             lstGrupos.append(d)
         return lstGrupos
@@ -231,3 +231,22 @@ def publicarParaRevision(idActividad, idJpReviso):
     #else:
     #    publicarNotificacionProfesor(idActividad, idJpReviso)
 
+def listarAlumnosDestacados(idActividad):
+    almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
+
+    #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, Usuario.id_usuario == Alumno_actividad.id_alumno).filter(almact_fltr.c.NOTA is not None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    print("message")
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+
+    d = {}
+    lst = []
+    for cod, nom, nota in data.all():
+        elem = {}
+        elem['codigo'] = cod
+        elem['nombre'] = nom
+        elem['nota'] = nota
+        lst.append(elem)
+
+    d['lista5Alumnos'] = lst
+
+    return d
