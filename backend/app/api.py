@@ -97,3 +97,4 @@ api.add_resource(Listar_grupo_general,'/api/grupo/listar-general') # se probo co
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Listar_integrantes,'/api/grupo/integrantes')
 api.add_resource(Existe_autoevaluacion,'/api/autoevaluacion/existencia')
+api.add_resource(Eliminar_actividad,'/api/actividad/eliminar')

@@ -75,3 +75,10 @@ class Actividad(db.Model):
     @classmethod
     def listar(self,idHorario):
         return Actividad.query.filter_by(id_horario = idHorario,flg_activo = 1)
+
+    @classmethod
+    def deleteOne(self,idActividad):
+        actividad = Actividad.query.filter_by(id_actividad = idActividad).first()
+        actividad.flg_activo = 0
+        db.session.commit()
+        return 
