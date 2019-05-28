@@ -81,8 +81,9 @@ def obtenerRubricasPasadas(idUsuario, idCurso):
 
 def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
     Rubrica().editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica)
-    Rubrica_aspecto().borrarAspectos(idRubrica)
     Rubrica_aspecto_indicador().borrarIndicadores(idRubrica)
+    Rubrica_aspecto().borrarAspectos(idRubrica)
+    
 
     for aspecto in listaAspectos:
         aspectoObjeto = Aspecto(
