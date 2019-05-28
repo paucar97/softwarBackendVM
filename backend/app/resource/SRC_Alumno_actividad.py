@@ -65,6 +65,14 @@ class Editar_nota_alumno_actividad(Resource):
 
         return controller.editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta)
 
+class Listar_alumnos_destacados(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.listarAlumnosDestacados(idActividad)
+
+
 #class Enviar_notificacion_profesor(Resource):
 #    def post(self):
 #        data = request.get_json()

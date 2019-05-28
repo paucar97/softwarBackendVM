@@ -95,3 +95,5 @@ api.add_resource(Crear_grupo,'/api/grupo/crear') # FALTA PROBAR @INDIOKER
 api.add_resource(Crear_grupo_general,'/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
 api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Listar_integrantes,'/api/grupo/integrantes')
+api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
+# api.add_resource(, '/api/actividad/')
