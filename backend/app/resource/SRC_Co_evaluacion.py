@@ -33,3 +33,9 @@ class Eliminar_co_evaluacion(Resource):
         data = request.get_json()
         idActividad=data['idActividad']
         return eliminarCoEvaluacion(idActividad)
+
+class Existe_Co_evaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad=data['idActividad']
+        return existeCoevaluacion(idActividad)
