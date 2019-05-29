@@ -74,4 +74,4 @@ class Alumno_actividad(db.Model):
 
     @classmethod
     def getAllGrupos(self,idActividad):
-        return db.session.query(Alumno_actividad.id_grupo).filter_by(id_actividad = idActividad).distinct()
+        return db.session.query(Alumno_actividad.id_grupo).filter(and_(Alumno_actividad.id_actividad == idActividad ,Alumno_actividad.id_grupo.isnot(None) )).distinct()
