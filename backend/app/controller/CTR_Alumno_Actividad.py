@@ -152,6 +152,11 @@ def obtenerNotaAlumno(idAlumno, idActividad):
         aux2 = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_alumno == idAlumno, Alumno_nota_aspecto.id_alumno == idActividad)).all()
         for notaAspecto in aux2:
             e = {}
+            aspectoDetalle = Aspecto.query.filter_by(id_aspecto = notaAspecto.id_aspecto)
+            e['descripcion'] = aspectoDetalle.descripcion
+            e['informacion'] = aspectoDetalle.informacion
+            e['puntajeMax'] = aspectoDetalle.puntaje_max
+            e['tipoClasificacion'] = aspectoDetalle.tipo_clasificacion
             e['nota'] = notaAspecto.nota
             e['comentario'] = notaAspecto.comentario
             e['idRubrica'] = notaAspecto.id_rubrica
@@ -160,6 +165,11 @@ def obtenerNotaAlumno(idAlumno, idActividad):
             aux3 = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_alumno == idActividad, Alumno_nota_indicador.id_aspecto == notaAspecto.id_aspecto)).all()
             for notaIndicador in aux3:
                 f = {}
+                indicadorDetalle = Indicador.query.filter_by(id_indicador = notaIndicador.id_indicador)
+                f['descripcion'] = indicadorDetale.descripcion
+                f['informacion'] = indicadorDetale.informacion
+                f['puntajeMax'] = indicadorDetale.puntaje_max
+                f['tipo'] = indicadorDetale.tipo
                 f['idIndicador'] = notaIndicador.id_indicador
                 f['nota'] = notaIndicador.nota
                 f['comentario'] = notaIndicador.comentario
@@ -168,6 +178,7 @@ def obtenerNotaAlumno(idAlumno, idActividad):
             listaNotaAsp.append(e)
         d['listaNotaAspectos'] = listaNotaAsp
         return d
+        
     else:
         d['flgCalificado'] = 0
         d['idActividad']= idActividad
