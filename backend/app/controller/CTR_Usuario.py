@@ -13,7 +13,7 @@ def Login_Controlador(email,clave):
     contAlumno = 0
     for usuarioHorario in lista:
         if usuarioHorario.id_permiso == 1:
-            contProfesor =1
+            contProfesor = 1
         elif usuarioHorario.id_permiso == 2:
             contAlumno = 1
         else:
