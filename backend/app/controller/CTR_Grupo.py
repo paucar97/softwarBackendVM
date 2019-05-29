@@ -4,7 +4,8 @@ from app.models.alumno_actividad import Alumno_actividad
 from app.models.usuario import Usuario
 from app.models.grupo_alumno_horario import Grupo_alumno_horario
 from app.commons.messages import *
-
+from app.models.permiso_usuario_horario import Permiso_usuario_horario
+from app.models.semestre import Semestre
 def crearGrupo(idActividad,grupos):
     idHorario = Actividad().getOne(idActividad).id_horario
     
@@ -62,4 +63,19 @@ def listarGruposGeneral(idHorario):
             lstIdGrupo.append(grupo.id_grupo)
             rpta.append(d)
 
+    return rpta
+
+def listarAlumnosHorario(idHorario):
+    semestreActivo = Semestre().getOne().id_semestre
+    listaAlumnosHorario = Permiso_usuario_horario().getAllAlumnos(idHorario,semestreActivo)
+    rpta = []
+    for alumnos in listaAlumnosHorario:
+        d=dict()
+        alumno = Usuario().getOneId(alumnos.id_usuario)
+        d['nombre'] = alumno.nombre
+        d['codigoPucp'] = alumno.codigo_pucp
+        d['apellidoPaterno'] = alumno.apellido_paterno
+        d['apellidoMaterno'] = alumno.apellido_materno
+        d['idUsuario'] = alumno.id_usuario
+        rpta.append(d)  
     return rpta

@@ -38,3 +38,7 @@ class Permiso_usuario_horario(db.Model):
     @classmethod
     def getAllUsuario(self,idUsuario):
         return Permiso_usuario_horario.query.filter_by(id_usuario=idUsuario).all()
+
+    @classmethod
+    def getAllAlumnos(self,idHorario,semestreActivo):
+        return Permiso_usuario_horario.query.filter_by(id_horario = idHorario, id_semestre = semestreActivo,id_permiso = 2)
