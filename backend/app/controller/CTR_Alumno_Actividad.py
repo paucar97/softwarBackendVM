@@ -231,7 +231,7 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
     return d
 
 def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
-    aux = Alumno_actividad().editarNotaAlumno(idActividad, idAlumno, nota, flgFalta)
+    aux = Alumno_actividad().editarNotaAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         Alumno_nota_aspecto().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaAspecto['nota'], notaAspecto['comentario'])
