@@ -37,7 +37,7 @@ class Alumno_nota_indicador(db.Model):
         return
 
     @classmethod
-    def updateNota(idActividad, idRubrica, idAspecto, idAlumno, idIndicador, nota, comentario):
+    def updateNota(self, idActividad, idRubrica, idAspecto, idAlumno, idIndicador, nota, comentario):
         alumnoIndicadorNota = Alumno_nota_indicador.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_rubrica = idRubrica, id_aspecto = idAspecto, id_indicador = idIndicador).first()
         alumnoIndicadorNota.nota = nota
         alumnoIndicadorNota.comentario = comentario
