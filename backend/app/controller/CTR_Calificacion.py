@@ -29,18 +29,18 @@ def obtenerAlumnosEntregableEntregado(idActividad):
         rpta['cantidad'] = len(alumnosEntregableEntregado)
         return rpta
     else:
-        try:
-            listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
-            lstGrupos = []
-            for grupo in listarGrupos:
-                idGrupo = grupo.id_grupo
-                d = dict()
-                d['idGrupo'] = idGrupo
-                d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
-                lstGrupos.append(d)
-            return lstGrupos
-        except:
-            return None 
+        ##try:
+        listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
+        lstGrupos = []
+        for grupo in listarGrupos:
+            idGrupo = grupo.id_grupo
+            d = dict()
+            d['idGrupo'] = idGrupo
+            d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
+            lstGrupos.append(d)
+        return lstGrupos
+        ##except:
+        ##    return None 
 
 def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
     for aspecto in listaRubrica:
