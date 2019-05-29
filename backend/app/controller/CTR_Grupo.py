@@ -80,3 +80,16 @@ def listarAlumnosHorario(idHorario):
         d['idUsuario'] = alumno.id_usuario
         rpta.append(d)  
     return rpta
+
+
+def asignarGrupoGeneral(idActividad):
+    idHorario = Actividad().getOne(idActividad).id_horario
+    listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario).all() ##SOLO SON LOS GENERALES
+    if listaGrupos == None:
+        return {'message' : 'Error no hay grupos definidos para el horario'}
+
+    
+    for _,grupo in listaGrupos:
+        Alumno_actividad().updateGrupo(idActividad,grupo.id_usuario,grupo.id_grupo)
+            
+    return
