@@ -45,3 +45,17 @@ class Listar_grupo_general(Resource):
         data = request.get_json()
         idHorario = data['idHorario']
         return listarGruposGeneral(idHorario)
+
+class Listar_alumnos_horario(Resource):
+    def post(self):
+        data = request.get_json()
+        idHorario = data['idHorario']
+        
+        return listarAlumnosHorario(idHorario)
+
+class Asignar_grupo_general(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return asignarGrupoGeneral(idActividad)

@@ -25,6 +25,7 @@ class Actividad(db.Model):
     id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
     flg_confianza = db.Column('FLG_CONFIANZA', db.Integer)
     flg_puede_revisar = db.Column('FLG_PUEDE_REVISAR', db.Integer)
+    #flg_multicalificable = db.Column('FLG_MULTICALIFICABLE', db.Integer, default = 0)
     #tipo I de individual y G de grupal
 
     def json(self):
@@ -77,7 +78,7 @@ class Actividad(db.Model):
 
     @classmethod
     def listar(self,idHorario):
-        return Actividad.query.filter_by(id_horario = idHorario,flg_activo = 1)
+        return Actividad.query.order_by(Actividad.fecha_inicio).filter_by(id_horario = idHorario,flg_activo = 1)
 
     @classmethod
     def deleteOne(self,idActividad):
@@ -85,3 +86,4 @@ class Actividad(db.Model):
         actividad.flg_activo = 0
         db.session.commit()
         return 
+        

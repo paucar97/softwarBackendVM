@@ -33,8 +33,10 @@ class Rubrica_aspecto_indicador(db.Model):
     @classmethod
     def borrarIndicadores(self, idRubrica):
         listaIndicador = Rubrica_aspecto_indicador.query.filter_by(id_rubrica = idRubrica).all()
-        Rubrica_aspecto_indicador.query.filter_by(id_rubrica=idRubrica).delete()
-        for indicador in listaIndicador:
-            Indicador.query.filter_by(id_indicador = indicador.id_indicador).delete()
-        db.session.commit()
+        if listaIndicador != None:
+            Rubrica_aspecto_indicador.query.filter_by(id_rubrica=idRubrica).delete()
+            for indicador in listaIndicador: ## PUEDE SALIR UN ERROR TALVEZ
+                Indicador.query.filter_by(id_indicador = indicador.id_indicador).delete()
+            db.session.commit()
+            return
         return

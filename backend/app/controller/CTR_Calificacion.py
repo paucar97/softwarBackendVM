@@ -1,29 +1,50 @@
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador 
+from app.models.actividad import Actividad
 from app.models.usuario import Usuario
+from app.models.grupo import Grupo
 from app.models.entregable import Entregable 
 def obtenerAlumnosEntregableEntregado(idActividad):
-    listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
-    
-    alumnosEntregableEntregado = []
-    for alumno in listaAlumnos:
-        entregable = Entregable().getAll(idActividad,alumno.id_alumno)
-        d = {}
-        d['idAlumno'] = alumno.id_alumno
-        aux = Usuario().getOneId(alumno.id_alumno)
-        d['codigoPUCP'] = aux.codigo_pucp
-        d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
-        d['entregables'] =[]
-        if entregable != None:
-            for e in entregable:
-                d['entregables'].append(e.json())
-        alumnosEntregableEntregado.append(d)
+    tipoActividad = Actividad().getOne(idActividad).tipo
 
-    rpta = {}
-    rpta['lista']= alumnosEntregableEntregado
-    rpta['cantidad'] = len(alumnosEntregableEntregado)
-    return rpta
+    if tipoActividad == 'I':
+        listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
+        
+        alumnosEntregableEntregado = []
+        for alumno in listaAlumnos:
+            entregable = Entregable().getAll(idActividad,alumno.id_alumno)
+            d = {}
+            d['idAlumno'] = alumno.id_alumno
+            aux = Usuario().getOneId(alumno.id_alumno)
+            d['codigoPUCP'] = aux.codigo_pucp
+            d['nombre'] = aux.nombre +  " " + aux.apellido_paterno
+            d['entregables'] =[]
+            if entregable != None:
+                for e in entregable:
+                    d['entregables'].append(e.json())
+            alumnosEntregableEntregado.append(d)
+
+        rpta = {}
+        rpta['lista']= alumnosEntregableEntregado
+        rpta['cantidad'] = len(alumnosEntregableEntregado)
+        return rpta
+    else:
+        ##try:
+        listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
+        
+        lstGrupos = []
+        for grupo in listarGrupos:
+            idGrupo = grupo.id_grupo
+            d = dict()
+            
+            d['idGrupo'] = idGrupo
+            
+            d['nombreGrupo'] = Grupo().getOne(idGrupo).first().nombre
+            lstGrupos.append(d)
+        return lstGrupos
+        ##except:
+        ##    return None 
 
 def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
     for aspecto in listaRubrica:
