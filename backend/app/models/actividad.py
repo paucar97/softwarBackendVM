@@ -25,6 +25,7 @@ class Actividad(db.Model):
     id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
     flg_confianza = db.Column('FLG_CONFIANZA', db.Integer)
     flg_puede_revisar = db.Column('FLG_PUEDE_REVISAR', db.Integer)
+    #flg_multicalificable = db.Column('FLG_MULTICALIFICABLE', db.Integer, default = 0)
     #tipo I de individual y G de grupal
 
     def json(self):

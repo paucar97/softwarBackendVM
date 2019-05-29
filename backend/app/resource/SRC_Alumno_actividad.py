@@ -58,6 +58,7 @@ class Calificar_alumno_actividad(Resource):
         idRubrica = data['idRubrica']
         flgFalta = data['flgFalta']
         listaNotaAspectos = data['listaNotaAspectos']
+        #flgCalifico = data['flgCalifico']
 
         return controller.calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta)
 
@@ -78,6 +79,7 @@ class Publicar_calificacion_para_revision(Resource):
         idActividad = data['idActividad']
         idJpReviso = data['idJpReviso']
         return controller.publicarParaRevision(idActividad, idJpReviso)
+
 class Listar_alumnos_destacados(Resource):
     def post(self):
         data = request.get_json()

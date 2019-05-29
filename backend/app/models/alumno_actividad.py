@@ -28,6 +28,7 @@ class Alumno_actividad(db.Model):
     flg_calificado = db.Column('FLG_CALIFICADO', db.Integer, default = 0)
     #Verifica si el alumno falto a la sesion o no
     flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
+    #flg_publicado = db.Column('FLG_PUBLICADO', db.Integer, default = 0)
 
     def addOne(self, obj):
         db.session.add(obj)
@@ -73,5 +74,13 @@ class Alumno_actividad(db.Model):
         
 
     @classmethod
-    def getAllGrupos(self,idActividad):
+    def getAllGrupos(self, idActividad):
         return db.session.query(Alumno_actividad.id_grupo).filter(and_(Alumno_actividad.id_actividad == idActividad ,Alumno_actividad.id_grupo.isnot(None) )).distinct()
+    
+    @classmethod
+    def publicarNotas(self, idActividad):
+        listaAlumnosActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad).all()
+        for alumnoActividad in listaAlumnosActividad:
+            alumnoActividad.flg_publicado = 1
+        db.session.commit()
+        return True
