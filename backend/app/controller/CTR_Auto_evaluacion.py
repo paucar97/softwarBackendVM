@@ -170,12 +170,14 @@ def eliminarAutoEvaluacion(idActividad):
     return flag
 
 def existeAutoevaluacion(idActividad):
-    actividad = Horario_encuesta().getOne(idActividad)
-    if actividad is None:
-        return {'message' : 'False'}
+    listaEncuesta = Horario_encuesta().getAll(idActividad)
+    if listaEncuesta is None:
+        return {'message':'False'}
     else:
-        tipoEncuesta = Encuesta().getOne(actividad.id_encuesta).tipo
-        if tipoEncuesta == 'AUTOEVALUACION':
-            return {'message' : 'True'}
-        else:
-            return {'message' : 'False'}
+        for horario_encuesta in listaEncuesta:
+            id = horario_encuesta.id_encuesta
+            encuesta = Encuesta().getOne(id)
+            if encuesta.tipo == 'AUTOEVALUACION':
+                return {'message':'True'}
+
+    return {'message':'False'}
