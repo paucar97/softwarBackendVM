@@ -71,7 +71,7 @@ class Alumno_actividad(db.Model):
         alumnoActividad.nota = nota
         alumnoActividad.flg_falta = flgFalta
         alumnoActividad.fecha_modificado = func.current_timestamp()
-        AlumnoActividad.idJp = idJp
+        alumnoActividad.idJp = idJp
         db.session.commit()
         return True
         
