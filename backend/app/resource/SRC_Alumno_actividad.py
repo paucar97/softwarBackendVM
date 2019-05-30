@@ -70,7 +70,8 @@ class Editar_nota_alumno_actividad(Resource):
         nota = data['nota']
         idRubrica = data['idRubrica']
         listaNotaAspectos = data['listaNotaAspectos']
-
+        idJp = data['idJp']
+        flgFalta = data['flgFalta']
         return controller.editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta)
 
 class Publicar_calificacion_para_revision(Resource):
