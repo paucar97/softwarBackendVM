@@ -107,3 +107,5 @@ api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
 api.add_resource(Listar_alumnos_horario, '/api/horario/alumnos')
 api.add_resource(Obtener_estadistica_actividad, '/api/actividad/estadistica')
 # api.add_resource(, '/api/actividad/')
+api.add_resource(Eliminar_actividad,'/api/actividad/eliminar') #
+api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas') #

@@ -100,4 +100,9 @@ class Obtener_estadistica_actividad(Resource):
 #    def post(self):
 #        data = request.get_json()
 
+class Lista_alumnos_notas(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
 
+        return controller.listarAlumnosNotas(idActividad)
