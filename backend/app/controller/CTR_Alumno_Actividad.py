@@ -18,11 +18,8 @@ from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
-<<<<<<< HEAD
 from statistics import *
-=======
 from collections import Counter
->>>>>>> 144e143566505a353a6d0a309539bcb23a8c4f22
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
