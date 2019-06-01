@@ -19,6 +19,7 @@ from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
 from sqlalchemy import and_
 from sqlalchemy import *
+from collections import Counter
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
@@ -318,3 +319,45 @@ def listarAlumnosDestacados(idActividad):
     d['lista5Alumnos'] = lst
 
     return d
+
+def listarAlumnosNotas(idActividad):
+    almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc())
+    d = {}
+    notas = []
+    faltas = 0
+    for _,_,nota in data.all():
+        if nota != None:
+            try:
+                notas.append(int(float(nota)))
+            except:
+                print("Error en castear la nota")
+        else:
+            faltas += 1
+            print("Nota Nula")
+    d['listaNotas'] = notas
+    notas  = dict(Counter(notas))
+    frecuencia = [(k, v) for k, v in notas.items()] 
+    cantidadNotas = len(notas)
+    total = cantidadNotas + faltas 
+    
+    d['frecuencia'] = frecuencia
+    d['cantidadNotas'] = cantidadNotas
+    d['cantidadFalta'] = faltas
+    d['cantidadTotal'] = cantidadNotas + faltas
+
+    return d
+"""
+{
+    listaNotas : [10,11,11,13,18]
+    frecuencia : [
+        (10,1),
+        (11,2),
+        (13,1),
+        (18,1)
+    ]
+    cantidadNotas : 5,
+    cantidadFalta : 1,
+    cantidadTotal : 6
+}
+"""
