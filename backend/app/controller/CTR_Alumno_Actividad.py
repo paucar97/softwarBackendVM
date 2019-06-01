@@ -362,7 +362,7 @@ def listarAlumnosNotas(idActividad):
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
     frecuencia = [(k, v) for k, v in notas.items()] 
-    d['frecuencia'] = []
+    d['notaFrecuencia'] = []
     for nota,frecuencia in frecuencia:
         aux={}
         aux['nota'] = nota
