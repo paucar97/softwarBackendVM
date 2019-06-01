@@ -358,14 +358,21 @@ def listarAlumnosNotas(idActividad):
                 print("Error en castear la nota")
         else:
             faltas += 1
-            print("Nota Nula")
+            #print("Nota Nula")
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
     frecuencia = [(k, v) for k, v in notas.items()] 
+    d['frecuencia'] = []
+    for nota,frecuencia in frecuencia:
+        aux={}
+        aux['nota'] = nota
+        aux['frecuencia'] = frecuencia
+        d['frecuencia'].append(aux)
+    
     cantidadNotas = len(notas)
     total = cantidadNotas + faltas 
     
-    d['frecuencia'] = frecuencia
+    
     d['cantidadNotas'] = cantidadNotas
     d['cantidadFalta'] = faltas
     d['cantidadTotal'] = cantidadNotas + faltas
