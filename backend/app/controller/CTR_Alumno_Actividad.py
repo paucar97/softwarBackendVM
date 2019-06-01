@@ -367,7 +367,7 @@ def listarAlumnosNotas(idActividad):
         aux={}
         aux['nota'] = nota
         aux['frecuencia'] = frecuencia
-        d['frecuencia'].append(aux)
+        d['notaFrecuencia'].append(aux)
     
     cantidadNotas = len(notas)
     total = cantidadNotas + faltas 
