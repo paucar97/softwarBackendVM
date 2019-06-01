@@ -18,6 +18,7 @@ from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
+from sqlalchemy.orm import aliased
 from statistics import *
 from collections import Counter
 
@@ -104,16 +105,19 @@ def listarComentarios(idActividad):
     d = dict()
     lstComments = []
 
+    Alumno = aliased(Usuario)
+    Profesor = aliased(Usuario)
     # TODO : actual query and iteration
 
-    #dataComment = dict()
-    #dataComment["idAlumno"] =
-    #dataComment["nomAlumno"] =
-    #dataComment["codAlumno"] =
-    #dataComment["nomProfesor"] =
-    #dataComment["comentario"] =
-    #dataComment["respuesta"] =
-    #lstComments.append(dataComment)
+    #for in :
+    #    dataComment = dict()
+    #    dataComment["idAlumno"] =
+    #    dataComment["nomAlumno"] =
+    #    dataComment["codAlumno"] =
+    #    dataComment["nomProfesor"] =
+    #    dataComment["comentario"] =
+    #    dataComment["respuesta"] =
+    #    lstComments.append(dataComment)
 
     d["numComentarios"] = len(lstComments)
     d["listaComentarios"] = lstComments
