@@ -277,6 +277,10 @@ def publicarNotificacionesAlumnos(idActividad):
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
     
+def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
+    cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
+    
+
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
     actividad = Actividad.getOne(idActividad)
@@ -290,7 +294,8 @@ def publicarParaRevision(idActividad, idJpReviso):
             d['succeed'] = True
             d['message'] = "Notas publicadas"
             return d
-
+    if actividad.flg_confianza == 0:
+        crearSolicitudRevisionProfesor(idActividad, idJpReviso)
 
     #flgConfianza = Actividad().getOne(idActividad).flg_confianza
     #
