@@ -100,6 +100,26 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
     # # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
     return d.jsonify()
 
+def listarComentarios(idActividad):
+    d = dict()
+    lstComments = []
+
+    # TODO : actual query and iteration
+
+    #dataComment = dict()
+    #dataComment["idAlumno"] =
+    #dataComment["nomAlumno"] =
+    #dataComment["codAlumno"] =
+    #dataComment["nomProfesor"] =
+    #dataComment["comentario"] =
+    #dataComment["respuesta"] =
+    #lstComments.append(dataComment)
+
+    d["numComentarios"] = len(lstComments)
+    d["listaComentarios"] = lstComments
+
+    return d
+
 def listaAlumnos(idActividad):
     ## ver si es grupal o indiviual
 
@@ -361,10 +381,10 @@ def listarAlumnosNotas(idActividad):
             print("Nota Nula")
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
-    frecuencia = [(k, v) for k, v in notas.items()] 
+    frecuencia = [(k, v) for k, v in notas.items()]
     cantidadNotas = len(notas)
-    total = cantidadNotas + faltas 
-    
+    total = cantidadNotas + faltas
+
     d['frecuencia'] = frecuencia
     d['cantidadNotas'] = cantidadNotas
     d['cantidadFalta'] = faltas

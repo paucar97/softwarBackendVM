@@ -34,6 +34,13 @@ class Responder_comentario_alumno(Resource):
         #
         return controller.responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta)
 
+class Listar_comentarios_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.listarComentarios(idActividad)
+
 class Obtener_alumnos_actividad(Resource):
     def post(self):
         data = request.get_json()
