@@ -88,6 +88,13 @@ class Listar_alumnos_destacados(Resource):
 
         return controller.listarAlumnosDestacados(idActividad)
 
+class Obtener_estadistica_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.obtenerEstadisticaActividad(idActividad)
+
 
 #class Enviar_notificacion_profesor(Resource):
 #    def post(self):

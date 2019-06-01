@@ -11,14 +11,14 @@ from app.models.semestre import Semestre
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.alumno_nota_aspecto import Alumno_nota_aspecto
 from app.models.alumno_nota_indicador import Alumno_nota_indicador
-from app.models.rubrica import Rubrica 
+from app.models.rubrica import Rubrica
 from app.models.aspecto import Aspecto
 from app.models.indicador import Indicador
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
-from sqlalchemy import and_
 from sqlalchemy import *
+from statistics import *
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
@@ -101,7 +101,7 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
 
 def listaAlumnos(idActividad):
     ## ver si es grupal o indiviual
-    
+
     listaAlumnos = Alumno_actividad().getAllAlumnos(idActividad)
     alumnos = []
     for alumno in listaAlumnos:
@@ -136,7 +136,7 @@ def listaAlumnos(idActividad):
                 lstGrupos.append(d)
             return lstGrupos
         except:
-            return None 
+            return None
     """
 
 def obtenerNotaAlumno(idAlumno, idActividad):
@@ -256,27 +256,27 @@ def publicarNotificacionGeneral(idSemestre, idUsuario, mensaje, idActividad):
 
 def publicarNotificacionesAlumnos(idActividad):
     alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0, Alumno_actividad.flg_calificado == 0)).all()
-    
+
     if len(alumnosFaltantesCalificados) > 0:
         return 0
-    
+
     alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0)).all()
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
     mensaje = cursoActividad.codigo + " - Se registro la nota de la Actividad: " + actividadEvaluada.nombre
     semestre = Semestre.getOne()
-    
+
     for alumno in alumnosCalificados:
         publicarNotificacionGeneral(semestre.id_semestre, alumno.id_alumno, mensaje, idActividad)
-    
+
     Alumno_actividad.publicarNotas(idActividad)
     idHorario = db.session.query(Actividad.id_actividad, Horario.id_horario).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).first()
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == idHorario.id_horario, Permiso_usuario_horario.id_permiso == 1))
-    
+
     for profesor in profesoresHorario:
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
-    
+
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
     actividad = Actividad.getOne(idActividad)
@@ -302,12 +302,13 @@ def publicarParaRevision(idActividad, idJpReviso):
 def listarAlumnosDestacados(idActividad):
     almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
 
-    #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, Usuario.id_usuario == Alumno_actividad.id_alumno).filter(almact_fltr.c.NOTA is not None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
-    print("message")
-    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).filter(almact_fltr.c.NOTA != None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).filter(and_(almact_fltr.c.FLG_CALIFICADO == True, almact_fltr.c.FLG_FALTA == False, almact_fltr.c.NOTA != None)).order_by(almact_fltr.c.NOTA.desc()).limit(5)
 
     d = {}
     lst = []
+
     for cod, nom, nota in data.all():
         elem = {}
         elem['codigo'] = cod
@@ -316,5 +317,29 @@ def listarAlumnosDestacados(idActividad):
         lst.append(elem)
 
     d['lista5Alumnos'] = lst
+
+    return d
+
+def obtenerEstadisticaActividad(idActividad):
+    d = {}
+
+    try:
+        sqlquery = db.session.query(Alumno_actividad.nota).filter(Alumno_actividad.id_actividad == idActividad).order_by(Alumno_actividad.nota.desc())
+        lst = [nota for nota, in sqlquery]
+        fltr_lst = list(filter(lambda x: x is not None, lst))
+    except Exception as ex:
+        d = ResponseMessage(1, 2, str(ex))
+        return d.jsonify()
+
+    try:
+        d['media'] = mean(fltr_lst)
+        d['desciavionEstandar'] = stdev(fltr_lst)
+        d['porcentajeAprobados'] = len(list(filter(lambda x: x > 10, fltr_lst))) * 100.0 / len(fltr_lst)
+        d['notaMax'] = max(fltr_lst)
+        d['notaMin'] = min(fltr_lst)
+        d['numNotas'] = len(fltr_lst)
+    except Exception as ex:
+        d = ResponseMessage(1, 1, str(ex))
+        return d.jsonify()
 
     return d
