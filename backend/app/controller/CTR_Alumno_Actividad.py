@@ -107,17 +107,18 @@ def listarComentarios(idActividad):
 
     Alumno = aliased(Usuario)
     Profesor = aliased(Usuario)
-    # TODO : actual query and iteration
+    # modif pendiente: filter Alumno_actividad antes de hacer los joins
+    sqlquery = db.session.query(Alumno_actividad.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad.comentario, Alumno_actividad.comentarioJp).join(Alumno, Alumno_actividad.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad.id_jp == Profesor.id_usuario).filter(and_(Alumno_actividad.comentario == idActividad, Alumno_actividad.comentario != None))
 
-    #for in :
-    #    dataComment = dict()
-    #    dataComment["idAlumno"] =
-    #    dataComment["nomAlumno"] =
-    #    dataComment["codAlumno"] =
-    #    dataComment["nomProfesor"] =
-    #    dataComment["comentario"] =
-    #    dataComment["respuesta"] =
-    #    lstComments.append(dataComment)
+    for row in sqlquery:
+        dataComment = dict()
+        dataComment["idAlumno"] = row[0]
+        dataComment["nomAlumno"] = row[1]
+        dataComment["codAlumno"] = row[2]
+        dataComment["nomProfesor"] = row[3]
+        dataComment["comentario"] = row[4]
+        dataComment["respuesta"] = row[5]
+        lstComments.append(dataComment)
 
     d["numComentarios"] = len(lstComments)
     d["listaComentarios"] = lstComments
@@ -357,8 +358,8 @@ def obtenerEstadisticaActividad(idActividad):
         return d.jsonify()
 
     try:
-        d['media'] = mean(fltr_lst)
-        d['desciavionEstandar'] = stdev(fltr_lst)
+        d['media'] = round(mean(fltr_lst), 2)
+        d['desviacionEstandar'] = round(stdev(fltr_lst), 2)
         d['porcentajeAprobados'] = len(list(filter(lambda x: x > 10, fltr_lst))) * 100.0 / len(fltr_lst)
         d['notaMax'] = max(fltr_lst)
         d['notaMin'] = min(fltr_lst)
