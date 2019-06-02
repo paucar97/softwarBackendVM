@@ -28,10 +28,11 @@ class Crear_rubrica(Resource):
         nombreRubrica = data['nombreRubrica']
         idActividad = data['idActividad']
         listaAspectos = data['listaAspectos']
+        tipo = data['tipo']
         # VALIDACION
         #
         #
-        return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
+        return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
 
 class Editar_rubrica(Resource):
     def post(self):

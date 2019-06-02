@@ -4,6 +4,7 @@ from app.models.aspecto import Aspecto
 from app.models.indicador import Indicador
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from app.models.rubrica_aspecto import Rubrica_aspecto
+from app.models.rubrica_aspecto_indicador_nivel import Rubrica_aspecto_indicador_nivel
 from app.models.horario import Horario
 from app.models.actividad_alarma import Actividad_alarma
 from app.models.encuesta_pregunta import Encuesta_pregunta
@@ -12,6 +13,7 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.semestre import Semestre
+from app.models.nivel import Nivel
 from app.commons.utils import *
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
@@ -122,11 +124,13 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
     return d
 
 
-def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
+def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
     rubricaObjeto = Rubrica(
         flg_rubrica_especial = idFlgEspecial,
         id_usuario_creador = idUsuarioCreador,
-        nombre = nombreRubrica
+        nombre = nombreRubrica,
+        tipo = tipo,
+        id_actividad = idActividad
     )
     idRubrica = Rubrica().addOne(rubricaObjeto)
 
@@ -136,6 +140,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
             informacion  = aspecto['informacion'],
             puntaje_max = aspecto['puntajeMax'],
             tipo_clasificacion = aspecto['tipoClasificacion']
+            flg_grupal = aspecto['flgGrupal']
         )
         listaIndicadores = aspecto['listaIndicadores']
         idAspecto = Aspecto().addOne(aspectoObjeto)
@@ -150,8 +155,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
             indicadorObjeto = Indicador(
                 descripcion = indicador['descripcion'],
                 informacion = indicador['informacion'],
-                puntaje_max = indicador['puntajeMax'],
-                tipo = indicador['tipo']
+                puntaje_max = indicador['puntajeMax']
             )
             idIndicador = Indicador().addOne(indicadorObjeto)
 
@@ -161,7 +165,25 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
                 id_indicador = idIndicador
             )
             aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
-        
+            
+            listaNiveles = indicador['listaNiveles']
+
+            for nivel in listaNiveles:
+                nivelObjeto = Nivel(
+                    descripcion = nivel['descripcion'],
+                    grado = nivel['grado'],
+                    puntaje = nivel['puntaje']
+                )
+                idNivel = Nivel().addOne(nivelObjeto)
+                rubricaAspectoIndicadorNivelObj = Rubrica_aspecto_indicador_nivel(
+                    id_rubrica = idRubrica,
+                    id_aspecto = idAspecto,
+                    id_indicador = idIndicador,
+                    id_nivel = idNivel
+                )
+                Rubrica_aspecto_indicador_nivel().addOne(rubricaAspectoIndicadorNivelObj)
+
+
     d = {}
     d['idRubrica'] = idRubrica
 

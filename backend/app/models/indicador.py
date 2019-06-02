@@ -6,10 +6,7 @@ class Indicador(db.Model):
     descripcion = db.Column('DESCRIPCION',db.String(500))
     informacion = db.Column('INFORMACION',db.String(500))
     puntaje_max = db.Column('PUNTAJE_MAX',db.Float)
-    tipo = db.Column('TIPO', db.String(100))
-    #NOTA
-    #COTEJO
-    #DESEMPEnO
+    #tipo = db.Column('TIPO', db.String(100))
 
     def addOne(self,obj):
         db.session.add(obj)

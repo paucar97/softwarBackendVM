@@ -13,6 +13,7 @@ class Horario(db.Model):
     id_curso = db.Column('ID_CURSO',db.ForeignKey(Curso.id_curso),primary_key = True)
     id_semestre = db.Column('ID_SEMESTRE', db.Integer, nullable = False)
     nombre = db.Column('NOMBRE',db.String(10))
+    id_rubrica_especial = db.Column('ID_RUBRICA_ESPECIAL', db.Integer, nullable = True)
     #index2 = db.Index('idx_horario', id_horario, id_curso, id_especialidad, id_semestre, unique=True)
 
     @classmethod
