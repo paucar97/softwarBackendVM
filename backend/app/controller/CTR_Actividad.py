@@ -235,3 +235,18 @@ def listarActividad(idHorario):
     for actividad in listaActividad:
         rpta.append(actividad.json())
     return rpta
+
+def eliminarActividad(idActividad):
+    actividad = Actividad().getOne(idActividad)
+    nowStr = datetime.datetime.now().__str__()
+    print(nowStr)
+    now  = datetime.datetime.strptime(nowStr,'%Y-%m-%d %H:%M:%S.%f')
+    fechaInicioActividad = datetime.datetime.strptime(actividad.fecha_inicio,'%Y-%m-%d %H:%M:%S.%f')
+    if (now >= fechaInicioActividad):
+        return {'message' : 'error - Actividad en proceso'}
+    else:
+        try:
+            Actividad().deleteOne(idActividad)
+            return {'message' : 'Se elimino correctamente'}
+        except:
+            return {'message' : 'Error no se elimino correctamente'}

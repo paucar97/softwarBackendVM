@@ -92,4 +92,4 @@ def asignarGrupoGeneral(idActividad):
     for _,grupo in listaGrupos:
         Alumno_actividad().updateGrupo(idActividad,grupo.id_usuario,grupo.id_grupo)
             
-    return
+    return {'message' : 'Realizado correctamente'}

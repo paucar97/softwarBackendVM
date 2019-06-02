@@ -78,3 +78,12 @@ class Listar_Actividad(Resource):
         data = request.get_json()
         idHorario = data['idhorario']
         return listarActividad(idHorario)
+
+
+class Eliminar_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+
+        return eliminarActividad(idActividad)

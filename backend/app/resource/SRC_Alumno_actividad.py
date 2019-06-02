@@ -34,6 +34,13 @@ class Responder_comentario_alumno(Resource):
         #
         return controller.responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta)
 
+class Listar_comentarios_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.listarComentarios(idActividad)
+
 class Obtener_alumnos_actividad(Resource):
     def post(self):
         data = request.get_json()
@@ -88,9 +95,21 @@ class Listar_alumnos_destacados(Resource):
 
         return controller.listarAlumnosDestacados(idActividad)
 
+class Obtener_estadistica_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+
+        return controller.obtenerEstadisticaActividad(idActividad)
+
 
 #class Enviar_notificacion_profesor(Resource):
 #    def post(self):
 #        data = request.get_json()
 
+class Lista_alumnos_notas(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
 
+        return controller.listarAlumnosNotas(idActividad)
