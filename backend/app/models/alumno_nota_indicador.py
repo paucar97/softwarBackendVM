@@ -13,12 +13,13 @@ class Alumno_nota_indicador(db.Model):
     id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key = True)
     id_rubrica = db.Column('ID_RUBRICA',db.Integer,primary_key = True)
     id_aspecto = db.Column('ID_ASPECTO',db.Integer,primary_key = True)
-    
+    id_calificador = db.Column('ID_CALIFICADOR',db.Integer,primary_key = True)
+
     #constraints
     __table_args__ =(
         db.ForeignKeyConstraint(
-            ['ID_ACTIVIDAD','ID_ALUMNO','ID_RUBRICA', 'ID_ASPECTO'],
-            [Alumno_nota_aspecto.id_actividad, Alumno_nota_aspecto.id_alumno, Alumno_nota_aspecto.id_rubrica, Alumno_nota_aspecto.id_aspecto]
+            ['ID_ACTIVIDAD','ID_ALUMNO','ID_RUBRICA', 'ID_ASPECTO', 'ID_CALIFICADOR'],
+            [Alumno_nota_aspecto.id_actividad, Alumno_nota_aspecto.id_alumno, Alumno_nota_aspecto.id_rubrica, Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_calificador]
         ),
     )
    

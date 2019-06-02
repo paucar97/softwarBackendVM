@@ -1,6 +1,5 @@
 from . import db
 from app.models.horario import Horario
-from app.models.rubrica import Rubrica
 from sqlalchemy import *
 # FALTA NOMBRE A ACTIVIDAD
 class Actividad(db.Model):
@@ -8,9 +7,7 @@ class Actividad(db.Model):
     id_actividad= db.Column('ID_ACTIVIDAD',db.Integer,primary_key=True, unique = True,autoincrement =True)
     horario = db.relationship(Horario, backref = __tablename__, lazy=True)
     id_horario  = db.Column('ID_HORARIO',db.ForeignKey(Horario.id_horario),primary_key = True)
-    rubrica = db.relationship(Rubrica, backref = __tablename__, lazy=True)
-    id_rubrica = db.Column('ID_RUBRICA',db.ForeignKey(Rubrica.id_rubrica), nullable = True)
-
+    
     id_semestre = db.Column('ID_SEMESTRE', db.Integer, nullable = False)
     nombre = db.Column('NOMBRE',db.String(255))
     descripcion = db.Column('DESCRIPCION', db.String(500), nullable = True)
@@ -25,7 +22,7 @@ class Actividad(db.Model):
     id_usuario_creador = db.Column('ID_USUARIO_CREADOR', db.Integer, nullable = False)
     flg_confianza = db.Column('FLG_CONFIANZA', db.Integer)
     flg_puede_revisar = db.Column('FLG_PUEDE_REVISAR', db.Integer)
-    #flg_multicalificable = db.Column('FLG_MULTICALIFICABLE', db.Integer, default = 0)
+    flg_multicalificable = db.Column('FLG_MULTICALIFICABLE', db.Integer, default = 0)
     #tipo I de individual y G de grupal
 
     def json(self):
@@ -34,6 +31,7 @@ class Actividad(db.Model):
         d['idRubrica'] = self.id_rubrica
         d['descripcion'] = self.descripcion
         d['flgConfianza'] = self.flg_confianza
+        d['flgMulticalificable'] = self.flg_multicalificable
         d['flgPuedeRevisar'] = self.flg_puede_revisar
         d['nombre'] = self.nombre
         d['flgEntregable'] = self.flg_entregable

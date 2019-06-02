@@ -64,14 +64,19 @@ api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cu
 api.add_resource(Listar_Cursos,'/api/curso/listar_cursos')
 api.add_resource(Hello,'/api/hello')
 api.add_resource(Login,'/api/login')
-api.add_resource(Crear_auto_evaluacion,'/api/auto-evaluacion/creacion')
+#api.add_resource(Crear_auto_evaluacion,'/api/auto-evaluacion/creacion')
+
+api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica')
 api.add_resource(Obtener_rubrica_idactividad, '/api/actividad/obtener_rubrica_idactividad')
 api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasadas')
-api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica')
+
+
 api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad')
 api.add_resource(Editar_Actividad,'/api/actividad/editar_actividad')
+
 api.add_resource(Mostar_entregable,'/api/entregables/lista')
 api.add_resource(Subir_entregable,'/api/entregable/entrega')
+
 api.add_resource(ListarObjetos,'/api/auto-evaluacion/listarPreguntas')
 api.add_resource(Listar_cursos_dictando, '/api/profesor/cursos')
 api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
