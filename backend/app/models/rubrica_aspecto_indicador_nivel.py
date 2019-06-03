@@ -1,5 +1,5 @@
 from . import db
-from app.models.indicador import Nivel
+from app.models.nivel import Nivel
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from sqlalchemy import and_
 
