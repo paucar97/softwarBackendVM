@@ -8,7 +8,7 @@ class Obtener_rubrica_idactividad(Resource):
         # VALIDACION
         #
         #
-        return obtenerRubricaXIdActividad(idActividad)
+        return obtenerRubricaEvaluacion(idActividad)
 
 class Obtener_rubricas_pasadas(Resource):
     def get(self):
@@ -57,8 +57,8 @@ class Crear_Actividad(Resource):
         flag_confianza= data['flgConfianza'] 
         flag_entregable = data['flgEntregable']
         idUsuarioCreador = data['idUsuarioCreador']
-
-        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable,idUsuarioCreador)
+        flg_multicalificable = data['flgMulticalificable']
+        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable,idUsuarioCreador, flg_multicalificable)
 
 class Editar_Actividad(Resource):
     def post(self):

@@ -52,8 +52,9 @@ def obtenerRubricaXidRubrica(idRubrica):
 
     return d
 
-def obtenerRubricaXIdActividad(idActividad):
-    idRubrica = Actividad.getOne(idActividad).id_rubrica
+def obtenerRubricaEvaluacion(idActividad):
+    idRubrica = Rubrica.query.filter(and_())
+    Actividad.getOne(idActividad).id_rubrica
 
     return obtenerRubricaXidRubrica(idRubrica)
 
@@ -139,7 +140,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
             descripcion = aspecto['descripcion'],
             informacion  = aspecto['informacion'],
             puntaje_max = aspecto['puntajeMax'],
-            tipo_clasificacion = aspecto['tipoClasificacion']
+            tipo_clasificacion = aspecto['tipoClasificacion'],
             flg_grupal = aspecto['flgGrupal']
         )
         listaIndicadores = aspecto['listaIndicadores']
@@ -192,23 +193,23 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
     return d
 
 
-def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador):
+def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador, flgMulticalificable):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
 
     actividadObjeto = Actividad(
         id_horario = idhorario,
-        #id_rubrica=1, ##
         descripcion = descripcion,
         id_semestre = idSemestre,
-        nombre=Nombre,
-        flg_activo=1,
-        flg_entregable=flag_entregable1,
-        flg_confianza=flag_confianza,
-        fecha_inicio= convertDatetime(fechaInicio),
-        fecha_fin=convertDatetime(fechaFin),
+        nombre = Nombre,
+        flg_activo = 1,
+        flg_entregable = flag_entregable1,
+        flg_confianza = flag_confianza,
+        fecha_inicio = convertDatetime(fechaInicio),
+        fecha_fin = convertDatetime(fechaFin),
         id_usuario_creador=idUsuarioCreador,
-        tipo=tipo1)
+        tipo=tipo1,
+        flg_multicalificable = flgMulticalificable)
 
     idActividad= Actividad().addOne(actividadObjeto)
 
