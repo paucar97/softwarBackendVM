@@ -30,7 +30,6 @@ class Rubrica_aspecto_indicador_nivel(db.Model):
     @classmethod
     def obtenerNiveles(self, idRubrica, idIndicador):
         stmt = Rubrica_aspecto_indicador_nivel.query.filter(and_(Rubrica_aspecto_indicador_nivel.id_rubrica == idRubrica, Rubrica_aspecto_indicador_nivel.id_indicador == idIndicador)).subquery()
-        print(stmt)
         aux = Nivel.query.join(stmt, Nivel.id_nivel == stmt.c.ID_NIVEL).all()
         
         if aux is None:
