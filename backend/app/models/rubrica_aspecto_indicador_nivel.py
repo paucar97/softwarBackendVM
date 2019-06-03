@@ -1,7 +1,7 @@
 from . import db
 from app.models.nivel import Nivel
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
-from sqlalchemy import and_
+from sqlalchemy import *
 
 class Rubrica_aspecto_indicador_nivel(db.Model):
     __tablename__='rubrica_aspecto_indicador_nivel'
@@ -26,3 +26,10 @@ class Rubrica_aspecto_indicador_nivel(db.Model):
         db.session.commit()
         db.session.flush()
         return
+    
+    #def obtenerNiveles(self, idRubrica, idIndicador):
+    #aux = Nivel.query.join(Rubrica_aspecto_indicador_nivel, Nivel.id_nivel == Rubrica_aspecto_indicador_nivel.id_nivel ).filter(and_(Rubrica_aspecto_indicador_nivel.id_rubrica == idRubrica,Rubrica_aspecto_indicador_nivel.id_indicador == idIndicador)).all()
+    #    if aux is None:
+    #        return []
+    #    else:
+    #        return aux 

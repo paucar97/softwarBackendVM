@@ -66,8 +66,9 @@ api.add_resource(Hello,'/api/hello')
 api.add_resource(Login,'/api/login')
 #api.add_resource(Crear_auto_evaluacion,'/api/auto-evaluacion/creacion')
 
-api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad')
+api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad') #ACTUALIZADO LUEGO DE FLORES
 api.add_resource(Editar_Actividad,'/api/actividad/editar_actividad')
+api.add_resource(Listar_Actividad, '/api/actividad/lista')
 
 api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica')
 api.add_resource(Obtener_rubrica_idactividad, '/api/actividad/obtener_rubrica_idactividad')
@@ -103,7 +104,6 @@ api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
 api.add_resource(Crear_grupo, '/api/grupo/crear') # FALTA PROBAR @INDIOKER
 api.add_resource(Crear_grupo_general, '/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
 api.add_resource(Listar_grupo_general, '/api/grupo/listar-general') # se probo con pstman PROCEDE
-api.add_resource(Listar_Actividad, '/api/actividad/lista')
 api.add_resource(Listar_integrantes, '/api/grupo/integrantes')
 api.add_resource(Existe_autoevaluacion, '/api/autoevaluacion/existencia')
 api.add_resource(Existe_Co_evaluacion, '/api/co-evaluacion/existencia')

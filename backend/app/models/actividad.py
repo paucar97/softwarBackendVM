@@ -28,16 +28,17 @@ class Actividad(db.Model):
     def json(self):
         d = {}
         d['idActividad'] = self.id_actividad
-        d['idRubrica'] = self.id_rubrica
-        d['descripcion'] = self.descripcion
-        d['flgConfianza'] = self.flg_confianza
-        d['flgMulticalificable'] = self.flg_multicalificable
-        d['flgPuedeRevisar'] = self.flg_puede_revisar
         d['nombre'] = self.nombre
+        d['descripcion'] = self.descripcion
         d['flgEntregable'] = self.flg_entregable
         d['fechaInicio'] = self.fecha_inicio.__str__()
         d['fechaFin'] = self.fecha_fin.__str__()
         d['tipo'] = self.tipo
+        d['fechaCreacion'] = self.fecha_creacion.__str__()
+        d['idUsuarioCreador'] = self.id_usuario_creador        
+        d['flgConfianza'] = self.flg_confianza
+        d['flgMulticalificable'] = self.flg_multicalificable
+        d['flgPuedeRevisar'] = self.flg_puede_revisar
         return d
 
     def addOne(self,obj):
@@ -47,15 +48,16 @@ class Actividad(db.Model):
         return obj.id_actividad
     
     @classmethod
-    def updateOne(self,idActividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
+    def updateOne(self,idActividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable, flg_multicalificable):
         actividad=Actividad.query.filter_by(id_actividad = idActividad).first()
         actividad.nombre=Nombre
         actividad.tipo=tipo1
         actividad.fecha_inicio=hora_inicio
         actividad.fecha_fin=hora_fin
-        actividad.fecha_modificacion=func.current_timestamp()
+        actividad.fecha_modificacion = func.current_timestamp()
         actividad.flg_confianza = flag_confianza
         actividad.flg_entregable=flag_entregable
+        actividad.flg_multicalificable = flg_multicalificable 
         db.session.commit()
         return
 

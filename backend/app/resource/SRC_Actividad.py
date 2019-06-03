@@ -71,13 +71,15 @@ class Editar_Actividad(Resource):
         fecha_final=data['fechaFinal']
         flag_confianza=data['flgConfianza']
         flag_entregable=data['flgEntregable']
+        idUsuarioCreador = data['idUsuarioCreador']
+        flg_multicalificable = data['flgMulticalificable']
 
-        return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_inicio,fecha_final,flag_confianza,flag_entregable)
+        return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_inicio,fecha_final,flag_confianza,flag_entregable, flg_multicalificable)
 
 class Listar_Actividad(Resource):
     def post(self):
         data = request.get_json()
-        idHorario = data['idhorario']
+        idHorario = data['idHorario']
         return listarActividad(idHorario)
 
 

@@ -28,7 +28,11 @@ class Rubrica_aspecto_indicador(db.Model):
 
     @classmethod
     def obtenerIndicadores(self,idRubrica, idAspecto):
-        return db.session.query(Indicador).join(Rubrica_aspecto_indicador).filter(and_(Rubrica_aspecto_indicador.id_rubrica == idRubrica, Rubrica_aspecto_indicador.id_aspecto == idAspecto)).all()
+        aux = db.session.query(Indicador).join(Rubrica_aspecto_indicador).filter(and_(Rubrica_aspecto_indicador.id_rubrica == idRubrica, Rubrica_aspecto_indicador.id_aspecto == idAspecto)).all()
+        if aux is None:
+            return []
+        else:
+            return aux 
 
     @classmethod
     def borrarIndicadores(self, idRubrica):

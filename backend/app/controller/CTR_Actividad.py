@@ -34,6 +34,7 @@ def obtenerRubricaXidRubrica(idRubrica):
         aux['informacion'] = aspecto.informacion
         aux['puntajeMax'] = aspecto.puntaje_max
         aux['tipoClasificacion'] = aspecto.tipo_clasificacion
+        aux['flgGrupal'] = aspecto.flg_grupal
         indicadores = []
         listaIndicadores = Rubrica_aspecto_indicador.obtenerIndicadores(idRubrica, aspecto.id_aspecto)
         for indicador in listaIndicadores:
@@ -42,8 +43,17 @@ def obtenerRubricaXidRubrica(idRubrica):
             aux2['descripcion'] = indicador.descripcion
             aux2['informacion'] = indicador.informacion
             aux2['puntajeMax'] = indicador.puntaje_max
-            aux2['tipo'] = indicador.tipo
+            #aux2['tipo'] = indicador.tipo
             indicadores.append(aux2)
+            niveles = []
+            listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
+            for nivel in listaNiveles:
+                aux3 = {}
+                aux3['idNivel'] = nivel.id_nivel
+                aux3['descripcion'] = nivel.descripcion
+                aux3['grado'] = nivel.grado
+                aux3['puntaje'] = nivel.puntaje
+            
         aux['listaIndicadores'] = indicadores
         aux['cantIndicadores'] = len(indicadores)
         aspectos.append(aux)
@@ -53,10 +63,9 @@ def obtenerRubricaXidRubrica(idRubrica):
     return d
 
 def obtenerRubricaEvaluacion(idActividad):
-    idRubrica = Rubrica.query.filter(and_())
-    Actividad.getOne(idActividad).id_rubrica
+    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 4)).first()
 
-    return obtenerRubricaXidRubrica(idRubrica)
+    return obtenerRubricaXidRubrica(idRubrica.id_rubrica)
 
 def obtenerRubricasPasadas(idUsuario, idCurso):
     listaHorarios = Horario.obtenerHorariosXCurso(idCurso)
@@ -243,11 +252,10 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
 
     return 
 
-def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable):
+def EditarActividad(idactividad,Nombre,tipo1,descripcion,hora_inicio,hora_fin,flag_confianza,flag_entregable, flg_multicalificable):
     fecha_inicio= convertDatetime(hora_inicio)
     fecha_fin=convertDatetime(hora_fin)
-    Actividad().updateOne(idactividad,Nombre,tipo1,descripcion,fecha_inicio,fecha_fin,flag_confianza,flag_entregable)
-    Alumno_actividad().updateOne(idactividad,flag_entregable)
+    Actividad().updateOne(idactividad,Nombre,tipo1,descripcion,fecha_inicio,fecha_fin,flag_confianza,flag_entregable, flg_multicalificable)
     return
 
 
@@ -256,7 +264,9 @@ def listarActividad(idHorario):
     rpta = []
 
     for actividad in listaActividad:
-        rpta.append(actividad.json())
+        d = actividad.json()
+        d['idRubrica'] = Rubrica.query.filter(and_(Rubrica.id_actividad == d['idActividad'], Rubrica.tipo == 4)).first().id_rubrica
+        rpta.append(d)
     return rpta
 
 def eliminarActividad(idActividad):
