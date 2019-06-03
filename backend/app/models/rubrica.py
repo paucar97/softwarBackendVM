@@ -22,6 +22,7 @@ class Rubrica(db.Model):
     # 2 Autoevaluacion
     # 3 Coevaluacion
     # 4 Instrumento de evaluacion
+    flg_activo = db.Column('FLG_ACTIVO', db.Integer, nullable = False, default = 1)
 
     def addOne(self,obj):
         db.session.add(obj)
@@ -44,3 +45,9 @@ class Rubrica(db.Model):
         db.session.commit()
         return
         
+    @classmethod
+    def desactivarRubrica(self, idRubrica):
+        rubricaAEditar = Rubrica.query.filter_by(id_rubrica = idRubrica).first()
+        rubricaAEditar.flg_activo = 0
+        db.session.commit()
+        return

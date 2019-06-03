@@ -20,6 +20,7 @@ class Rubrica_aspecto(db.Model):
     @classmethod
     def obtenerAspectos(self, idRubrica):
         aux = db.session.query(Aspecto).join(Rubrica_aspecto).filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
+
         if aux is None:
             return []
         else:
