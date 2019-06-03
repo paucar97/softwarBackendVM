@@ -44,7 +44,6 @@ def obtenerRubricaXidRubrica(idRubrica):
             aux2['informacion'] = indicador.informacion
             aux2['puntajeMax'] = indicador.puntaje_max
             #aux2['tipo'] = indicador.tipo
-            indicadores.append(aux2)
             niveles = []
             listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
             for nivel in listaNiveles:
@@ -53,7 +52,10 @@ def obtenerRubricaXidRubrica(idRubrica):
                 aux3['descripcion'] = nivel.descripcion
                 aux3['grado'] = nivel.grado
                 aux3['puntaje'] = nivel.puntaje
-            
+                niveles.append(aux3)
+            aux2['listaNiveles'] = niveles
+            aux2['cantNiveles'] = len(niveles)
+            indicadores.append(aux2)
         aux['listaIndicadores'] = indicadores
         aux['cantIndicadores'] = len(indicadores)
         aspectos.append(aux)
@@ -63,7 +65,7 @@ def obtenerRubricaXidRubrica(idRubrica):
     return d
 
 def obtenerRubricaEvaluacion(idActividad):
-    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 4)).first()
+    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 4, Rubrica.flg_activo == 1)).first()
 
     return obtenerRubricaXidRubrica(idRubrica.id_rubrica)
 
@@ -135,6 +137,12 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
 
 
 def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
+    
+    rubricaActual = Rubrica.query.filter(Rubrica.id_actividad == idActividad, Rubrica.flg_activo == 1).first()
+
+    if rubricaActual is not None:
+        Rubrica.desactivarRubrica(rubricaActual.id_rubrica)
+    
     rubricaObjeto = Rubrica(
         flg_rubrica_especial = idFlgEspecial,
         id_usuario_creador = idUsuarioCreador,

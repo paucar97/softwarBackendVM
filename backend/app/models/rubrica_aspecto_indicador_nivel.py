@@ -27,9 +27,13 @@ class Rubrica_aspecto_indicador_nivel(db.Model):
         db.session.flush()
         return
     
-    #def obtenerNiveles(self, idRubrica, idIndicador):
-    #aux = Nivel.query.join(Rubrica_aspecto_indicador_nivel, Nivel.id_nivel == Rubrica_aspecto_indicador_nivel.id_nivel ).filter(and_(Rubrica_aspecto_indicador_nivel.id_rubrica == idRubrica,Rubrica_aspecto_indicador_nivel.id_indicador == idIndicador)).all()
-    #    if aux is None:
-    #        return []
-    #    else:
-    #        return aux 
+    @classmethod
+    def obtenerNiveles(self, idRubrica, idIndicador):
+        stmt = Rubrica_aspecto_indicador_nivel.query.filter(and_(Rubrica_aspecto_indicador_nivel.id_rubrica == idRubrica, Rubrica_aspecto_indicador_nivel.id_indicador == idIndicador)).subquery()
+        print(stmt)
+        aux = Nivel.query.join(stmt, Nivel.id_nivel == stmt.c.ID_NIVEL).all()
+        
+        if aux is None:
+            return []
+        else:
+            return aux
