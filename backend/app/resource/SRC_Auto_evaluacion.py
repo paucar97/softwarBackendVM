@@ -4,12 +4,18 @@ from app.controller.CTR_Auto_evaluacion import *
 class Crear_auto_evaluacion(Resource):
     def post(self):
         data = request.get_json()
+        idFlgEspecial = data['flgRubricaEspecial']
+        idUsuarioCreador = data['idUsuarioCreador']
+        nombreRubrica = data['nombreRubrica']
         idActividad = data['idActividad']
-        listaFamilia  = data['listaFamilia']
+        listaAspectos = data['listaAspectos']
+        tipo = data['tipo']
+        
         # VALIDACION
         #
         #
-        return crearAutoEvaluacion(idActividad,listaFamilia)
+        
+        return crearAutoEvaluacion(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
 
 class ListarObjetos(Resource):
     def post(self):
@@ -30,7 +36,7 @@ class Editar_auto_evaluacion(Resource):
 class Eliminar_auto_evaluacion(Resource):
     def post(self):
         data = request.get_json()
-        idActividad=data['idActividad']
+        idActividad = data['idActividad']
         return eliminarAutoEvaluacion(idActividad)
 
 

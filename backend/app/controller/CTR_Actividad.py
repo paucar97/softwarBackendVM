@@ -75,7 +75,7 @@ def obtenerRubricaEvaluacion(idActividad):
     else:
         d = {}
         d['succeed'] = False
-        d['message'] = "No existe autoevaluacion"
+        d['message'] = "No existe Rubrica"
         return d
     
 def obtenerRubricasPasadas(idUsuario, idCurso):
@@ -231,8 +231,6 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
     d = {}
     d['idRubrica'] = idRubrica
 
-    Actividad().actualizarRubrica(idActividad, idRubrica)
-
     return d
 
 
@@ -317,3 +315,16 @@ def eliminarActividad(idActividad):
             return {'message' : 'Se elimino correctamente'}
         except:
             return {'message' : 'Error no se elimino correctamente'}
+
+def desactivarRubrica(idRubrica):
+    try:
+        Rubrica.desactivarRubrica(idRubrica)
+        d = {}
+        d['succeed'] = True
+        d['message'] = "Rubrica desactivada"
+        return d
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
