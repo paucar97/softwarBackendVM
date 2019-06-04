@@ -10,3 +10,10 @@ class Alarma(db.Model):
     flg_disponible = db.Column('FLG_DISPONIBLE',db.Integer)
     mensaje = db.Column('MENSAJE', db.String(500))
     asunto = db.Column('ASUNTO',db.String(100))
+
+    @classmethod
+    def addOne(self, obj):
+        db.session.add(obj)
+        db.session.flush()
+        db.session.commit()
+        return obj.id_alarma

@@ -8,3 +8,10 @@ class Actividad_alarma(db.Model):
     alarma = db.relationship(Alarma,backref = __tablename__,lazy=True)
     id_actividad  = db.Column('ID_ACTIVIDAD',db.ForeignKey(Actividad.id_actividad),primary_key = True)
     id_alarma= db.Column('ID_ALARMA',db.ForeignKey(Alarma.id_alarma),primary_key=True)
+
+    @classmethod
+    def addOne(self,idActividad,idAlarma):
+        db.session.add(obj)
+        db.session.flush()
+        db.session.commit()
+        return
