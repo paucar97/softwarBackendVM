@@ -29,11 +29,14 @@ class Crear_rubrica(Resource):
         idActividad = data['idActividad']
         listaAspectos = data['listaAspectos']
         tipo = data['tipo']
-        # VALIDACION
-        #
-        #
-        return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
-
+        
+        if tipo == 4:
+            return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
+        else:
+            d = {}
+            d['succeed'] = False
+            d['message'] = "No se esta intentando crear una Rubrica."
+            return d
 class Editar_rubrica(Resource):
     def post(self):
         data = request.get_json()

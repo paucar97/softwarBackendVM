@@ -7,6 +7,16 @@ from app.models.rubrica import Rubrica
 from app.controller import CTR_Actividad
 from sqlalchemy import *
 
+def crearAutoEvaluacion(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
+    if tipo == 2:
+        d = CTR_Actividad.crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
+        return d
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No se esta intentando crear una autoevaluacion."
+        return d
+"""
 def crearAutoEvaluacion(idActividad,listaFamilia):
     encuestaObjecto =Encuesta(
         tipo = 'AUTOEVALUACION',
@@ -46,7 +56,7 @@ def crearAutoEvaluacion(idActividad,listaFamilia):
     )
     Horario_encuesta().addOne(Horario_encuestaObjecto)
     return
-
+"""
 def listarObjetosAutoevaluacion(idActividad):   
     idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 2, Rubrica.flg_activo == 1)).first()
     if idRubrica is not None:
@@ -161,6 +171,11 @@ def editarAutoEvaluacion(idActividad,listaFamilia):
     return
 
 def eliminarAutoEvaluacion(idActividad):
+    rubricaADesactivar = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 2, Rubrica.flg_activo == 1)).first()
+    d = CTR_Actividad.desactivarRubrica(rubricaADesactivar.id_rubrica)
+    return d
+"""
+def eliminarAutoEvaluacion(idActividad):
     listaEncuesta=Horario_encuesta().getAll(idActividad)
     idencuesta=0
     for horario_encuesta in listaEncuesta:
@@ -183,7 +198,7 @@ def eliminarAutoEvaluacion(idActividad):
     
 
     return flag
-
+"""
 def existeAutoevaluacion(idActividad):
     listaEncuesta = Horario_encuesta().getAll(idActividad)
     if listaEncuesta is None:

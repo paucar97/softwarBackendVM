@@ -88,10 +88,14 @@ api.add_resource(Listar_integrantes, '/api/grupo/integrantes')
 #ACTUALIZADO LUEGO DE FLORES
 api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad')
 api.add_resource(Editar_Actividad,'/api/actividad/editar_actividad')
+api.add_resource(Listar_Actividad,'/api/actividad/lista')
+
 api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica')
 api.add_resource(Obtener_rubrica_idactividad, '/api/actividad/obtener_rubrica_idactividad')
 
+api.add_resource(Crear_auto_evaluacion, '/api/auto-evaluacion/creacion')
 api.add_resource(ListarObjetos,'/api/auto-evaluacion/listarPreguntas')
+api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
 
 
 #CHEQUEAR
@@ -99,9 +103,8 @@ api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
 
 #FALTA EDITAR LUEGO DE FLORES
 api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasadas')
-api.add_resource(Listar_Actividad,'/api/actividad/lista')
+
 api.add_resource(Editar_auto_evaluacion, '/api/auto-evaluacion/editar')
-api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
 api.add_resource(Existe_autoevaluacion, '/api/autoevaluacion/existencia')
 
 api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
