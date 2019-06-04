@@ -10,6 +10,7 @@ class Alarma(db.Model):
     flg_disponible = db.Column('FLG_DISPONIBLE',db.Integer)
     mensaje = db.Column('MENSAJE', db.String(500))
     asunto = db.Column('ASUNTO',db.String(100))
+    nombre = db.Column('NOMBRE',db.String(20))
 
     @classmethod
     def addOne(self, obj):

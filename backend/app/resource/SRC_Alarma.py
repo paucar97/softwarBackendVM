@@ -5,7 +5,8 @@ class Crear_alarma(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
+        nombre = data['nombre']
         asunto = data['asunto']
         mensaje = data['mensaje']
         fechaEjecucion = data['fechaEjecucion']
-        return crearAlarma(idActividad,asunto, mensaje,fechaEjecucion)
+        return crearAlarma(idActividad,nombre,asunto, mensaje,fechaEjecucion)
