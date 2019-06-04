@@ -99,7 +99,7 @@ api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
 
 #FALTA EDITAR LUEGO DE FLORES
 api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasadas')
-
+api.add_resource(Listar_Actividad,'/api/actividad/lista')
 api.add_resource(Editar_auto_evaluacion, '/api/auto-evaluacion/editar')
 api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
 api.add_resource(Existe_autoevaluacion, '/api/autoevaluacion/existencia')
