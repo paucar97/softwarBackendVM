@@ -59,7 +59,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
         if reg_comment is None:
             d.opcode = 1
             d.errcode = 1
@@ -80,15 +80,15 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
         if reg_resp is None:
             d.opcode = 1
             d.errcode = 1
             d.message = "Alumno o actividad no válidas"
-        elif reg_resp.id_jp != idProfesor:
-            d.opcode = 1
-            d.errcode = 1
-            d.message = "No tiene autoridad para responder el comentario."
+        # elif reg_resp.id_jp != idProfesor:
+        #     d.opcode = 1
+        #     d.errcode = 1
+        #     d.message = "No tiene autoridad para responder el comentario."
         else:
             reg_resp.comentarioJp = respuesta
             db.session.commit()
@@ -302,10 +302,10 @@ def publicarNotificacionesAlumnos(idActividad):
     for profesor in profesoresHorario:
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
-    
+
 def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
-    
+
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
@@ -392,18 +392,18 @@ def listarAlumnosNotas(idActividad):
             #print("Nota Nula")
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
-    frecuencia = [(k, v) for k, v in notas.items()] 
+    frecuencia = [(k, v) for k, v in notas.items()]
     d['notaFrecuencia'] = []
     for nota,frecuencia in frecuencia:
         aux={}
         aux['nota'] = nota
         aux['frecuencia'] = frecuencia
         d['notaFrecuencia'].append(aux)
-    
+
     cantidadNotas = len(notas)
-    total = cantidadNotas + faltas 
-    
-    
+    total = cantidadNotas + faltas
+
+
     d['cantidadNotas'] = cantidadNotas
     d['cantidadFalta'] = faltas
     d['cantidadTotal'] = cantidadNotas + faltas
