@@ -10,7 +10,7 @@ class Actividad_alarma(db.Model):
     id_alarma= db.Column('ID_ALARMA',db.ForeignKey(Alarma.id_alarma),primary_key=True)
 
     @classmethod
-    def addOne(self,idActividad,idAlarma):
+    def addOne(self,obj):
         db.session.add(obj)
         db.session.flush()
         db.session.commit()
