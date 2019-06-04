@@ -12,6 +12,14 @@ class Alarma(db.Model):
     asunto = db.Column('ASUNTO',db.String(100))
     nombre = db.Column('NOMBRE',db.String(20))
 
+    def json(self):
+        d =dict()
+        d['fechaEjecucion'] = self.fecha_ejecucion
+        d['nombre'] = self.nombre
+        d['mensaje'] = self.mensaje
+        d['asunto'] = self.asunto
+        return d
+
     @classmethod
     def addOne(self, obj):
         db.session.add(obj)

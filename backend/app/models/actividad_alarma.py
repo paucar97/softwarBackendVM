@@ -1,7 +1,7 @@
 from . import db
 from app.models.actividad import Actividad
 from app.models.alarma import Alarma
-
+from sqlalchemy import *
 class Actividad_alarma(db.Model):
     __tablename__='actividad_alarma'
     actividad = db.relationship(Actividad,backref = __tablename__,lazy=True)
@@ -15,3 +15,8 @@ class Actividad_alarma(db.Model):
         db.session.flush()
         db.session.commit()
         return
+
+    @classmethod
+    def getAll(self,idActividad):
+        l= db.session.query(Actividad_alarma,Alarma).join(Alarma).filter(and_(Actividad_alarma.id_actividad == idActividad,Alarma.flg_disponible== 1))
+        return l 

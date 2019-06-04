@@ -10,3 +10,9 @@ class Crear_alarma(Resource):
         mensaje = data['mensaje']
         fechaEjecucion = data['fechaEjecucion']
         return crearAlarma(idActividad,nombre,asunto, mensaje,fechaEjecucion)
+
+class Listar_alarma(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        return listarAlarma(idActividad)

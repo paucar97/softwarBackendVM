@@ -13,3 +13,11 @@ def crearAlarma(idActividad,nombre,asunto, mensaje,fechaEjecucion):
     objActividaAlarma= Actividad_alarma(id_alarma = idAlarma, id_actividad = idActividad)
     Actividad_alarma().addOne(objActividaAlarma)
     return { "message" : "se registro correctamente"}
+
+
+def listarAlarma(idActividad):
+    lstAlarma = Actividad_alarma().getAll(idActividad)
+    rpta = []
+    for _,alarma in lstAlarma:
+        rpta.append(alarma.json())
+    return rpta
