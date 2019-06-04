@@ -36,3 +36,14 @@ class Rubrica_aspecto_indicador_nivel(db.Model):
             return []
         else:
             return aux
+
+    @classmethod
+    def borrarNiveles(self, idRubrica):
+        listaNivel = Rubrica_aspecto_indicador_nivel.query.filter_by(id_rubrica = idRubrica).all()
+        if listaNivel != None:
+            for nivel in listaNivel:
+                Rubrica_aspecto_indicador_nivel.query.filter_by(id_nivel = nivel.id_nivel).delete()
+                Nivel.query.filter_by(id_nivel = nivel.id_nivel).delete()
+            db.session.commit()
+            return
+        return

@@ -47,7 +47,7 @@ class Mostar_entregable(Resource):
         data = request.get_json()
         idActividad = data['idActividad']
         idUsuario = data['idUsuario']
-        rpta =mostrarEntregable(idActividad,idUsuario)
+        rpta = mostrarEntregable(idActividad,idUsuario)
         return rpta
 
 class Descarga_entregabla(Resource):

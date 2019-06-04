@@ -374,6 +374,7 @@ def obtenerEstadisticaActividad(idActividad):
         return d.jsonify()
 
     return d
+
 def listarAlumnosNotas(idActividad):
     almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
     data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc())

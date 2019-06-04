@@ -36,12 +36,13 @@ class Rubrica(db.Model):
         return Rubrica.query.filter_by(id_rubrica = idRubrica).first()
 
     @classmethod
-    def editarRubrica(self, idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica):
+    def editarRubrica(self, idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, tipo):
         rubricaAEditar = Rubrica.query.filter_by(id_rubrica = idRubrica).first()
         rubricaAEditar.fecha_modificacion = func.current_timestamp()
         rubricaAEditar.flg_rubrica_especial = idFlgEspecial
         rubricaAEditar.id_usuario_creador = idUsuarioCreador
         rubricaAEditar.nombre = nombreRubrica
+        rubricaAEditar.tipo = tipo
         db.session.commit()
         return
         
