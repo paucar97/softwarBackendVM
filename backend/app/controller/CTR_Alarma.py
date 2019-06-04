@@ -11,4 +11,4 @@ def crearAlarma(idActividad,asunto, mensaje,fechaEjecucion):
     idAlarma = Alarma().addOne(objAlarma)
     objActividaAlarma= Actividad_alarma(id_alarma = idAlarma, id_actividad = idActividad)
     Actividad_alarma().addOne(objActividaAlarma)
-    return { "message" ; "se registro correctamente"}
+    return { "message" : "se registro correctamente"}
