@@ -19,10 +19,14 @@ from app.commons.messages import ResponseMessage
 from sqlalchemy import *
 
 def obtenerRubricaXidRubrica(idRubrica):
-    nombreRubrica = Rubrica.obtenerRubrica(idRubrica).nombre
+    nombreRubrica = Rubrica.obtenerRubrica(idRubrica)
     d = {}
     d['idRubrica'] = idRubrica
-    d['nombreRubrica'] = nombreRubrica
+    d['nombreRubrica'] = nombreRubrica.nombre
+    d['fechaRegistro'] = nombreRubrica.fecha_registro.__str__()
+    d['flgRubricaEspecial'] = nombreRubrica.flg_rubrica_especial
+    d['idUsuarioCreador'] = nombreRubrica.id_usuario_creador
+    d['tipo'] = nombreRubrica.tipo    
 
     aspectos = []
     listaAspectos = Rubrica_aspecto.obtenerAspectos(idRubrica)
@@ -66,9 +70,14 @@ def obtenerRubricaXidRubrica(idRubrica):
 
 def obtenerRubricaEvaluacion(idActividad):
     idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 4, Rubrica.flg_activo == 1)).first()
-
-    return obtenerRubricaXidRubrica(idRubrica.id_rubrica)
-
+    if idRubrica is not None:
+        return obtenerRubricaXidRubrica(idRubrica.id_rubrica)
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe autoevaluacion"
+        return d
+    
 def obtenerRubricasPasadas(idUsuario, idCurso):
     listaHorarios = Horario.obtenerHorariosXCurso(idCurso)
 
@@ -93,18 +102,19 @@ def obtenerRubricasPasadas(idUsuario, idCurso):
     
     return d
 
-def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos):
-    Rubrica().editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica)
+def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
+    Rubrica().editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, tipo)
+    Rubrica_aspecto_indicador_nivel().borrarNiveles(idRubrica)
     Rubrica_aspecto_indicador().borrarIndicadores(idRubrica)
     Rubrica_aspecto().borrarAspectos(idRubrica)
     
-
     for aspecto in listaAspectos:
         aspectoObjeto = Aspecto(
             descripcion = aspecto['descripcion'],
             informacion  = aspecto['informacion'],
             puntaje_max = aspecto['puntajeMax'],
-            tipo_clasificacion = aspecto['tipoClasificacion']
+            tipo_clasificacion = aspecto['tipoClasificacion'],
+            flg_grupal = aspecto['flgGrupal']
         )
         listaIndicadores = aspecto['listaIndicadores']
         idAspecto = Aspecto().addOne(aspectoObjeto)
@@ -119,8 +129,7 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
             indicadorObjeto = Indicador(
                 descripcion = indicador['descripcion'],
                 informacion = indicador['informacion'],
-                puntaje_max = indicador['puntajeMax'],
-                tipo = indicador['tipo']
+                puntaje_max = indicador['puntajeMax']
             )
             idIndicador = Indicador().addOne(indicadorObjeto)
 
@@ -130,6 +139,23 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
                 id_indicador = idIndicador
             )
             aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
+            
+            listaNiveles = indicador['listaNiveles']
+
+            for nivel in listaNiveles:
+                nivelObjeto = Nivel(
+                    descripcion = nivel['descripcion'],
+                    grado = nivel['grado'],
+                    puntaje = nivel['puntaje']
+                )
+                idNivel = Nivel().addOne(nivelObjeto)
+                rubricaAspectoIndicadorNivelObj = Rubrica_aspecto_indicador_nivel(
+                    id_rubrica = idRubrica,
+                    id_aspecto = idAspecto,
+                    id_indicador = idIndicador,
+                    id_nivel = idNivel
+                )
+                Rubrica_aspecto_indicador_nivel().addOne(rubricaAspectoIndicadorNivelObj)
     
     d = {}
     d['message'] = True

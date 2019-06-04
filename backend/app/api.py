@@ -60,57 +60,67 @@ from app.resource.SRC_Grupo import *
 from app.resource.SRC_Co_evaluacion import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
+
 api.add_resource(Obtener_cursos_activos_alumno, '/api/permiso_usuario_horario/cursos_activos_alumno')
 api.add_resource(Listar_Cursos,'/api/curso/listar_cursos')
 api.add_resource(Hello,'/api/hello')
 api.add_resource(Login,'/api/login')
 #api.add_resource(Crear_auto_evaluacion,'/api/auto-evaluacion/creacion')
 
-#ACTUALIZADO LUEGO DE FLORES
-api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad') #ACTUALIZADO LUEGO DE FLORES
-api.add_resource(Editar_Actividad,'/api/actividad/editar_actividad') #ACTUALIZADO LUEGO DE FLORES
-api.add_resource(Listar_Actividad, '/api/actividad/lista') #ACTUALIZADO LUEGO DE FLORES
-
-api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica') #ACTUALIZADO LUEGO DE FLORES
-api.add_resource(Obtener_rubrica_idactividad, '/api/actividad/obtener_rubrica_idactividad')
-api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasadas')
-
+#INDIFERENTE DE FLORES
 api.add_resource(Mostar_entregable,'/api/entregables/lista')
 api.add_resource(Subir_entregable,'/api/entregable/entrega')
+api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
+api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+
+api.add_resource(Listar_cursos_dictando, '/api/profesor/cursos')
+
+api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
+api.add_resource(Eliminar_actividad,'/api/actividad/eliminar')
+
+api.add_resource(Listar_alumnos_horario, '/api/horario/alumnos')
+
+api.add_resource(Crear_grupo, '/api/grupo/crear') # FALTA PROBAR @INDIOKER
+api.add_resource(Crear_grupo_general, '/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
+api.add_resource(Listar_grupo_general, '/api/grupo/listar-general') # se probo con pstman PROCEDE
+api.add_resource(Listar_integrantes, '/api/grupo/integrantes')
+
+#ACTUALIZADO LUEGO DE FLORES
+api.add_resource(Crear_Actividad,'/api/actividad/crear_actividad')
+api.add_resource(Editar_Actividad,'/api/actividad/editar_actividad')
+api.add_resource(Crear_rubrica, '/api/actividad/crear_rubrica')
+api.add_resource(Obtener_rubrica_idactividad, '/api/actividad/obtener_rubrica_idactividad')
 
 api.add_resource(ListarObjetos,'/api/auto-evaluacion/listarPreguntas')
-api.add_resource(Listar_cursos_dictando, '/api/profesor/cursos')
-api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
-#api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
-#api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
-api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
-api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
-api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
+
+
+#CHEQUEAR
 api.add_resource(Editar_rubrica, '/api/actividad/editar_rubrica')
-api.add_resource(Obtener_nota_alumno, '/api/actividad/alumnos/obtener_nota_alumno')
+
+#FALTA EDITAR LUEGO DE FLORES
+api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasadas')
+
+api.add_resource(Editar_auto_evaluacion, '/api/auto-evaluacion/editar')
+api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
+api.add_resource(Existe_autoevaluacion, '/api/autoevaluacion/existencia')
 
 api.add_resource(Crear_co_evaluacion,'/api/co-evaluacion/crear_co_evaluacion')
 api.add_resource(ListarPreguntas,'/api/co-evaluacion/listarPreguntas')
 api.add_resource(Editar_co_evaluacion,'/api/co-evaluacion/editar')
 api.add_resource(Eliminar_co_evaluacion,'/api/co-evaluacion/eliminar')
+api.add_resource(Existe_Co_evaluacion, '/api/co-evaluacion/existencia')
 
-# iter2 mod:comentarios
+api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
+api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
+api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
+api.add_resource(Obtener_nota_alumno, '/api/actividad/alumnos/obtener_nota_alumno')
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario_alumno')
 api.add_resource(Responder_comentario_alumno, '/api/actividad/responder_comentario_alumno')
 api.add_resource(Listar_comentarios_actividad, '/api/actividad/listar_comentarios')
-api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
-api.add_resource(Obtener_alumnos_actividad,'/api/actividad/alumnos')
-api.add_resource(Editar_auto_evaluacion, '/api/auto-evaluacion/editar')
-api.add_resource(Eliminar_auto_evaluacion, '/api/auto-evaluacion/eliminar')
-api.add_resource(Crear_grupo, '/api/grupo/crear') # FALTA PROBAR @INDIOKER
-api.add_resource(Crear_grupo_general, '/api/grupo/crear-general') # FALTA PROBAR @INDIOKER
-api.add_resource(Listar_grupo_general, '/api/grupo/listar-general') # se probo con pstman PROCEDE
-api.add_resource(Listar_integrantes, '/api/grupo/integrantes')
-api.add_resource(Existe_autoevaluacion, '/api/autoevaluacion/existencia')
-api.add_resource(Existe_Co_evaluacion, '/api/co-evaluacion/existencia')
+
 api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
-api.add_resource(Listar_alumnos_horario, '/api/horario/alumnos')
 api.add_resource(Obtener_estadistica_actividad, '/api/actividad/estadistica')
-# api.add_resource(, '/api/actividad/')
-api.add_resource(Eliminar_actividad,'/api/actividad/eliminar') #
-api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas') #
+api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas')
+
+#api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
+#api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')

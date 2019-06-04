@@ -3,6 +3,10 @@ from app.models.pregunta import Pregunta
 from app.models.actividad import Actividad
 from app.models.encuesta_pregunta import Encuesta_pregunta
 from app.models.horario_encuesta import Horario_encuesta
+from app.models.rubrica import Rubrica
+from app.controller import CTR_Actividad
+from sqlalchemy import *
+
 def crearAutoEvaluacion(idActividad,listaFamilia):
     encuestaObjecto =Encuesta(
         tipo = 'AUTOEVALUACION',
@@ -44,6 +48,16 @@ def crearAutoEvaluacion(idActividad,listaFamilia):
     return
 
 def listarObjetosAutoevaluacion(idActividad):   
+    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 2, Rubrica.flg_activo == 1)).first()
+    if idRubrica is not None:
+        return CTR_Actividad.obtenerRubricaXidRubrica(idRubrica.id_rubrica)
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe autoevaluacion"
+        return d
+"""
+def listarObjetosAutoevaluacion(idActividad):   
     listaEncuesta=Horario_encuesta().getAll(idActividad)
     idencuesta=0
     for horario_encuesta in listaEncuesta:
@@ -51,7 +65,8 @@ def listarObjetosAutoevaluacion(idActividad):
         encuesta=Encuesta().getOne(id)
         if encuesta.tipo=='AUTOEVALUACION':
             idencuesta=encuesta.id_encuesta
-            
+
+
     print(idencuesta)
     if idencuesta==0:
         print('error')
@@ -95,7 +110,7 @@ def listarObjetosAutoevaluacion(idActividad):
 
     l['listaFamilia']=lista     
     return l
-
+"""
 def editarAutoEvaluacion(idActividad,listaFamilia):
     print("="*20)
     print(listaFamilia)

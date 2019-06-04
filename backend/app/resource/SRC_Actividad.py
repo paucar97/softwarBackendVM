@@ -41,9 +41,9 @@ class Editar_rubrica(Resource):
         idFlgEspecial = data['flgRubricaEspecial']
         idUsuarioCreador = data['idUsuarioCreador']
         nombreRubrica = data['nombreRubrica']
-        idActividad = data['idActividad']
         listaAspectos = data['listaAspectos']
-        return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos)
+        tipo = data['tipo']
+        return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
 
 class Crear_Actividad(Resource):
     def post(self):
