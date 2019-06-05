@@ -9,7 +9,7 @@ from sqlalchemy import *
 
 def crearAutoEvaluacion(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
     if tipo == 2:
-        d = CTR_Actividad.crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
+        d = CTR_Actividad.crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
         return d
     else:
         d = {}
