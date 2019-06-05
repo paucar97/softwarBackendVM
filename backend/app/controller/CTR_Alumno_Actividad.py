@@ -247,7 +247,7 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
     d['flgEntregable']= aux.flag_entregable
     d['idRubrica'] = actividadAnalizada.id_rubrica
 
-    d['calificacion']= listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica)
+    d['calificacion']= listarCalificacion(idAlumno, idActividad, idCalificador, actividadAnalizada.id_rubrica)
     
     return d
 
