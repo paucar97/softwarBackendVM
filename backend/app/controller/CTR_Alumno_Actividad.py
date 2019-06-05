@@ -60,7 +60,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
+        reg_comment = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_actividad == idActividad)).first()
         if reg_comment is None:
             d.opcode = 1
             d.errcode = 1
@@ -74,14 +74,14 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
         d.errcode = 2
         d.message = str(ex)
 
-    # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+    Alumno_actividad_calificacion().updateComentarioAlumno(idActividad,idAlumno,reg_comment)
     return d.jsonify()
 
 def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
+        reg_resp = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_actividad == idActividad)).first()
         if reg_resp is None:
             d.opcode = 1
             d.errcode = 1
@@ -98,8 +98,8 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         d.opcode = 1
         d.errcode = 2
         d.message = str(ex)
-#
-    # # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+
+    Alumno_actividad_calificacion().updateComentarioJP(idActividad,idAlumno,idProfesor,reg_resp)
     return d.jsonify()
 
 def listarComentarios(idActividad):
@@ -109,7 +109,7 @@ def listarComentarios(idActividad):
     Alumno = aliased(Usuario)
     Profesor = aliased(Usuario)
     # modif pendiente: filter Alumno_actividad antes de hacer los joins
-    sqlquery = db.session.query(Alumno_actividad.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad.comentario, Alumno_actividad.comentarioJp).join(Alumno, Alumno_actividad.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad.id_jp == Profesor.id_usuario).filter(and_(Alumno_actividad.comentario == idActividad, Alumno_actividad.comentario != None))
+    sqlquery = db.session.query(Alumno_actividad_calificacion.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad_calificacion.comentario_alumno, Alumno_actividad.comentario_jp).join(Alumno, Alumno_actividad_calificacion.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad_calificacion.id_calificador == Profesor.id_usuario).filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.comentario_alumno != None))
 
     for row in sqlquery:
         dataComment = dict()

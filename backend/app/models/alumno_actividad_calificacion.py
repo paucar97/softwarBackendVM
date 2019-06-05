@@ -41,3 +41,16 @@ class Alumno_actividad_calificacion(db.Model):
         alumnoActividad.flag_entregable = flag_entregable1
         db.session.commit()
         return
+    @classmethod
+    def updateComentarioAlumno(self,idActividad,idAlumno,comentario):
+        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad=idActividad,id_alumno=idAlumno).first()
+        alumnoActividad.comentario_alumno=comentario
+        db.session.commit()
+        return
+
+    @classmethod
+    def updateComentarioJP(self,idActividad,idAlumno,idProfesor,comentario):
+        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad=idActividad,id_alumno=idAlumno,id_calificador=idProfesor).first()
+        alumnoActividad.comentario_jp=comentario
+        db.session.commit()
+        return
