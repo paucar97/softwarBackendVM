@@ -1,6 +1,7 @@
 from . import db
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
+from app.models.rubrica import Rubrica
 from sqlalchemy import *
 
 class Alumno_actividad_calificacion(db.Model):
@@ -10,7 +11,7 @@ class Alumno_actividad_calificacion(db.Model):
 
     id_actividad = db.Column('ID_ACTIVIDAD',db.Integer,primary_key=True)
     id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key=True)
-
+    id_rubrica = db.Column('ID_RUBRICA', db.ForeignKey(Rubrica.id_rubrica), primary_key = True)
     __table_args__ =(
         db.ForeignKeyConstraint(
             ['ID_ACTIVIDAD','ID_ALUMNO'],
@@ -18,8 +19,25 @@ class Alumno_actividad_calificacion(db.Model):
         ),
     )
 
+
     id_calificador = db.Column('ID_CALIFICADOR',db.Integer, nullable=False)
     nota = db.Column('NOTA',db.Float,nullable= True)
     fecha_revisado = db.Column('FECHA_REVISADO',db.DateTime)
     fecha_modificado = db.Column('FECHA_MODIFICADO', db.DateTime)
     flg_completo = db.Column('FLG_COMPLETO', db.Integer, nullable = False)
+    comentario_alumno = db.Column('COMENTARIO_ALUMNO',db.String(150),nullable = True)
+    comentario_jp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
+    flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
+    
+    def addOne(self, obj):
+        db.session.add(obj)
+        db.session.flush()
+        db.session.commit()
+        return True
+    
+    @classmethod
+    def updateOne(self, idActividad, flag_entregable1):
+        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad=idActividad).first()
+        alumnoActividad.flag_entregable = flag_entregable1
+        db.session.commit()
+        return

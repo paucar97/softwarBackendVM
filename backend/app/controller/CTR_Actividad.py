@@ -68,8 +68,8 @@ def obtenerRubricaXidRubrica(idRubrica):
 
     return d
 
-def obtenerRubricaEvaluacion(idActividad):
-    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 4, Rubrica.flg_activo == 1)).first()
+def obtenerRubrica(idActividad, tipo):
+    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo, Rubrica.flg_activo == 1)).first()
     if idRubrica is not None:
         return obtenerRubricaXidRubrica(idRubrica.id_rubrica)
     else:
@@ -164,7 +164,7 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
 
 def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
     
-    rubricaActual = Rubrica.query.filter(Rubrica.id_actividad == idActividad, Rubrica.flg_activo == 1).first()
+    rubricaActual = Rubrica.query.filter(Rubrica.id_actividad == idActividad, Rubrica.flg_activo == 1, Rubrica.tipo == tipo).first()
 
     if rubricaActual is not None:
         Rubrica.desactivarRubrica(rubricaActual.id_rubrica)
@@ -263,20 +263,14 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
 
     listaAlumnos= Permiso_usuario_horario().getAll(idSemestre,idhorario)
     listaIdAlumnos=[]
-    idjp = 0
-    idprofesor=0
     for usuario in listaAlumnos:
         if usuario.id_permiso== 2: #Alumnos
             listaIdAlumnos.append(usuario.id_usuario)
-        if usuario.id_permiso == 3: #Jefe de Practica
-            idjp = usuario.id_usuario
-        if usuario.id_permiso==1:
-            idprofesor=usuario.id_usuario
 
     for idalumno in listaIdAlumnos:
-        alumnoActividadObjeto=Alumno_actividad(
-            id_actividad=idActividad,
-            id_alumno=idalumno)
+        alumnoActividadObjeto = Alumno_actividad(
+            id_actividad = idActividad,
+            id_alumno = idalumno)
         try:
             Alumno_actividad().addOne(alumnoActividadObjeto)
         except:
@@ -331,3 +325,5 @@ def desactivarRubrica(idRubrica):
         d['succeed'] = False
         d['message'] = str(ex)
         return d
+
+#def preguntasFijasCoevaluacion
