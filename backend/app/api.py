@@ -126,6 +126,7 @@ api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
 api.add_resource(Obtener_estadistica_actividad, '/api/actividad/estadistica')
 api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas')
 api.add_resource(Crear_alarma,'/api/actividad/alarma/crear')
-api.add_resource(Listar_alarma,'/api/alarma/listar') # aun no esta hechp 
+api.add_resource(Listar_alarma,'/api/alarma/listar')
+api.add_resource(Editar_alarma,'/api/alarma/editar')
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
