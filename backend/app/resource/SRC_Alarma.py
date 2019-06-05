@@ -16,3 +16,15 @@ class Listar_alarma(Resource):
         data = request.get_json()
         idActividad = data['idActividad']
         return listarAlarma(idActividad)
+
+
+class Editar_alarma(Resource);
+    def post(self):
+        data = request.get_json()
+        idAlarma = data['idAlarma']
+        nombre = data['nombre']
+        asunto = data['asunto']
+        mensaje = data['mensaje']
+        fechaEjecucion = data['fechaEjecucion']
+
+        return editarAlarma(idAlarma,nombre,asunto,mensaje,fechaEjecucion)

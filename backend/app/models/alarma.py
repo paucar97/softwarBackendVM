@@ -26,3 +26,13 @@ class Alarma(db.Model):
         db.session.flush()
         db.session.commit()
         return obj.id_alarma
+
+    @classmethod
+    def updateOne(self,idAlarma,nombre,asunto,mensaje,fechaEjecucion):
+        alarma = Alarma.query.filter_by(id_alarma = idAlarma).first()
+        alarma.nombre = nombre
+        alarma.asunto = asunto
+        alarma.mensaje = mensaje
+        alarma.fecha_ejecucion = fechaEjecucion
+        db.session.commit()
+        return

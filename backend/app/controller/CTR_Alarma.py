@@ -21,3 +21,7 @@ def listarAlarma(idActividad):
     for _,alarma in lstAlarma:
         rpta.append(alarma.json())
     return rpta
+
+def editarAlarma(idAlarma,nombre,asunto,mensaje,fechaEjecucion):
+    Alarma().updateOne(idAlarma,nombre,asunto,mensaje,convertDatetime(fechaEjecucion))
+    return { "message" : "Done" }
