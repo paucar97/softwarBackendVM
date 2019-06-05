@@ -53,7 +53,8 @@ class Obtener_nota_alumno(Resource):
         data = request.get_json()
         idAlumno = data['idAlumno']
         idActividad = data['idActividad']
-        return controller.obtenerNotaAlumno(idAlumno, idActividad)
+        tipo = data['tipo']
+        return controller.obtenerNotaAlumno(idAlumno, idActividad, tipo)
 
 class Calificar_alumno_actividad(Resource):
     def post(self):
@@ -65,9 +66,10 @@ class Calificar_alumno_actividad(Resource):
         idRubrica = data['idRubrica']
         flgFalta = data['flgFalta']
         listaNotaAspectos = data['listaNotaAspectos']
+        flgCompleto = data['flgCompleto']
         #flgCalifico = data['flgCalifico']
 
-        return controller.calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta)
+        return controller.calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto)
 
 class Editar_nota_alumno_actividad(Resource):
     def post(self):

@@ -47,12 +47,8 @@ class Alumno_actividad(db.Model):
         return
     
     @classmethod
-    def calificarAlumno(self, idActividad, idAlumno, idJp, nota, flgFalta):
+    def calificarAlumno(self, idActividad, idAlumno):
         alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
-        alumnoActividad.id_jp = idJp
-        alumnoActividad.flg_falta = flgFalta
-        alumnoActividad.nota = nota
-        alumnoActividad.fecha_revisado = func.current_timestamp()
         alumnoActividad.flg_calificado = 1
         db.session.commit()
         return True

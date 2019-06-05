@@ -326,4 +326,4 @@ def desactivarRubrica(idRubrica):
         d['message'] = str(ex)
         return d
 
-def preguntasFijasCoevaluacion
+#def preguntasFijasCoevaluacion

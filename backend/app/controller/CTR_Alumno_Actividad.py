@@ -1,5 +1,6 @@
 from app.models import db
 from app.models.alumno_actividad import Alumno_actividad
+from app.models.alumno_actividad_calificacion import Alumno_actividad_calificacion
 from app.models.actividad import Actividad
 from app.models.entregable import Entregable
 from app.models.usuario import Usuario
@@ -165,9 +166,10 @@ def listaAlumnos(idActividad):
             return None
     """
 
-def obtenerNotaAlumno(idAlumno, idActividad):
+def obtenerNotaAlumno(idAlumno, idActividad, tipo):
     aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
-    actividadAnalizada = Actividad.getOne(idActividad)
+    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo)).first()
+
     d = {}
 
     d['flgCalificado'] = aux.flg_calificado
@@ -223,9 +225,22 @@ def obtenerNotaAlumno(idAlumno, idActividad):
     d['listaNotaAspectos'] = listaNotaAsp
     return d
 
-def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
-    aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
-    
+def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto):
+    Alumno_actividad().calificarAlumno(idActividad, idAlumno)
+
+    calificacionIngresada = Alumno_actividad_calificacion(
+        id_actividad = idActividad,
+        id_alumno = idAlumno,
+        id_rubrica = idRubrica,
+        id_calificador = idJp,
+        nota = nota,
+        fecha_revisado = func.current_timestamp(),
+        flg_completo = flgCompleto,
+        flg_falta = flgFalta
+    )
+
+    aux = Alumno_actividad_calificacion().addOne(calificacionIngresada)
+
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         notaAspectoObjeto = Alumno_nota_aspecto(
@@ -233,6 +248,7 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
             id_alumno=idAlumno,
             id_rubrica=idRubrica,
             id_aspecto=idAspecto,
+            id_calificador = idJp,
             nota=notaAspecto['nota'],
             comentario=notaAspecto['comentario']
         )
@@ -246,6 +262,7 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
                 id_alumno=idAlumno,
                 id_rubrica=idRubrica,
                 id_aspecto=idAspecto,
+                id_calificador = idJp,
                 id_indicador=notaIndicador['idIndicador'],
                 nota=notaIndicador['nota'],
                 comentario=notaIndicador['comentario'],

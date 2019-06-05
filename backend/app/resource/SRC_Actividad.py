@@ -1,13 +1,13 @@
 from flask_restful import Resource
 from flask import Flask, request
-from app.controller.CTR_Actividad import *
+from app.controller import CTR_Actividad as controller
 class Obtener_rubrica(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
         tipo = data['tipo']
         if tipo <= 4 and tipo > 0:
-            return obtenerRubricaEvaluacion(idActividad, tipo)
+            return controller.obtenerRubrica(idActividad, tipo)
         else:
             d = {}
             d['succeed'] = False
@@ -23,7 +23,7 @@ class Obtener_rubricas_pasadas(Resource):
         # VALIDACION
         #
         #
-        return obtenerRubricasPasadas(idUsuario, idCurso)
+        return controller.obtenerRubricasPasadas(idUsuario, idCurso)
 
 class Crear_rubrica(Resource):
     def post (self):
@@ -36,7 +36,7 @@ class Crear_rubrica(Resource):
         tipo = data['tipo']
         
         if tipo <= 4 and tipo > 0:
-            return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
+            return controller.crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
         else:
             d = {}
             d['succeed'] = False
@@ -52,7 +52,7 @@ class Editar_rubrica(Resource):
         nombreRubrica = data['nombreRubrica']
         listaAspectos = data['listaAspectos']
         tipo = data['tipo']
-        return editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
+        return controller.editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
 
 class Crear_Actividad(Resource):
     def post(self):
@@ -67,7 +67,7 @@ class Crear_Actividad(Resource):
         flag_entregable = data['flgEntregable']
         idUsuarioCreador = data['idUsuarioCreador']
         flg_multicalificable = data['flgMulticalificable']
-        return CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable,idUsuarioCreador, flg_multicalificable)
+        return controller.CrearActividad(idHorario,nombre,tipo,descripcion,fechaInicio,fechaFin,flag_confianza,flag_entregable,idUsuarioCreador, flg_multicalificable)
 
 class Editar_Actividad(Resource):
     def post(self):
@@ -83,13 +83,13 @@ class Editar_Actividad(Resource):
         idUsuarioCreador = data['idUsuarioCreador']
         flg_multicalificable = data['flgMulticalificable']
 
-        return EditarActividad(idActividad,nombre,tipo,descripcion,fecha_inicio,fecha_final,flag_confianza,flag_entregable, flg_multicalificable)
+        return controller.EditarActividad(idActividad,nombre,tipo,descripcion,fecha_inicio,fecha_final,flag_confianza,flag_entregable, flg_multicalificable)
 
 class Listar_Actividad(Resource):
     def post(self):
         data = request.get_json()
         idHorario = data['idHorario']
-        return listarActividad(idHorario)
+        return controller.listarActividad(idHorario)
 
 
 class Eliminar_actividad(Resource):
@@ -98,4 +98,4 @@ class Eliminar_actividad(Resource):
         idActividad = data['idActividad']
 
 
-        return eliminarActividad(idActividad)
+        return controller.eliminarActividad(idActividad)
