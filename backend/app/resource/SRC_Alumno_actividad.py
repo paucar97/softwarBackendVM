@@ -54,7 +54,8 @@ class Obtener_nota_alumno(Resource):
         idAlumno = data['idAlumno']
         idActividad = data['idActividad']
         tipo = data['tipo']
-        return controller.obtenerNotaAlumno(idAlumno, idActividad, tipo)
+        idCalificador = data['idCalificador']
+        return controller.obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador)
 
 class Calificar_alumno_actividad(Resource):
     def post(self):
