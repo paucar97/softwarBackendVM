@@ -60,7 +60,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_comment = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        reg_comment = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_actividad == idActividad)).first()
         if reg_comment is None:
             d.opcode = 1
             d.errcode = 1
@@ -74,22 +74,22 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
         d.errcode = 2
         d.message = str(ex)
 
-    # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+    Alumno_actividad_calificacion().updateComentarioAlumno(idActividad,idAlumno,reg_comment)
     return d.jsonify()
 
 def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
     # test if exists
     d = ResponseMessage()
     try:
-        reg_resp = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_alumno == idActividad)).first()
+        reg_resp = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_actividad == idActividad)).first()
         if reg_resp is None:
             d.opcode = 1
             d.errcode = 1
             d.message = "Alumno o actividad no válidas"
-        elif reg_resp.id_jp != idProfesor:
-            d.opcode = 1
-            d.errcode = 1
-            d.message = "No tiene autoridad para responder el comentario."
+        # elif reg_resp.id_jp != idProfesor:
+        #     d.opcode = 1
+        #     d.errcode = 1
+        #     d.message = "No tiene autoridad para responder el comentario."
         else:
             reg_resp.comentarioJp = respuesta
             db.session.commit()
@@ -98,8 +98,8 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         d.opcode = 1
         d.errcode = 2
         d.message = str(ex)
-#
-    # # Alumno_actividad.update().where(Alumno_actividad.id_usuario == idAlumno)
+
+    Alumno_actividad_calificacion().updateComentarioJP(idActividad,idAlumno,idProfesor,reg_resp)
     return d.jsonify()
 
 def listarComentarios(idActividad):
@@ -109,7 +109,7 @@ def listarComentarios(idActividad):
     Alumno = aliased(Usuario)
     Profesor = aliased(Usuario)
     # modif pendiente: filter Alumno_actividad antes de hacer los joins
-    sqlquery = db.session.query(Alumno_actividad.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad.comentario, Alumno_actividad.comentarioJp).join(Alumno, Alumno_actividad.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad.id_jp == Profesor.id_usuario).filter(and_(Alumno_actividad.comentario == idActividad, Alumno_actividad.comentario != None))
+    sqlquery = db.session.query(Alumno_actividad_calificacion.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad_calificacion.comentario_alumno, Alumno_actividad.comentario_jp).join(Alumno, Alumno_actividad_calificacion.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad_calificacion.id_calificador == Profesor.id_usuario).filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.comentario_alumno != None))
 
     for row in sqlquery:
         dataComment = dict()
@@ -345,10 +345,10 @@ def publicarNotificacionesAlumnos(idActividad):
     for profesor in profesoresHorario:
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
-    
+
 def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
-    
+
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
@@ -435,18 +435,18 @@ def listarAlumnosNotas(idActividad):
             #print("Nota Nula")
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
-    frecuencia = [(k, v) for k, v in notas.items()] 
+    frecuencia = [(k, v) for k, v in notas.items()]
     d['notaFrecuencia'] = []
     for nota,frecuencia in frecuencia:
         aux={}
         aux['nota'] = nota
         aux['frecuencia'] = frecuencia
         d['notaFrecuencia'].append(aux)
-    
+
     cantidadNotas = len(notas)
-    total = cantidadNotas + faltas 
-    
-    
+    total = cantidadNotas + faltas
+
+
     d['cantidadNotas'] = cantidadNotas
     d['cantidadFalta'] = faltas
     d['cantidadTotal'] = cantidadNotas + faltas
