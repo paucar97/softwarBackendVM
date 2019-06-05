@@ -16,6 +16,7 @@ from app.models.rubrica import Rubrica
 from app.models.aspecto import Aspecto
 from app.models.indicador import Indicador
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
+from app.models.rubrica_aspecto_indicador_nivel import Rubrica_aspecto_indicador_nivel
 from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
@@ -168,14 +169,21 @@ def listaAlumnos(idActividad):
 
 def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
     
-    alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idCalificador))
+    alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == idRubrica, Alumno_actividad_calificacion.id_calificador == idCalificador)).first()
 
     d = {}
-    d['nota'] = alumnoCalificacion.nota
-    d['comentario']= alumnoCalificacion.comentario_alumno
-    d['comentarioJp']= alumnoCalificacion.comentario_jp
-    d['flgFalta']= alumnoCalificacion.flg_falta
-    d['flgCompleto'] = alumnoCalificacion.flg_completo
+    if alumnoCalificacion is not None:
+        d['nota'] = alumnoCalificacion.nota
+        d['comentario']= alumnoCalificacion.comentario_alumno
+        d['comentarioJp']= alumnoCalificacion.comentario_jp
+        d['flgFalta']= alumnoCalificacion.flg_falta
+        d['flgCompleto'] = alumnoCalificacion.flg_completo
+    else:
+        d['nota'] = None
+        d['comentario']= None
+        d['comentarioJp']= None
+        d['flgFalta']= None
+        d['flgCompleto'] = None
     listaNotaAsp = []
     
     aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
@@ -204,7 +212,7 @@ def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
             f['descripcion'] = indicadorDetalle.descripcion
             f['informacion'] = indicadorDetalle.informacion
             f['puntajeMax'] = indicadorDetalle.puntaje_max
-            f['tipo'] = indicadorDetalle.tipo
+            #f['tipo'] = indicadorDetalle.tipo
             f['idIndicador'] = indicadorDetalle.id_indicador
             
             niveles = []
