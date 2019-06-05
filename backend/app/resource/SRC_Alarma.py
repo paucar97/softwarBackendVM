@@ -18,7 +18,7 @@ class Listar_alarma(Resource):
         return listarAlarma(idActividad)
 
 
-class Editar_alarma(Resource);
+class Editar_alarma(Resource):
     def post(self):
         data = request.get_json()
         idAlarma = data['idAlarma']
