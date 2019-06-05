@@ -18,11 +18,8 @@ class Alumno_actividad(db.Model):
     #Preguntar cual es la etapa
     flag_entregable = db.Column('FLG_ENTREGABLE', db.Integer)
     #Indica si el alumno subio el entregable o no
-    comentario = db.Column('COMENTARIO',db.String(150),nullable = True)
-    comentarioJp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
     flg_calificado = db.Column('FLG_CALIFICADO', db.Integer, default = 0)
     #Verifica si el alumno falto a la sesion o no
-    flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
     flg_publicado = db.Column('FLG_PUBLICADO', db.Integer, default = 0)
 
     def addOne(self, obj):
@@ -50,12 +47,8 @@ class Alumno_actividad(db.Model):
         return
     
     @classmethod
-    def calificarAlumno(self, idActividad, idAlumno, idJp, nota, flgFalta):
+    def calificarAlumno(self, idActividad, idAlumno):
         alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
-        alumnoActividad.id_jp = idJp
-        alumnoActividad.flg_falta = flgFalta
-        alumnoActividad.nota = nota
-        alumnoActividad.fecha_revisado = func.current_timestamp()
         alumnoActividad.flg_calificado = 1
         db.session.commit()
         return True

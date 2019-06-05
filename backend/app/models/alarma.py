@@ -10,6 +10,15 @@ class Alarma(db.Model):
     flg_disponible = db.Column('FLG_DISPONIBLE',db.Integer)
     mensaje = db.Column('MENSAJE', db.String(500))
     asunto = db.Column('ASUNTO',db.String(100))
+    nombre = db.Column('NOMBRE',db.String(20))
+
+    def json(self):
+        d =dict()
+        d['fechaEjecucion'] = self.fecha_ejecucion.__str__()
+        d['nombre'] = self.nombre
+        d['mensaje'] = self.mensaje
+        d['asunto'] = self.asunto
+        return d
 
     @classmethod
     def addOne(self, obj):
