@@ -166,29 +166,22 @@ def listaAlumnos(idActividad):
             return None
     """
 
-def obtenerNotaAlumno(idAlumno, idActividad, tipo):
-    aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
-    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo)).first()
+def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
+    
+    alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idCalificador))
 
     d = {}
-
-    d['flgCalificado'] = aux.flg_calificado
-    d['idActividad']= idActividad
-    d['idAlumno']= idAlumno
-    d['idJp']= aux.id_jp
-    d['idGrupo']= aux.id_grupo
-    d['nota']= aux.nota
-    d['flgEntregable']= aux.flag_entregable
-    d['comentario']= aux.comentario
-    d['comentarioJp']= aux.comentarioJp
-    d['flgFalta']= aux.flg_falta
-    d['idRubrica'] = actividadAnalizada.id_rubrica
-
+    d['nota'] = alumnoCalificacion.nota
+    d['comentario']= alumnoCalificacion.comentario_alumno
+    d['comentarioJp']= alumnoCalificacion.comentario_jp
+    d['flgFalta']= alumnoCalificacion.flg_falta
+    d['flgCompleto'] = alumnoCalificacion.flg_completo
     listaNotaAsp = []
-    aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == actividadAnalizada.id_rubrica).all()
+    
+    aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
     for aspecto in aux2:
         e = {}
-        notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_alumno == idAlumno, Alumno_nota_aspecto.id_actividad == idActividad, Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto)).first()
+        notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == idCalificador)).first()
         aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
         e['descripcion'] = aspectoDetalle.descripcion
         e['informacion'] = aspectoDetalle.informacion
@@ -205,7 +198,7 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo):
         listaNotaInd = []
         aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
         for indicador in aux3:
-            notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador)).first()
+            notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
             f = {}
             indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
             f['descripcion'] = indicadorDetalle.descripcion
@@ -213,6 +206,19 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo):
             f['puntajeMax'] = indicadorDetalle.puntaje_max
             f['tipo'] = indicadorDetalle.tipo
             f['idIndicador'] = indicadorDetalle.id_indicador
+            
+            niveles = []
+            listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
+            for nivel in listaNiveles:
+                aux3 = {}
+                aux3['idNivel'] = nivel.id_nivel
+                aux3['descripcion'] = nivel.descripcion
+                aux3['grado'] = nivel.grado
+                aux3['puntaje'] = nivel.puntaje
+                niveles.append(aux3)
+            f['listaNiveles'] = niveles
+            f['cantNiveles'] = len(niveles)
+
             if notaIndicador is not None:
                 f['nota'] = notaIndicador.nota
                 f['comentario'] = notaIndicador.comentario
@@ -223,6 +229,26 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo):
         e['listaNotaIndicador'] = listaNotaInd
         listaNotaAsp.append(e)
     d['listaNotaAspectos'] = listaNotaAsp
+    return d    
+    
+def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
+    #actividadSolicitada = Actividad.query.filter(and_(Actividad.id_actividad == idActividad)).first()
+    #if actividadSolicitada.flg_multicalificable == 0:
+    aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
+    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo)).first()
+    
+    d = {}
+
+    d['flgCalificado'] = aux.flg_calificado
+    d['idActividad']= idActividad
+    d['idAlumno']= idAlumno
+    d['idCalificador']= idCalificador
+    d['idGrupo']= aux.id_grupo
+    d['flgEntregable']= aux.flag_entregable
+    d['idRubrica'] = actividadAnalizada.id_rubrica
+
+    d['calificacion']= listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica)
+    
     return d
 
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto):
