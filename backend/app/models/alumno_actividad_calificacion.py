@@ -23,3 +23,7 @@ class Alumno_actividad_calificacion(db.Model):
     fecha_revisado = db.Column('FECHA_REVISADO',db.DateTime)
     fecha_modificado = db.Column('FECHA_MODIFICADO', db.DateTime)
     flg_completo = db.Column('FLG_COMPLETO', db.Integer, nullable = False)
+    comentario_alumno = db.Column('COMENTARIO_ALUMNO',db.String(150),nullable = True)
+    comentario_jp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
+    flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
+    

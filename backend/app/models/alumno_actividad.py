@@ -18,11 +18,8 @@ class Alumno_actividad(db.Model):
     #Preguntar cual es la etapa
     flag_entregable = db.Column('FLG_ENTREGABLE', db.Integer)
     #Indica si el alumno subio el entregable o no
-    comentario = db.Column('COMENTARIO',db.String(150),nullable = True)
-    comentarioJp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
     flg_calificado = db.Column('FLG_CALIFICADO', db.Integer, default = 0)
     #Verifica si el alumno falto a la sesion o no
-    flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
     flg_publicado = db.Column('FLG_PUBLICADO', db.Integer, default = 0)
 
     def addOne(self, obj):

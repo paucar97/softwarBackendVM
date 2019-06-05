@@ -1,14 +1,19 @@
 from flask_restful import Resource
 from flask import Flask, request
 from app.controller.CTR_Actividad import *
-class Obtener_rubrica_idactividad(Resource):
+class Obtener_rubrica(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
-        # VALIDACION
-        #
-        #
-        return obtenerRubricaEvaluacion(idActividad)
+        tipo = data['tipo']
+        if tipo <= 4 and tipo > 0:
+            return obtenerRubricaEvaluacion(idActividad, tipo)
+        else:
+            d = {}
+            d['succeed'] = False
+            d['message'] = "No se puede obtener este tipo de rubrica."
+            return d
+
 
 class Obtener_rubricas_pasadas(Resource):
     def get(self):
@@ -30,13 +35,14 @@ class Crear_rubrica(Resource):
         listaAspectos = data['listaAspectos']
         tipo = data['tipo']
         
-        if tipo == 4:
+        if tipo <= 4 and tipo > 0:
             return crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo)
         else:
             d = {}
             d['succeed'] = False
-            d['message'] = "No se esta intentando crear una Rubrica."
+            d['message'] = "No se puede crear este tipo de rubrica."
             return d
+
 class Editar_rubrica(Resource):
     def post(self):
         data = request.get_json()

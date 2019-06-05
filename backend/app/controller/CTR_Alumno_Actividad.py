@@ -225,7 +225,7 @@ def obtenerNotaAlumno(idAlumno, idActividad):
 
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
     aux = Alumno_actividad().calificarAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
-
+    
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         notaAspectoObjeto = Alumno_nota_aspecto(
