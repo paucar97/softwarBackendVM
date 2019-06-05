@@ -14,6 +14,7 @@ class Alarma(db.Model):
 
     def json(self):
         d =dict()
+        d['idAlarma'] = self.id_alarma
         d['fechaEjecucion'] = self.fecha_ejecucion.__str__()
         d['nombre'] = self.nombre
         d['mensaje'] = self.mensaje
