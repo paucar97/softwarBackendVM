@@ -278,6 +278,7 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
             nota=notaAspecto['nota'],
             comentario=notaAspecto['comentario']
         )
+        print("="*120,idActividad,idAlumno,idRubrica,idAspecto,notaAspecto['nota'],notaAspecto['comentario'])
         Alumno_nota_aspecto().addOne(notaAspectoObjeto)
 
         listaNotaIndicador = notaAspecto['listaNotaIndicador']

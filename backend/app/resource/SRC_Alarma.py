@@ -28,3 +28,9 @@ class Editar_alarma(Resource):
         fechaEjecucion = data['fechaEjecucion']
 
         return editarAlarma(idAlarma,nombre,asunto,mensaje,fechaEjecucion)
+
+class Eliminar_alarma(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlarma = data['idAlarma']
+        return eliminarAlarma(idAlarma)
