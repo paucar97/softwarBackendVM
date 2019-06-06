@@ -37,3 +37,9 @@ class Alarma(db.Model):
         alarma.fecha_ejecucion = fechaEjecucion
         db.session.commit()
         return
+
+    @classmethod
+    def deleteOne(self,idAlarma):
+        Alarma.query.filter_by(id_alarma=idAlarma).delete()
+        db.session.commit()
+        return 

@@ -25,3 +25,7 @@ def listarAlarma(idActividad):
 def editarAlarma(idAlarma,nombre,asunto,mensaje,fechaEjecucion):
     Alarma().updateOne(idAlarma,nombre,asunto,mensaje,convertDatetime(fechaEjecucion))
     return { "message" : "Done" }
+
+def eliminarAlarma(idAlarma):
+    Alarma().deleteOne(idAlarma)
+    return { "message" : "Done" }
