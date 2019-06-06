@@ -243,7 +243,7 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
     #actividadSolicitada = Actividad.query.filter(and_(Actividad.id_actividad == idActividad)).first()
     #if actividadSolicitada.flg_multicalificable == 0:
     aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad)).first()
-    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo)).first()
+    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo,Rubrica.flg_activo==1)).first()
     
     d = {}
 
