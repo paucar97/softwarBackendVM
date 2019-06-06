@@ -27,5 +27,6 @@ def editarAlarma(idAlarma,nombre,asunto,mensaje,fechaEjecucion):
     return { "message" : "Done" }
 
 def eliminarAlarma(idAlarma):
+    Actividad_alarma().deleteOne(idAlarma)
     Alarma().deleteOne(idAlarma)
     return { "message" : "Done" }

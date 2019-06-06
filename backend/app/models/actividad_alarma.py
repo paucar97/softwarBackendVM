@@ -20,3 +20,9 @@ class Actividad_alarma(db.Model):
     def getAll(self,idActividad):
         l= db.session.query(Actividad_alarma,Alarma).join(Alarma).filter(and_(Actividad_alarma.id_actividad == idActividad,Alarma.flg_disponible== 1))
         return l 
+
+    @classmethod
+    def deleteOne(self,idAlarma):
+        Actividad_alarma.query.filter_by(id_alarma=idAlarma).delete()
+        db.session.commit()
+        return 
