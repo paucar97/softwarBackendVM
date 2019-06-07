@@ -75,7 +75,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
         d.errcode = 2
         d.message = str(ex)
 
-    Alumno_actividad_calificacion().updateComentarioAlumno(idActividad,idAlumno,reg_comment)
+    #Alumno_actividad_calificacion().updateComentarioAlumno(idActividad,idAlumno,reg_comment)
     return d.jsonify()
 
 def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
@@ -100,7 +100,7 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         d.errcode = 2
         d.message = str(ex)
 
-    Alumno_actividad_calificacion().updateComentarioJP(idActividad,idAlumno,idProfesor,reg_resp)
+    #Alumno_actividad_calificacion().updateComentarioJP(idActividad,idAlumno,idProfesor,reg_resp)
     return d.jsonify()
 
 def listarComentarios(idActividad):
