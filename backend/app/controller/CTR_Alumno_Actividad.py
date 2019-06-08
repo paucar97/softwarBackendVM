@@ -110,7 +110,7 @@ def listarComentarios(idActividad):
     Alumno = aliased(Usuario)
     Profesor = aliased(Usuario)
     # modif pendiente: filter Alumno_actividad antes de hacer los joins
-    sqlquery = db.session.query(Alumno_actividad_calificacion.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad_calificacion.comentario_alumno, Alumno_actividad.comentario_jp).join(Alumno, Alumno_actividad_calificacion.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad_calificacion.id_calificador == Profesor.id_usuario).filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.comentario_alumno != None))
+    sqlquery = db.session.query(Alumno_actividad_calificacion.id_alumno, Alumno.nombre_completo, Alumno.codigo_pucp, Profesor.nombre_completo, Alumno_actividad_calificacion.comentario_alumno, Alumno_actividad_calificacion.comentario_jp).join(Alumno, Alumno_actividad_calificacion.id_alumno == Alumno.id_usuario).join(Profesor, Alumno_actividad_calificacion.id_calificador == Profesor.id_usuario).filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.comentario_alumno != None))
 
     for row in sqlquery:
         dataComment = dict()
