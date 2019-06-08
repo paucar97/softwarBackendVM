@@ -54,3 +54,14 @@ class Alumno_actividad_calificacion(db.Model):
         alumnoActividad.comentario_jp=comentario
         db.session.commit()
         return
+
+    @classmethod
+    def editarNotaAlumno(self, idActividad, idAlumno, idJpAnt, idJpN ,nota, flgFalta, flgCompleto):
+        alumnoActividad = Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_calificador = idJpAnt).first()
+        alumnoActividad.nota = nota
+        alumnoActividad.flg_falta = flgFalta
+        alumnoActividad.fecha_modificado = func.current_timestamp()
+        alumnoActividad.id_calificador = idJpN
+        alumnoActividad.flg_completo = flgCompleto
+        db.session.commit()
+        return True
