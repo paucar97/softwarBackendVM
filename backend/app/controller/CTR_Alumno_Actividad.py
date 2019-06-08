@@ -383,11 +383,11 @@ def publicarParaRevision(idActividad, idJpReviso):
     #    publicarNotificacionProfesor(idActividad, idJpReviso)
 
 def listarAlumnosDestacados(idActividad):
-    almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
+    almact_fltr = Alumno_actividad_calificacion.query.filter(Alumno_actividad_calificacion.id_actividad == idActividad).subquery()
 
     #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
     #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).filter(almact_fltr.c.NOTA != None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
-    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).filter(and_(almact_fltr.c.FLG_CALIFICADO == True, almact_fltr.c.FLG_FALTA == False, almact_fltr.c.NOTA != None)).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).join(Alumno_actividad, Alumno_actividad.id_alumno==Usuario.id_usuario).filter(and_( almact_fltr.c.FLG_FALTA == False,Alumno_actividad.flg_calificado==True, almact_fltr.c.NOTA != None)).order_by(almact_fltr.c.NOTA.desc()).limit(5)
 
     d = {}
     lst = []
@@ -407,7 +407,7 @@ def obtenerEstadisticaActividad(idActividad):
     d = {}
 
     try:
-        sqlquery = db.session.query(Alumno_actividad.nota).filter(Alumno_actividad.id_actividad == idActividad).order_by(Alumno_actividad.nota.desc())
+        sqlquery = db.session.query(Alumno_actividad_calificacion.nota).filter(Alumno_actividad_calificacion.id_actividad == idActividad).order_by(Alumno_actividad_calificacion.nota.desc())
         lst = [nota for nota, in sqlquery]
         fltr_lst = list(filter(lambda x: x is not None, lst))
     except Exception as ex:
@@ -428,7 +428,7 @@ def obtenerEstadisticaActividad(idActividad):
     return d
 
 def listarAlumnosNotas(idActividad):
-    almact_fltr = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).subquery()
+    almact_fltr = Alumno_actividad_calificacion.query.filter(Alumno_actividad_calificacion.id_actividad == idActividad).subquery()
     data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc())
     d = {}
     notas = []
