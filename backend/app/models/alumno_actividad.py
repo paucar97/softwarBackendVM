@@ -51,18 +51,7 @@ class Alumno_actividad(db.Model):
         alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
         alumnoActividad.flg_calificado = 1
         db.session.commit()
-        return True
-
-    @classmethod
-    def editarNotaAlumno(self, idActividad, idAlumno, idJp, nota, flgFalta):
-        alumnoActividad = Alumno_actividad.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno).first()
-        alumnoActividad.nota = nota
-        alumnoActividad.flg_falta = flgFalta
-        alumnoActividad.fecha_modificado = func.current_timestamp()
-        alumnoActividad.idJp = idJp
-        db.session.commit()
-        return True
-        
+        return True        
 
     @classmethod
     def getAllGrupos(self, idActividad):

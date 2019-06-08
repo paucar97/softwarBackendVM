@@ -308,8 +308,8 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
     d['message'] = "succeed"
     return d
 
-def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta):
-    aux = Alumno_actividad().editarNotaAlumno(idActividad, idAlumno, idJp, nota, flgFalta)
+def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto):
+    aux = Alumno_actividad_calificacion().editarNotaAlumno(idActividad, idAlumno, idJpAnt, idJpN, nota, flgFalta, flgCompleto)
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         Alumno_nota_aspecto().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaAspecto['nota'], notaAspecto['comentario'])
