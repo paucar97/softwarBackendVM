@@ -129,5 +129,11 @@ api.add_resource(Crear_alarma,'/api/actividad/alarma/crear')
 api.add_resource(Listar_alarma,'/api/alarma/listar')
 api.add_resource(Editar_alarma,'/api/alarma/editar')
 api.add_resource(Eliminar_alarma,'/api/alarma/eliminar')
+
+
+api.add_resource(Calificar_grupo,'/api/actividad/alumnos/calificar_grupo')
+api.add_resource(Obtener_nota_grupo,'/api/actividad/alumnos/obter_nota_grupo')
+api.add_resource(Editar_nota_grupo,'/api/actividad/alumnos/editar_nota_grupo')
+
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
