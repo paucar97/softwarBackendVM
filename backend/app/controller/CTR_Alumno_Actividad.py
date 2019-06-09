@@ -70,7 +70,7 @@ def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
             d.errcode = 1
             d.message = "Alumno o actividad no válidas"
         else:
-            reg_comment.comentario = comentario
+            reg_comment.comentario_alumno = comentario
             db.session.commit()
             d.message = "Comentario agregado correctamente"
     except Exception as ex:
@@ -95,7 +95,7 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         #     d.errcode = 1
         #     d.message = "No tiene autoridad para responder el comentario."
         else:
-            reg_resp.comentarioJp = respuesta
+            reg_resp.comentario_jp = respuesta
             db.session.commit()
             d.message = "Respuesta agregada correctamente"
     except Exception as ex:
