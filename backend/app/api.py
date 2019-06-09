@@ -132,7 +132,7 @@ api.add_resource(Eliminar_alarma,'/api/alarma/eliminar')
 
 
 api.add_resource(Calificar_grupo,'/api/actividad/alumnos/calificar_grupo')
-api.add_resource(Obtener_nota_grupo,'/api/actividad/alumnos/obter_nota_grupo')
+api.add_resource(Obtener_nota_grupo,'/api/actividad/alumnos/obtener_nota_grupo')
 api.add_resource(Editar_nota_grupo,'/api/actividad/alumnos/editar_nota_grupo')
 
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
