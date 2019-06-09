@@ -72,6 +72,44 @@ class Calificar_alumno_actividad(Resource):
 
         return controller.calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto)
 
+class Calificar_grupo(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idGrupo = data['idGrupo']
+        idJp = data['idJp']
+        nota = data['nota']
+        idRubrica = data['idRubrica']
+        flgFalta = data['flgFalta']
+        listaNotaAspectos = data['listaNotaAspectos']
+        flgCompleto = data['flgCompleto']
+        #flgCalifico = data['flgCalifico']
+
+        return controller.calificarGrupo(idActividad, idGrupo, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto)
+
+class Obtener_nota_grupo(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idGrupo = data['idGrupo']
+        idJp = data['idJp']
+
+        return controller.obtenerNotaGrupo(idActividad, idGrupo, idJp)
+
+class Editar_nota_grupo(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idGrupo = data['idGrupo']
+        nota = data['nota']
+        idRubrica = data['idRubrica']
+        listaNotaAspectos = data['listaNotaAspectos']
+        idJpAnt = data['idJpAnt']
+        idJpN = data['idJpN']
+        flgFalta = data['flgFalta']
+        flgCompleto = data['flgCompleto']
+        return controller.editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
+
 class Editar_nota_alumno_actividad(Resource):
     def post(self):
         data = request.get_json()

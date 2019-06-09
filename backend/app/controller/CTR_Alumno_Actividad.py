@@ -57,6 +57,9 @@ def entregablesActividadXAlumno(idActividad):
 
     return d
 
+    
+
+
 def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
@@ -239,6 +242,7 @@ def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
     d['listaNotaAspectos'] = listaNotaAsp
     return d    
     
+
 def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
     #actividadSolicitada = Actividad.query.filter(and_(Actividad.id_actividad == idActividad)).first()
     #if actividadSolicitada.flg_multicalificable == 0:
@@ -258,6 +262,8 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
     d['calificacion']= listarCalificacion(idAlumno, idActividad, idCalificador, actividadAnalizada.id_rubrica)
     
     return d
+
+
 
 def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto):
     Alumno_actividad().calificarAlumno(idActividad, idAlumno)
@@ -286,7 +292,7 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
             nota=notaAspecto['nota'],
             comentario=notaAspecto['comentario']
         )
-        print("="*120,idActividad,idAlumno,idRubrica,idAspecto,notaAspecto['nota'],notaAspecto['comentario'])
+        #print("="*120,idActividad,idAlumno,idRubrica,idAspecto,notaAspecto['nota'],notaAspecto['comentario'])
         Alumno_nota_aspecto().addOne(notaAspectoObjeto)
 
         listaNotaIndicador = notaAspecto['listaNotaIndicador']
@@ -475,3 +481,37 @@ def listarAlumnosNotas(idActividad):
     cantidadTotal : 6
 }
 """
+
+def calificarGrupo(idActividad, idGrupo, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto):
+    listaAlumnosGrupo = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).all()
+    try:
+        for alumno in listaAlumnosGrupo:
+            d = calificarAlumno(idActividad, alumno.id_alumno, idRubrica, idJp, nota, listaNotaAspectos, flgFalta, flgCompleto)
+        return d
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
+
+def obtenerNotaGrupo(idActividad, idGrupo, idJp):
+    try:
+        alumnoReferencia = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).first()
+        return obtenerNotaAlumno(alumnoReferencia.id_alumno, idActividad, 4, idJp)
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
+
+def editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto):
+    listaAlumnosGrupo = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).all()
+    try:
+        for alumno in listaAlumnosGrupo:
+            d = (idActividad, alumno.id_alumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
+        return d
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
