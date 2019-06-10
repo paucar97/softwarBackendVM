@@ -7,7 +7,11 @@ from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.models.rubrica_aspecto_indicador_nivel import Rubrica_aspecto_indicador_nivel
 from app.models.horario import Horario
 from app.models.actividad_alarma import Actividad_alarma
+from app.models.grupo import Grupo
+from app.models.grupo_alumno_horario import Grupo_alumno_horario
 from app.models.encuesta_pregunta import Encuesta_pregunta
+from app.models.encuesta import Encuesta
+from app.models.pregunta import Pregunta
 from app.models.horario_encuesta import Horario_encuesta
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
@@ -65,7 +69,6 @@ def obtenerRubricaXidRubrica(idRubrica):
         aspectos.append(aux)
     d['listaAspectos'] = aspectos
     d['cantAspectos'] = len(aspectos)
-
     return d
 
 def obtenerRubrica(idActividad, tipo):
@@ -161,9 +164,62 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
     d['message'] = True
     return d
 
+def obtenerEncuestaCoevaluacion(idActividad, idAlumno):
+    d = {}
+    listaEncuesta = Encuesta.query.filter(and_(Encuesta.id_usuario == idAlumno, Encuesta.id_actividad == idActividad, Encuesta.flg_activo == 1)).first()
+    if listaEncuesta is not None:
+        d['nombre'] = listaEncuesta.nombre
+        d['idEncuesta'] = listaEncuesta.id_encuesta
+        d['descripcion'] = listaEncuesta.descripcion
+        listaPreguntas = Encuesta_pregunta.query.filter(and_(Encuesta_pregunta.id_encuesta == listaEncuesta.id_encuesta)).all()
+        listaPreguntasDesglozadas = []
+        for pregunta in listaPreguntas:
+            preguntaAnalizada = Pregunta.query.filter(Pregunta.id_pregunta == pregunta.id_pregunta).first()
+            e = {}
+            e['descripcion'] = preguntaAnalizada.descripcion
+            listaPreguntasDesglozadas.append(e)
+        d['listaPreguntas'] = listaPreguntasDesglozadas
+        return d
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe la coevaluacion."
+        return d
+
+def crearEncuestasCoevaluacion(idActividad):
+    listaGrupos = Alumno_actividad.query(Alumno_actividad.id_grupo).filter(Alumno_actividad.id_actividad == idActividad).distinct().all()
+    actividadAnalizada = Actividad.query.filter(Actividad.id_actividad == idActividad).first()
+
+    for grupo in listaGrupos:
+        listaAlumnos = Grupo_alumno_horario.query(Grupo_alumno_horario.id_usuario).filter(Grupo_alumno_horario.id_grupo == grupo.id_grupo)
+        for alumno in listaAlumnos:
+            encuestaObjeto = Encuesta(
+                tipo = 3,
+                nombre = "CoEvaluacion de la actividad: " + actividadAnalizada.nombre,
+                id_actividad = idActividad,
+                id_usuario = alumno.id_usuario
+            )
+            idEncuesta = Encuesta.addOne(encuestaObjeto)
+            for alumno2 in listaAlumnos:
+                if alumno.id_usuario != alumno2.id_usuario:
+                    alumnoCompanero = Usuario.query.filter(Usuario.id_usuario == alumno2.id_usuario)
+                    preguntaTipo = Pregunta(
+                        descripcion = "¿Qué tan bien crees que trabajó " + alumnoCompanero.nombre + " " + alumnoCompanero.apellido_paterno + "?",
+                        tipo_pregunta = 3
+                    )
+                    idPregunta = Pregunta.addOne(preguntaTipo)
+                    encuestaPreguntaObjeto = Encuesta_pregunta(
+                        id_encuesta = idEncuesta,
+                        id_pregunta = idPregunta
+                    )
+                    Encuesta_pregunta.addOne(encuestaPreguntaObjeto)
+
 
 def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
     
+    if tipo == 3:
+        crearEncuestasCoevaluacion(idActividad)
+
     rubricaActual = Rubrica.query.filter(Rubrica.id_actividad == idActividad, Rubrica.flg_activo == 1, Rubrica.tipo == tipo).first()
 
     if rubricaActual is not None:
