@@ -59,3 +59,11 @@ class Asignar_grupo_general(Resource):
         idActividad = data['idActividad']
 
         return asignarGrupoGeneral(idActividad)
+
+class Listar_companheros_calificar(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idUsuario = data['idUsuario']
+        
+        return listarCompanherosCalificar(idActividad,idUsuario)
