@@ -93,3 +93,20 @@ def asignarGrupoGeneral(idActividad):
         Alumno_actividad().updateGrupo(idActividad,grupo.id_usuario,grupo.id_grupo)
             
     return {'message' : 'Realizado correctamente'}
+
+def listarCompanherosCalificar(idActividad,idUsuario):
+    idGrupo = Alumno_actividad().getIdGrupo(idActividad,idUsuario)
+    listaIntegrante = Grupo_alumno_horario().getAll(idGrupo)
+    rpta = []
+    for integrante in listaIntegrante:
+        if str(integrante.id_usuario) != str(idUsuario):
+            d=dict()
+            alumno = Usuario().getOneId(integrante.id_usuario)
+            
+            d['nombre'] = alumno.nombre
+            d['codigoPucp'] = alumno.codigo_pucp
+            d['apellidoPaterno'] = alumno.apellido_paterno
+            d['apellidoMaterno'] = alumno.apellido_materno
+            d['idUsuario'] = alumno.id_usuario
+            rpta.append(d)
+    return rpta

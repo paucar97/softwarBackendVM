@@ -44,6 +44,11 @@ def obtenerAlumnosEntregableEntregado(idActividad):
             lstGrupos.append(d)
         return lstGrupos
         ##except:
+        """
+        [
+            
+        ]
+        """
         ##    return None 
 
 def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):

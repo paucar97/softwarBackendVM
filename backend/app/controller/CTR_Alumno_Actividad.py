@@ -408,7 +408,7 @@ def listarAlumnosDestacados(idActividad):
 
     #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc()).limit(5)
     #data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).filter(almact_fltr.c.NOTA != None).order_by(almact_fltr.c.NOTA.desc()).limit(5)
-    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).join(Alumno_actividad, Alumno_actividad.id_alumno==Usuario.id_usuario).filter(and_( almact_fltr.c.FLG_FALTA == False,Alumno_actividad.flg_calificado==True, almact_fltr.c.NOTA != None)).order_by(almact_fltr.c.NOTA.desc()).limit(5)
+    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).join(Alumno_actividad, Alumno_actividad.id_alumno==Usuario.id_usuario).filter(and_( almact_fltr.c.FLG_FALTA == False,Alumno_actividad.flg_calificado==True, almact_fltr.c.NOTA != None, Alumno_actividad.id_actividad==idActividad)).order_by(almact_fltr.c.NOTA.desc()).limit(5)
 
     d = {}
     lst = []
