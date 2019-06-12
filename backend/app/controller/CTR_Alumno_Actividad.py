@@ -265,7 +265,7 @@ def obtenerNotaAlumno(idAlumno, idActividad, tipo, idCalificador):
     if actividadAux.flg_multicalificable == 1:
         d['idCalificador']= idCalificador
     else:
-        alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == idRubrica)).first()
+        alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica)).first()
         if alumnoCalificacion is None:
             d['idCalificador']= idCalificador
         else:
