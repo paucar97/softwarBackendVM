@@ -316,27 +316,27 @@ def obtenerRubricaCoevaluacion(idActividad, idAlumnoConsultando):
 
 def crearNivelesCoev(idRubrica, idAspectoCoev, idIndicadorCoev):
     nivelObjeto1 = Nivel(
-        descripcion = "Muy mal"
+        descripcion = "Muy mal",
         grado = 1,
         puntaje = 0
     )
     nivelObjeto2 = Nivel(
-        descripcion = "Mal"
+        descripcion = "Mal",
         grado = 2,
         puntaje = 1
     )
     nivelObjeto3 = Nivel(
-        descripcion = "Mas o menos"
+        descripcion = "Mas o menos",
         grado = 3,
         puntaje = 2
     )
     nivelObjeto4 = Nivel(
-        descripcion = "Bien"
+        descripcion = "Bien",
         grado = 4,
         puntaje = 3
     )
     nivelObjeto5 = Nivel(
-        descripcion = "Muy bien"
+        descripcion = "Muy bien",
         grado = 5,
         puntaje = 4
     )
