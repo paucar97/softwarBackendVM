@@ -198,7 +198,10 @@ def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
     aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
     for aspecto in aux2:
         e = {}
-        notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == alumnoCalificacion.id_calificador)).first()
+        if alumnoCalificacion is not None:
+            notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == alumnoCalificacion.id_calificador)).first()
+        else:
+            notaAspecto = None
         aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
         e['descripcion'] = aspectoDetalle.descripcion
         e['informacion'] = aspectoDetalle.informacion
@@ -215,7 +218,10 @@ def listarCalificacion(idAlumno, idActividad, idCalificador, idRubrica):
         listaNotaInd = []
         aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
         for indicador in aux3:
-            notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == alumnoCalificacion.id_indicador)).first()
+            if alumnoCalificacion is not None:
+                notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == alumnoCalificacion.id_indicador)).first()
+            else:
+                notaIndicador = None
             f = {}
             indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
             f['descripcion'] = indicadorDetalle.descripcion
