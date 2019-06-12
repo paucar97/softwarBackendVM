@@ -137,3 +137,6 @@ api.add_resource(Editar_nota_grupo,'/api/actividad/alumnos/editar_nota_grupo')
 
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+api.add_resource(Obtener_calificacion_otra_rubrica,'/api/actividad/obtener_calificacion_otra_rubrica')
+api.add_resource(Calificar_otra_rubrica,'/api/actividad/calificar_otra_rubrica')
+

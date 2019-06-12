@@ -14,7 +14,6 @@ class Obtener_rubrica(Resource):
             d['message'] = "No se puede obtener este tipo de rubrica."
             return d
 
-
 class Obtener_rubricas_pasadas(Resource):
     def get(self):
         data = request.get_json()
@@ -99,3 +98,16 @@ class Eliminar_actividad(Resource):
 
 
         return controller.eliminarActividad(idActividad)
+
+class Obtener_coevaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idAlumnoConsultando = data['idAlumnoConsultando']
+        return controller.obtenerRubricaCoevaluacion(idActividad, idAlumnoConsultando)
+
+class Obtener_registro_horas(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        return controller.obtenerRubrica(idActividad, 5)
