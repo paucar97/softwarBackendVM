@@ -156,3 +156,25 @@ class Lista_alumnos_notas(Resource):
         idActividad = data['idActividad']
 
         return controller.listarAlumnosNotas(idActividad)
+
+class Obtener_calificacion_otra_rubrica(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlumno = data['idAlumno']
+        idActividad = data['idActividad']
+        tipo = data['tipo']
+
+        return controller.obtenerCalificacionOtraRubrica(idAlumno, idActividad, tipo)
+
+class Calificar_otra_rubrica(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idAlumno = data['idAlumno']
+        nota = data['nota']
+        idRubrica = data['idRubrica']
+        flgFalta = data['flgFalta']
+        listaNotaAspectos = data['listaNotaAspectos']
+        flgCompleto = data['flgCompleto']
+        
+        return controller.calificarOtraRubrica(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)

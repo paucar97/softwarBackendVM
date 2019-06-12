@@ -22,6 +22,8 @@ class Rubrica(db.Model):
     # 2 Autoevaluacion
     # 3 Coevaluacion
     # 4 Instrumento de evaluacion
+    # 5 Registro de Horas
+    
     flg_activo = db.Column('FLG_ACTIVO', db.Integer, nullable = False, default = 1)
 
     def addOne(self,obj):

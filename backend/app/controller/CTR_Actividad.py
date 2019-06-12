@@ -7,7 +7,11 @@ from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.models.rubrica_aspecto_indicador_nivel import Rubrica_aspecto_indicador_nivel
 from app.models.horario import Horario
 from app.models.actividad_alarma import Actividad_alarma
+from app.models.grupo import Grupo
+from app.models.grupo_alumno_horario import Grupo_alumno_horario
 from app.models.encuesta_pregunta import Encuesta_pregunta
+from app.models.encuesta import Encuesta
+from app.models.pregunta import Pregunta
 from app.models.horario_encuesta import Horario_encuesta
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
@@ -29,7 +33,10 @@ def obtenerRubricaXidRubrica(idRubrica):
     d['tipo'] = nombreRubrica.tipo    
 
     aspectos = []
-    listaAspectos = Rubrica_aspecto.obtenerAspectos(idRubrica)
+    if nombreRubrica.tipo != 3:
+        listaAspectos = Rubrica_aspecto.obtenerAspectos(idRubrica)
+    else:
+        listaAspectos = Rubrica_aspecto.obtenerAspectosCoev(idRubrica)
 
     for aspecto in listaAspectos:
         aux = {}
@@ -65,7 +72,6 @@ def obtenerRubricaXidRubrica(idRubrica):
         aspectos.append(aux)
     d['listaAspectos'] = aspectos
     d['cantAspectos'] = len(aspectos)
-
     return d
 
 def obtenerRubrica(idActividad, tipo):
@@ -160,7 +166,221 @@ def editarRubrica(idRubrica, idFlgEspecial, idUsuarioCreador, nombreRubrica, lis
     d = {}
     d['message'] = True
     return d
+"""
+def obtenerEncuestaCoevaluacion(idActividad, idAlumno):
+    d = {}
+    listaEncuesta = Encuesta.query.filter(and_(Encuesta.id_usuario == idAlumno, Encuesta.id_actividad == idActividad, Encuesta.flg_activo == 1)).first()
+    if listaEncuesta is not None:
+        d['nombre'] = listaEncuesta.nombre
+        d['idEncuesta'] = listaEncuesta.id_encuesta
+        d['descripcion'] = listaEncuesta.descripcion
+        listaPreguntas = Encuesta_pregunta.query.filter(and_(Encuesta_pregunta.id_encuesta == listaEncuesta.id_encuesta)).all()
+        listaPreguntasDesglozadas = []
+        for pregunta in listaPreguntas:
+            preguntaAnalizada = Pregunta.query.filter(Pregunta.id_pregunta == pregunta.id_pregunta).first()
+            e = {}
+            e['descripcion'] = preguntaAnalizada.descripcion
+            listaPreguntasDesglozadas.append(e)
+        d['listaPreguntas'] = listaPreguntasDesglozadas
+        return d
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe la coevaluacion."
+        return d
+"""
+"""
+def crearEncuestasCoevaluacion(idActividad):
+    listaGrupos = Alumno_actividad.query(Alumno_actividad.id_grupo).filter(Alumno_actividad.id_actividad == idActividad).distinct().all()
+    actividadAnalizada = Actividad.query.filter(Actividad.id_actividad == idActividad).first()
 
+    for grupo in listaGrupos:
+        descripcion = aspecto['descripcion'],
+        informacion  = aspecto['informacion'],
+        puntaje_max = aspecto['puntajeMax'],
+        tipo_clasificacion = aspecto['tipoClasificacion'],
+        flg_grupal = aspecto['flgGrupal']
+        listaAlumnos = Grupo_alumno_horario.query(Grupo_alumno_horario.id_usuario).filter(Grupo_alumno_horario.id_grupo == grupo.id_grupo)
+        for alumno in listaAlumnos:
+            encuestaObjeto = Encuesta(
+                tipo = 3,
+                nombre = "CoEvaluacion de la actividad: " + actividadAnalizada.nombre,
+                id_actividad = idActividad,
+                id_usuario = alumno.id_usuario
+            )
+            idEncuesta = Encuesta.addOne(encuestaObjeto)
+            for alumno2 in listaAlumnos:
+                if alumno.id_usuario != alumno2.id_usuario:
+                    alumnoCompanero = Usuario.query.filter(Usuario.id_usuario == alumno2.id_usuario)
+                    preguntaTipo = Pregunta(
+                        descripcion = "¿Qué tan bien crees que trabajó " + alumnoCompanero.nombre + " " + alumnoCompanero.apellido_paterno + "?",
+                        tipo_pregunta = 3
+                    )
+                    idPregunta = Pregunta.addOne(preguntaTipo)
+                    encuestaPreguntaObjeto = Encuesta_pregunta(
+                        id_encuesta = idEncuesta,
+                        id_pregunta = idPregunta
+                    )
+                    Encuesta_pregunta.addOne(encuestaPreguntaObjeto)
+"""
+def obtenerRubricaCoevaluacion(idActividad, idAlumnoConsultando):
+    idRubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3, Rubrica.flg_activo == 1)).first()
+    if idRubrica is not None:
+        nombreRubrica = Rubrica.obtenerRubrica(idRubrica)
+        d = {}
+        d['idRubrica'] = idRubrica
+        d['nombreRubrica'] = nombreRubrica.nombre
+        d['fechaRegistro'] = nombreRubrica.fecha_registro.__str__()
+        d['flgRubricaEspecial'] = nombreRubrica.flg_rubrica_especial
+        d['idUsuarioCreador'] = nombreRubrica.id_usuario_creador
+        d['tipo'] = nombreRubrica.tipo    
+
+        aspectos = []
+        listaAspectos = Rubrica_aspecto.obtenerAspectos(idRubrica)
+
+        for aspecto in listaAspectos:
+            if aspecto.descripcion == "Evaluacion a miembros del grupo":
+                grupoAnalizado = Alumno_actividad.query(Alumno_actividad.id_grupo).filter(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_alumno == idAlumnoConsultando).first()
+                listaAlumnosCoev = Grupo_alumno_horario.query(Grupo_alumno_horario.id_usuario).filter(and_(Grupo_alumno_horario.id_grupo == grupoAnalizado.id_grupo, Grupo_alumno_horario.id_usuario != idAlumnoConsultando)).all()
+                aux = {}
+                aux['idAspecto'] = aspecto.id_aspecto
+                aux['descripcion'] = aspecto.descripcion
+                aux['informacion'] = aspecto.informacion
+                aux['puntajeMax'] = aspecto.puntaje_max
+                aux['tipoClasificacion'] = aspecto.tipo_clasificacion
+                aux['flgGrupal'] = aspecto.flg_grupal
+                indicadores = []
+                for alumno in listaAlumnosCoev:
+                    indicadorCoev = Indicador.query(Indicador.id_indicador).join(Rubrica_aspecto_indicador, Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).filter(Indicador.id_alumno == alumno.id_usuario).first()
+                    aux2 = {}
+                    aux2['idIndicador'] = indicadorCoev.id_indicador
+                    aux2['descripcion'] = indicadorCoev.descripcion
+                    aux2['informacion'] = indicadorCoev.informacion
+                    aux2['puntajeMax'] = indicadorCoev.puntaje_max
+                    niveles = []
+                    listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicadorCoev.id_indicador)
+                    for nivel in listaNiveles:
+                        aux3 = {}
+                        aux3['idNivel'] = nivel.id_nivel
+                        aux3['descripcion'] = nivel.descripcion
+                        aux3['grado'] = nivel.grado
+                        aux3['puntaje'] = nivel.puntaje
+                        niveles.append(aux3)
+                    aux2['listaNiveles'] = niveles
+                    aux2['cantNiveles'] = len(niveles)
+                    indicadores.append(aux2)
+                aux['listaIndicadores'] = indicadores
+                aux['cantIndicadores'] = len(indicadores)
+                aspectos.append(aux)
+
+            else:
+                aux = {}
+                aux['idAspecto'] = aspecto.id_aspecto
+                aux['descripcion'] = aspecto.descripcion
+                aux['informacion'] = aspecto.informacion
+                aux['puntajeMax'] = aspecto.puntaje_max
+                aux['tipoClasificacion'] = aspecto.tipo_clasificacion
+                aux['flgGrupal'] = aspecto.flg_grupal
+                indicadores = []
+                listaIndicadores = Rubrica_aspecto_indicador.obtenerIndicadores(idRubrica, aspecto.id_aspecto)
+                for indicador in listaIndicadores:
+                    aux2 = {}
+                    aux2['idIndicador'] = indicador.id_indicador
+                    aux2['descripcion'] = indicador.descripcion
+                    aux2['informacion'] = indicador.informacion
+                    aux2['puntajeMax'] = indicador.puntaje_max
+                    niveles = []
+                    listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
+                    for nivel in listaNiveles:
+                        aux3 = {}
+                        aux3['idNivel'] = nivel.id_nivel
+                        aux3['descripcion'] = nivel.descripcion
+                        aux3['grado'] = nivel.grado
+                        aux3['puntaje'] = nivel.puntaje
+                        niveles.append(aux3)
+                    aux2['listaNiveles'] = niveles
+                    aux2['cantNiveles'] = len(niveles)
+                    indicadores.append(aux2)
+                aux['listaIndicadores'] = indicadores
+                aux['cantIndicadores'] = len(indicadores)
+                aspectos.append(aux)
+        d['listaAspectos'] = aspectos
+        d['cantAspectos'] = len(aspectos)
+        return d
+        
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe Rubrica"
+        return d
+
+def crearNivelesCoev(idRubrica, idAspectoCoev, idIndicadorCoev):
+    nivelObjeto1 = Nivel(
+        descripcion = "Muy mal",
+        grado = 1,
+        puntaje = 0
+    )
+    nivelObjeto2 = Nivel(
+        descripcion = "Mal",
+        grado = 2,
+        puntaje = 1
+    )
+    nivelObjeto3 = Nivel(
+        descripcion = "Mas o menos",
+        grado = 3,
+        puntaje = 2
+    )
+    nivelObjeto4 = Nivel(
+        descripcion = "Bien",
+        grado = 4,
+        puntaje = 3
+    )
+    nivelObjeto5 = Nivel(
+        descripcion = "Muy bien",
+        grado = 5,
+        puntaje = 4
+    )
+    idNivel1 = Nivel().addOne(nivelObjeto1)
+    idNivel2 = Nivel().addOne(nivelObjeto2)
+    idNivel3 = Nivel().addOne(nivelObjeto3)
+    idNivel4 = Nivel().addOne(nivelObjeto4)
+    idNivel5 = Nivel().addOne(nivelObjeto5)
+
+    Obj1 = Rubrica_aspecto_indicador_nivel(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspectoCoev,
+        id_indicador = idIndicadorCoev,
+        id_nivel = idNivel1
+    )
+    Obj2 = Rubrica_aspecto_indicador_nivel(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspectoCoev,
+        id_indicador = idIndicadorCoev,
+        id_nivel = idNivel2
+    )
+    Obj3 = Rubrica_aspecto_indicador_nivel(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspectoCoev,
+        id_indicador = idIndicadorCoev,
+        id_nivel = idNivel3
+    )
+    Obj4 = Rubrica_aspecto_indicador_nivel(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspectoCoev,
+        id_indicador = idIndicadorCoev,
+        id_nivel = idNivel4
+    )
+    Obj5 = Rubrica_aspecto_indicador_nivel(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspectoCoev,
+        id_indicador = idIndicadorCoev,
+        id_nivel = idNivel5
+    )
+    Rubrica_aspecto_indicador_nivel().addOne(Obj1)
+    Rubrica_aspecto_indicador_nivel().addOne(Obj2)
+    Rubrica_aspecto_indicador_nivel().addOne(Obj3)
+    Rubrica_aspecto_indicador_nivel().addOne(Obj4)
+    Rubrica_aspecto_indicador_nivel().addOne(Obj5)
 
 def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, listaAspectos, tipo):
     
@@ -177,6 +397,38 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         id_actividad = idActividad
     )
     idRubrica = Rubrica().addOne(rubricaObjeto)
+
+    if tipo == 3:
+        aspectoObjetoCoev = Aspecto(
+            descripcion = "Evaluacion a miembros del grupo",
+            puntaje_max = 5,
+            tipo_clasificacion = 1,
+            flg_grupal = 0
+        )
+        idAspectoCoev = Aspecto().addOne(aspectoObjetoCoev)
+        rubricaAspectoObjetoCoev = Rubrica_aspecto(
+            id_rubrica = idRubrica,
+            id_aspecto = idAspectoCoev
+        )
+        Rubrica_aspecto().addOne(rubricaAspectoObjetoCoev)
+        
+        listaAlumnos = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).all()
+        for alumno in listaAlumnos:
+            alumnoCompanero = Usuario.query.filter(Usuario.id_usuario == alumno.id_alumno)
+            indicadorObjetoCoev = Indicador(
+                descripcion = "¿Que tan bien crees que trabajo " + alumnoCompanero.nombre + " " + alumnoCompanero.apellido_paterno + "?",
+                puntaje_max = 5,
+                id_alumno = alumno.id_alumno
+            )
+            idIndicadorCoev = Indicador().addOne(indicadorObjetoCoev)
+            
+            rubricaAspectoIndicadorCoev = Rubrica_aspecto_indicador(
+                id_rubrica = idRubrica,
+                id_aspecto = idAspectoCoev,
+                id_indicador = idIndicadorCoev
+            )
+            Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorCoev)
+            crearNivelesCoev(idRubrica, idAspectoCoev, idIndicadorCoev)
 
     for aspecto in listaAspectos:
         aspectoObjeto = Aspecto(
@@ -210,6 +462,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
             )
             aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
             
+    
             listaNiveles = indicador['listaNiveles']
 
             for nivel in listaNiveles:
@@ -233,6 +486,56 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
 
     return d
 
+def crearRegistroHoras(idActividad, Nombre, idUsuarioCreador):
+    rubricaObjeto = Rubrica(
+        flg_rubrica_especial = 0,
+        id_usuario_creador = idUsuarioCreador,
+        nombre = "Registro de horas de la Actividad " + Nombre,
+        tipo = 5,
+        id_actividad = idActividad
+    )
+    idRubrica = Rubrica().addOne(rubricaObjeto)
+    aspectoObjeto = Aspecto(
+        descripcion = "Horas planteadas y reales",
+        puntaje_max = 100,
+        tipo_clasificacion = 2,
+        flg_grupal = 0
+    )
+    idAspecto = Aspecto().addOne(aspectoObjeto)
+    rubricaAspectoObjeto = Rubrica_aspecto(
+        id_rubrica = idRubrica,
+        id_aspecto = idAspecto
+    )
+    aux = Rubrica_aspecto().addOne(rubricaAspectoObjeto)
+    listaIndicadores = []
+    
+    indicador1 = {}
+    indicador1['descripcion'] = "¿En cuantas horas planeaste terminar la actividad?"
+    indicador1['informacion'] = None
+    indicador1['puntajeMax'] = 100
+    listaIndicadores.append(indicador1)
+
+    indicador2 = {}
+    indicador2['descripcion'] = "¿Cuantas horas realmente invertiste?"
+    indicador2['informacion'] = None
+    indicador2['puntajeMax'] = 100
+    listaIndicadores.append(indicador2)
+
+    for indicador in listaIndicadores:
+            indicadorObjeto = Indicador(
+                descripcion = indicador['descripcion'],
+                informacion = indicador['informacion'],
+                puntaje_max = indicador['puntajeMax']
+            )
+            idIndicador = Indicador().addOne(indicadorObjeto)
+
+            rubricaAspectoIndicadorObj = Rubrica_aspecto_indicador(
+                id_rubrica = idRubrica,
+                id_aspecto = idAspecto,
+                id_indicador = idIndicador
+            )
+            aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
+    return True
 
 def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador, flgMulticalificable):
     semestre=Semestre().getOne()
@@ -254,12 +557,7 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
 
     idActividad= Actividad().addOne(actividadObjeto)
 
-    #Cuando creamos el objeta, habran alarmas predefinidas suponemos(?)
-    #actividad_alarmaObjeto=Actividad_Alarma(
-    #    id_actividad=idActividad,
-    #    id_alarma=1,
-    #)
-    #Actividad_Alarma().addOne(actividad_alarmaObjeto)
+    crearRegistroHoras(idActividad, Nombre, idUsuarioCreador)
 
     listaAlumnos= Permiso_usuario_horario().getAll(idSemestre,idhorario)
     listaIdAlumnos=[]
