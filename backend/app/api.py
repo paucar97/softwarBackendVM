@@ -138,3 +138,6 @@ api.add_resource(Listar_companheros_calificar,'/api/actividad/grupo/lista-integr
 api.add_resource(Existe_agrupacion_horario,'/api/existencia/agrupaciones')
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
+api.add_resource(Obtener_calificacion_otra_rubrica,'/api/actividad/obtener_calificacion_otra_rubrica')
+api.add_resource(Calificar_otra_rubrica,'/api/actividad/calificar_otra_rubrica')
+

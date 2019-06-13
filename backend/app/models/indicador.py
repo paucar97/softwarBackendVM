@@ -6,6 +6,7 @@ class Indicador(db.Model):
     descripcion = db.Column('DESCRIPCION',db.String(500))
     informacion = db.Column('INFORMACION',db.String(500))
     puntaje_max = db.Column('PUNTAJE_MAX',db.Float)
+    id_alumno = db.Column('ID_ALUMNO', db.Integer, nullable = True)
     #tipo = db.Column('TIPO', db.String(100))
 
     def addOne(self,obj):

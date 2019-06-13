@@ -25,6 +25,15 @@ class Rubrica_aspecto(db.Model):
             return []
         else:
             return aux
+    
+    @classmethod
+    def obtenerAspectosCoev(self, idRubrica):
+        aux = db.session.query(Aspecto).join(Rubrica_aspecto).filter(and_(Rubrica_aspecto.id_rubrica == idRubrica, Aspecto.descripcion != "Evaluacion a miembros del grupo")).all()
+
+        if aux is None:
+            return []
+        else:
+            return aux
 
     @classmethod
     def borrarAspectos(self, idRubrica):
