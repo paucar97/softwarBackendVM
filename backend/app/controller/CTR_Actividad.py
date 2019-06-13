@@ -20,6 +20,7 @@ from app.models.semestre import Semestre
 from app.models.usuario import Usuario
 from app.models.nivel import Nivel
 from app.commons.utils import *
+from app.commons.utils import Alumno_actividad_calificacion
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
 
