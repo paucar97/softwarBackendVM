@@ -17,6 +17,7 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
 from app.models.alumno_actividad import Alumno_actividad
 from app.models.semestre import Semestre
+from app.models.usuario import Usuario
 from app.models.nivel import Nivel
 from app.commons.utils import *
 from app.commons.messages import ResponseMessage
