@@ -71,5 +71,5 @@ class Listar_companheros_calificar(Resource):
 class Existe_agrupacion_horario(Resource):
     def post(self):
         data = request.get_json()
-        idActividad = data['idActividad']
-        return existeAgrupacionHorario(idActividad)
+        idHorario = data['idHorario']
+        return existeAgrupacionHorario(idHorario)
