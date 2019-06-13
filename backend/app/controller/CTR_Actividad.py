@@ -415,7 +415,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         
         listaAlumnos = Alumno_actividad.query.filter(Alumno_actividad.id_actividad == idActividad).all()
         for alumno in listaAlumnos:
-            alumnoCompanero = Usuario.query.filter(Usuario.id_usuario == alumno.id_alumno)
+            alumnoCompanero = Usuario.query.filter(Usuario.id_usuario == alumno.id_alumno).first()
             indicadorObjetoCoev = Indicador(
                 descripcion = "¿Que tan bien crees que trabajo " + alumnoCompanero.nombre + " " + alumnoCompanero.apellido_paterno + "?",
                 puntaje_max = 5,
