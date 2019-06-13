@@ -67,3 +67,9 @@ class Listar_companheros_calificar(Resource):
         idUsuario = data['idUsuario']
         
         return listarCompanherosCalificar(idActividad,idUsuario)
+
+class Existe_agrupacion_horario(Resource):
+    def post(self):
+        data = request.get_json()
+        idHorario = data['idHorario']
+        return existeAgrupacionHorario(idHorario)
