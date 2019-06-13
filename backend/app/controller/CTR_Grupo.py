@@ -110,3 +110,10 @@ def listarCompanherosCalificar(idActividad,idUsuario):
             d['idUsuario'] = alumno.id_usuario
             rpta.append(d)
     return rpta
+
+def existeAgrupacionHorario(idActividad):
+    listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario).all()
+    if listaGrupos == None:
+        return {'message' : False}
+    else:
+        return {'message' : True}
