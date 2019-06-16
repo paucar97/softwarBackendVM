@@ -44,7 +44,7 @@ def crearGrupoGeneral(idHorario,grupos):
         idGrupo = Grupo().addOne(objGrupo) # agrego grupo a la bd
         for alumno in grupo['lstAlumnos']:
                 
-            objAlumnoInGrupo = Grupo_alumno_horario(id_grupo = idGrupo,id_horario = idHorario,id_usuario = alumno['idAlumno'])
+            objAlumnoInGrupo = Grupo_alumno_horario(id_grupo = idGrupo,id_horario = idHorario,id_usuario = alumno['idUsuario'])
             Grupo_alumno_horario().addOne(objAlumnoInGrupo)
             # SE CREO EL GRUPO GENERAL 
 
@@ -63,6 +63,7 @@ def listarGruposGeneral(idHorario):
             d['nombre'] = grupo.nombre
             lstIdGrupo.append(grupo.id_grupo)
             rpta.append(d)
+            d['lstIntegrantes'] = listarIntegrantes(grupo.id_grupo)
 
     return rpta
 
@@ -113,7 +114,8 @@ def listarCompanherosCalificar(idActividad,idUsuario):
 
 def existeAgrupacionHorario(idHorario):
     listaGrupos = Grupo_alumno_horario().getAllGeneral(idHorario).all()
-    if listaGrupos == None:
+    
+    if listaGrupos == [] :
         return {'message' : False}
     else:
         return {'message' : True}
