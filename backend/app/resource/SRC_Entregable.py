@@ -6,7 +6,7 @@ class Subir_entregable(Resource):
     def post(self):
         #img_file = request.files.get('file')
         #request.files.getlist('file')[0]
-        print(type(request))
+        #print(type(request))
         print(request.form)
         
         idActividad  = int(request.form['idActividad'])
@@ -15,9 +15,6 @@ class Subir_entregable(Resource):
         
         tipo = int(request.form['tipo'])
         
-        fechaEntrega = request.form['fechaEntrega']
-        
-        print('salio')
         listaFiles=None
         url=""
         
