@@ -1,2 +1,2 @@
 # path de prueba para guardar los archivos
-pathTest = "app/test/"
+pathTest = "app/doc/test/"
