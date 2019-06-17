@@ -9,3 +9,4 @@ class Registro_esfuerzo(db.Model):
     
     actividad = db.relationship(Actividad,backref = __tablename__,lazy=True)
     id_actividad = db.Column('ID_ACTIVIDAD',db.ForeignKey(Actividad.id_actividad),primary_key=True)
+    flg_activo = db.Column('FLG_ACTIVO', db.Integer, nullable = False, default = 1)
