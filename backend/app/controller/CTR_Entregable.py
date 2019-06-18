@@ -57,7 +57,7 @@ def descargaEntregable(idEntregable):
     _,extension = filename.split('.') 
     with open(pathTest+filename,'wb') as file:
         file.write(data)
-    
+    filename = filename.replace(' ','%20') 
     return { 'url' : urlDecarga+filename, 'extension':extension }
     #PROCESO DE DESCARGA
     #
