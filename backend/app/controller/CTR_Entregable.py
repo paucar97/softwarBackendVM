@@ -20,7 +20,7 @@ def crearEntregableObjeto(idActividad,idUsuario,fechaEntrega,tipo,nombreArchivo 
         )
     return entregableObjeto
 
-def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega):
+def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega =None):
 
     if tipo == 1 :
         for file in listaFiles:
