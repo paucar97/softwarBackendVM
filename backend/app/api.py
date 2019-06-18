@@ -75,6 +75,7 @@ api.add_resource(Login,'/api/login')
 #INDIFERENTE DE FLORES
 api.add_resource(Mostar_entregable,'/api/entregables/lista')
 api.add_resource(Subir_entregable,'/api/entregable/entrega')
+api.add_resource(Descarga_entregabla,'api/entregable/descarga')
 api.add_resource(Obtener_alumnos_entregable_entregado,'/api/actividad/alumnos/entregables')
 api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
 

@@ -58,7 +58,7 @@ def descargaEntregable(idEntregable):
     with open(pathTest+filename,'wb') as file:
         file.write(data)
     
-    return { 'url' : pathTest+filename, 'extension':extension }
+    return { 'url' : urlDecarga+filename, 'extension':extension }
     #PROCESO DE DESCARGA
     #
     #
