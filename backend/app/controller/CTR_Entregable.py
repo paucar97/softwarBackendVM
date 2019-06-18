@@ -52,7 +52,13 @@ def mostrarEntregable(idActividad,idUsuario):
 
 def descargaEntregable(idEntregable):
     entregableObjeto = Entregable().getOne(idEntregable)
-
+    data = entregableObjeto.documento
+    filename =entregableObjeto.nombre_archivo
+    _,extension = filename.split('.') 
+    with open(pathTest+filename,'wb') as file:
+        file.write(data)
+    
+    return { 'url' : pathTest+filename, 'extension':extension }
     #PROCESO DE DESCARGA
     #
     #
