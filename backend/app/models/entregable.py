@@ -52,4 +52,4 @@ class Entregable(db.Model):
 
     @classmethod
     def getOne(self,idEntregable):
-        return Entregable.query.filter_by(Entregable.id_entregable = idEntregable).first()
+        return Entregable.query.filter_by(id_entregable = idEntregable).first()

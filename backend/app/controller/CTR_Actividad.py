@@ -9,9 +9,6 @@ from app.models.horario import Horario
 from app.models.actividad_alarma import Actividad_alarma
 from app.models.grupo import Grupo
 from app.models.grupo_alumno_horario import Grupo_alumno_horario
-from app.models.encuesta_pregunta import Encuesta_pregunta
-from app.models.encuesta import Encuesta
-from app.models.pregunta import Pregunta
 from app.models.horario_encuesta import Horario_encuesta
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.feedback_actividad import Feedback_actividad
@@ -21,6 +18,10 @@ from app.models.usuario import Usuario
 from app.models.nivel import Nivel
 from app.commons.utils import *
 from app.models.alumno_actividad_calificacion import Alumno_actividad_calificacion
+from app.models.registro_esfuerzo import Registro_esfuerzo
+from app.models.categoria import Categoria
+from app.models.categoria_respuesta_alumno import Categoria_respuesta_alumno
+
 from app.commons.messages import ResponseMessage
 from sqlalchemy import *
 
@@ -488,57 +489,117 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
 
     return d
 
-def crearRegistroHoras(idActividad, Nombre, idUsuarioCreador):
-    rubricaObjeto = Rubrica(
-        flg_rubrica_especial = 0,
-        id_usuario_creador = idUsuarioCreador,
-        nombre = "Registro de horas de la Actividad " + Nombre,
-        tipo = 5,
-        id_actividad = idActividad
-    )
-    idRubrica = Rubrica().addOne(rubricaObjeto)
-    aspectoObjeto = Aspecto(
-        descripcion = "Horas planteadas y reales",
-        puntaje_max = 100,
-        tipo_clasificacion = 2,
-        flg_grupal = 0
-    )
-    idAspecto = Aspecto().addOne(aspectoObjeto)
-    rubricaAspectoObjeto = Rubrica_aspecto(
-        id_rubrica = idRubrica,
-        id_aspecto = idAspecto
-    )
-    aux = Rubrica_aspecto().addOne(rubricaAspectoObjeto)
-    listaIndicadores = []
+def obtenerRegistroEsfuerzoIndividual(tipo, idActividadUHorario):
+    if tipo == 1:
+        registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_actividad == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
+    else:
+        registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_horario == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
     
-    indicador1 = {}
-    indicador1['descripcion'] = "¿En cuantas horas planeaste terminar la actividad?"
-    indicador1['informacion'] = None
-    indicador1['puntajeMax'] = 100
-    listaIndicadores.append(indicador1)
+    d = {}
+    d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
+    d['tipo'] = registroEsfuerzoAnalizado.tipo
+    d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
 
-    indicador2 = {}
-    indicador2['descripcion'] = "¿Cuantas horas realmente invertiste?"
-    indicador2['informacion'] = None
-    indicador2['puntajeMax'] = 100
-    listaIndicadores.append(indicador2)
+    categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
 
-    for indicador in listaIndicadores:
-            indicadorObjeto = Indicador(
-                descripcion = indicador['descripcion'],
-                informacion = indicador['informacion'],
-                puntaje_max = indicador['puntajeMax']
-            )
-            idIndicador = Indicador().addOne(indicadorObjeto)
+    listaCategorias = []
+    for categoria in categoriasAnalizadas:
+        e = {}
+        e['idCategoria'] = categoria.id_categoria
+        e['descripcion'] = categoria.descripcion
+        listaCategorias.append(e)    
+    d['listaCategorias'] = listaCategorias
+    return d
 
-            rubricaAspectoIndicadorObj = Rubrica_aspecto_indicador(
-                id_rubrica = idRubrica,
-                id_aspecto = idAspecto,
-                id_indicador = idIndicador
-            )
-            aux2 = Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorObj)
-    return True
+def obtenerRegistroEsfuerzo(idAlumno, tipo, idActividadUHorario):
+    if tipo == 1:
+        registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_actividad == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
+    else:
+        registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_horario == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
+    
+    d = {}
+    d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
+    d['tipo'] = registroEsfuerzoAnalizado.tipo
+    d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
 
+    categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
+
+    listaCategorias = []
+    for categoria in categoriasAnalizadas:
+        e = {}
+        e['idCategoria'] = categoria.id_categoria
+        e['descripcion'] = categoria.descripcion
+        
+        respuestasCategoria = Categoria_respuesta_alumno.query.filter(and_(Categoria_respuesta_alumno.id_categoria == categoria.id_categoria, Categoria_respuesta_alumno.id_alumno == idAlumno, Categoria_respuesta_alumno.flg_activo == 1)).all()
+        listaRespuestas = []
+        if respuestasCategoria is not None:
+            for respuesta in respuestasCategoria:
+                f = {}
+                f['descripcion'] = respuesta.descripcion
+                f['horasPlanificadas'] = respuesta.horas_planificadas
+                f['horasReales'] = respuesta.horas_reales
+                listaRespuestas.append(f)
+        e['listaRespuestas'] = listaRespuestas
+        listaCategorias.append(e)    
+    d['listaCategorias'] = listaCategorias
+    return d
+
+def registrarHoras(idRegistroEsfuerzo, idAlumno, listaCategorias):
+    try:
+        Categoria_respuesta_alumno().apagarCategorias(idRegistroEsfuerzo, idAlumno)
+        for categoria in listaCategorias:
+            idCategoria = categoria['idCategoria']
+            listaRespuestas = categoria['listaRespuestas']
+            for respuesta in listaRespuestas:
+                categoriaRespuesObjeto = Categoria_respuesta_alumno(
+                    id_categoria = idCategoria,
+                    id_alumno = idAlumno,
+                    descripcion = respuesta['descripcion'],
+                    horas_planificadas = respuesta['horasPlanificadas'],
+                    horas_reales = respuesta['horasReales']
+                )
+                Categoria_respuesta_alumno().addOne(categoriaRespuesObjeto)
+        d = {}
+        d['succeed'] = True
+        d['message'] = "Registro realizado"
+        return d
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
+
+def crearRegistroHoras(idUsuarioCreador, tipo, idActividadUHorario, listaCategorias):
+    if tipo == 1:
+        registroEsfuerzoObjeto = Registro_esfuerzo(
+            id_actividad = idActividadUHorario,
+            id_usuario_creador = idUsuarioCreador,
+            tipo = tipo
+        )
+    
+    else:
+        registroEsfuerzoObjeto = Registro_esfuerzo(
+            id_horario = idActividadUHorario,
+            usuarioCreador = idUsuarioCreador,
+            tipo = tipo
+        )
+    
+    idRegistroEsfuerzo = Registro_esfuerzo().addOne(registroEsfuerzoObjeto)
+
+    for categoria in listaCategorias:
+        categoriaObjeto = Categoria(
+            id_registro_esfuerzo = idRegistroEsfuerzo,
+            descripcion = categoria['descripcion']
+        )
+
+        idCategoria = Categoria().addOne(categoriaObjeto)
+    
+    d = {}
+    d['idRegistroEsfuerzo'] = idRegistroEsfuerzo
+
+    return d
+
+    
 def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin, flag_confianza, flag_entregable1,idUsuarioCreador, flgMulticalificable):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
@@ -558,8 +619,6 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
         flg_multicalificable = flgMulticalificable)
 
     idActividad= Actividad().addOne(actividadObjeto)
-
-    crearRegistroHoras(idActividad, Nombre, idUsuarioCreador)
 
     listaAlumnos= Permiso_usuario_horario().getAll(idSemestre,idhorario)
     listaIdAlumnos=[]

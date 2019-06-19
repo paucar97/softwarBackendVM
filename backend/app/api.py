@@ -142,6 +142,15 @@ api.add_resource(Listar_companheros_calificar,'/api/actividad/grupo/lista-integr
 api.add_resource(Existe_agrupacion_horario,'/api/existencia/agrupaciones')
 #api.add_resource(Registrar_calificaciones,'/api/actividad/registrar-calificaciones')
 #api.add_resource(Obtener_entregables_actividad_por_alumno, '/api/actividad/entregables')
-api.add_resource(Obtener_calificacion_otra_rubrica,'/api/actividad/obtener_calificacion_otra_rubrica')
-api.add_resource(Calificar_otra_rubrica,'/api/actividad/calificar_otra_rubrica')
 
+# Registro de Horas
+api.add_resource(Crear_registro_horas,'/api/registro_horas/crear_registro_horas')
+api.add_resource(Registrar_horas,'/api/registro_horas/registrar_horas')
+api.add_resource(Obtener_registro_horas,'/api/registro_horas/obtener_registro_horas_alumno')
+api.add_resource(Obtener_registro_horas_individual,'/api/registro_horas/obtener_registro_horas')
+
+# AutoEvaluacion y Coevaluacion
+api.add_resource(Obtener_autoevaluacion,'/api/autoevaluacion/obtener_autoevaluacion')
+api.add_resource(Calificar_autoevaluacion,'/api/autoevaluacion/calificar_autoevaluacion')
+api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
+api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacion')
