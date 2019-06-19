@@ -36,7 +36,7 @@ class Subir_entregable(Resource):
             url = request.form['url']
         
 
-        return subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega)
+        return subirEntregable(idActividad,idUsuario,listaFiles,url,tipo)
 
 
 class Mostar_entregable(Resource):

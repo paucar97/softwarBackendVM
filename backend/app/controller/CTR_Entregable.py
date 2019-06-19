@@ -1,5 +1,5 @@
 from app.models.entregable import Entregable
-from app.commons.paths import pathTest
+from app.commons.paths import pathTest,urlDecarga
 import io
 def crearEntregableObjeto(idActividad,idUsuario,fechaEntrega,tipo,nombreArchivo = None,url=None,path=None,doc=None):
     if doc == None:
@@ -20,7 +20,7 @@ def crearEntregableObjeto(idActividad,idUsuario,fechaEntrega,tipo,nombreArchivo 
         )
     return entregableObjeto
 
-def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega):
+def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega =None):
 
     if tipo == 1 :
         for file in listaFiles:
@@ -57,8 +57,8 @@ def descargaEntregable(idEntregable):
     _,extension = filename.split('.') 
     with open(pathTest+filename,'wb') as file:
         file.write(data)
-    
-    return { 'url' : pathTest+filename, 'extension':extension }
+    filename = filename.replace(' ','%20') 
+    return { 'url' : urlDecarga+filename, 'extension':extension }
     #PROCESO DE DESCARGA
     #
     #
