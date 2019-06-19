@@ -157,16 +157,25 @@ class Lista_alumnos_notas(Resource):
 
         return controller.listarAlumnosNotas(idActividad)
 
-class Obtener_calificacion_otra_rubrica(Resource):
+class Obtener_autoevaluacion(Resource):
     def post(self):
         data = request.get_json()
         idAlumno = data['idAlumno']
         idActividad = data['idActividad']
-        tipo = data['tipo']
 
-        return controller.obtenerCalificacionOtraRubrica(idAlumno, idActividad, tipo)
+        return controller.obtenerAutoevaluacion(idAlumno, idActividad)
 
-class Calificar_otra_rubrica(Resource):
+class Obtener_coevaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idCalificado = data['idCalificado']
+        idActividad = data['idActividad']
+        idCalificador = data['idCalificador']
+
+        return controller.obtenerCoevaluacion(idCalificado, idActividad, idCalificador)
+
+
+class Calificar_autoevaluacion(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
@@ -177,4 +186,18 @@ class Calificar_otra_rubrica(Resource):
         listaNotaAspectos = data['listaNotaAspectos']
         flgCompleto = data['flgCompleto']
         
-        return controller.calificarOtraRubrica(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)
+        return controller.calificarAutoevaluacion(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)
+
+class Calificar_coevaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idAlumno = data['idAlumno']
+        idCalificador = data['idCalificador']
+        nota = data['nota']
+        idRubrica = data['idRubrica']
+        flgFalta = data['flgFalta']
+        listaNotaAspectos = data['listaNotaAspectos']
+        flgCompleto = data['flgCompleto']
+        
+        return controller.calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)

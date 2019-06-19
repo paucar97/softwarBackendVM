@@ -537,184 +537,149 @@ def editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, lista
         d['message'] = str(ex)
         return d
 
-def obtenerCalificacionOtraRubrica(idAlumno, idActividad, tipo):
+def obtenerAutoevaluacion(idAlumno, idActividad):
+    tipo = 2
     actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo,Rubrica.flg_activo==1)).first()
     idRubrica = actividadAnalizada.id_rubrica
     idCalificador = idAlumno
     alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idAlumno)).first()
+
+    d = {}
+    if alumnoCalificacion is not None:
+        d['nota'] = alumnoCalificacion.nota
+        d['comentario']= alumnoCalificacion.comentario_alumno
+        d['comentarioJp']= alumnoCalificacion.comentario_jp
+        d['flgFalta']= alumnoCalificacion.flg_falta
+        d['flgCompleto'] = alumnoCalificacion.flg_completo
+    else:
+        d['nota'] = None
+        d['comentario']= None
+        d['comentarioJp']= None
+        d['flgFalta']= None
+        d['flgCompleto'] = None
+    listaNotaAsp = []
+    aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
+    for aspecto in aux2:
+        e = {}
+        notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == idCalificador)).first()
+        aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
+        e['descripcion'] = aspectoDetalle.descripcion
+        e['informacion'] = aspectoDetalle.informacion
+        e['puntajeMax'] = aspectoDetalle.puntaje_max
+        e['tipoClasificacion'] = aspectoDetalle.tipo_clasificacion
+        e['idAspecto'] = aspectoDetalle.id_aspecto
+        if notaAspecto is not None:
+            e['nota'] = notaAspecto.nota
+            e['comentario'] = notaAspecto.comentario
+        else:
+            e['nota'] = None
+            e['comentario'] = None
+        listaNotaInd = []
+        aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
+        for indicador in aux3:
+            notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
+            f = {}
+            indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
+            f['descripcion'] = indicadorDetalle.descripcion
+            f['informacion'] = indicadorDetalle.informacion
+            f['puntajeMax'] = indicadorDetalle.puntaje_max
+            #f['tipo'] = indicadorDetalle.tipo
+            f['idIndicador'] = indicadorDetalle.id_indicador
+            niveles = []
+            listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
+            for nivel in listaNiveles:
+                aux3 = {}
+                aux3['idNivel'] = nivel.id_nivel
+                aux3['descripcion'] = nivel.descripcion
+                aux3['grado'] = nivel.grado
+                aux3['puntaje'] = nivel.puntaje
+                niveles.append(aux3)
+            f['listaNiveles'] = niveles
+            f['cantNiveles'] = len(niveles)
+            if notaIndicador is not None:
+                f['nota'] = notaIndicador.nota
+                f['comentario'] = notaIndicador.comentario
+            else:
+                f['nota'] = None
+                f['comentario'] = None
+            listaNotaInd.append(f)
+        e['listaNotaIndicador'] = listaNotaInd
+        listaNotaAsp.append(e)
+    d['listaNotaAspectos'] = listaNotaAsp
+    return d
+
+def obtenerCoevaluacion(idCalificado, idActividad, idCalificador):
+    tipo = 3
+    actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo,Rubrica.flg_activo==1)).first()
+    idRubrica = actividadAnalizada.id_rubrica
+    alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idCalificado, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idCalificador)).first()
     
-    if tipo != 3:
-        d = {}
-        if alumnoCalificacion is not None:
-            d['nota'] = alumnoCalificacion.nota
-            d['comentario']= alumnoCalificacion.comentario_alumno
-            d['comentarioJp']= alumnoCalificacion.comentario_jp
-            d['flgFalta']= alumnoCalificacion.flg_falta
-            d['flgCompleto'] = alumnoCalificacion.flg_completo
+    d = {}
+    if alumnoCalificacion is not None:
+        d['nota'] = alumnoCalificacion.nota
+        d['comentario']= alumnoCalificacion.comentario_alumno
+        d['comentarioJp']= alumnoCalificacion.comentario_jp
+        d['flgFalta']= alumnoCalificacion.flg_falta
+        d['flgCompleto'] = alumnoCalificacion.flg_completo
+    else:
+        d['nota'] = None
+        d['comentario']= None
+        d['comentarioJp']= None
+        d['flgFalta']= None
+        d['flgCompleto'] = None
+    listaNotaAsp = []
+    aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
+    for aspecto in aux2:
+        e = {}
+        notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idCalificado,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == idCalificador)).first()
+        aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
+        e['descripcion'] = aspectoDetalle.descripcion
+        e['informacion'] = aspectoDetalle.informacion
+        e['puntajeMax'] = aspectoDetalle.puntaje_max
+        e['tipoClasificacion'] = aspectoDetalle.tipo_clasificacion
+        e['idAspecto'] = aspectoDetalle.id_aspecto
+        if notaAspecto is not None:
+            e['nota'] = notaAspecto.nota
+            e['comentario'] = notaAspecto.comentario
         else:
-            d['nota'] = None
-            d['comentario']= None
-            d['comentarioJp']= None
-            d['flgFalta']= None
-            d['flgCompleto'] = None
-        listaNotaAsp = []
-
-        aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
-        for aspecto in aux2:
-            e = {}
-            notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == idCalificador)).first()
-            aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
-            e['descripcion'] = aspectoDetalle.descripcion
-            e['informacion'] = aspectoDetalle.informacion
-            e['puntajeMax'] = aspectoDetalle.puntaje_max
-            e['tipoClasificacion'] = aspectoDetalle.tipo_clasificacion
-            e['idAspecto'] = aspectoDetalle.id_aspecto
-            if notaAspecto is not None:
-                e['nota'] = notaAspecto.nota
-                e['comentario'] = notaAspecto.comentario
+            e['nota'] = None
+            e['comentario'] = None
+        listaNotaInd = []
+        
+        aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
+        for indicador in aux3:
+            notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idCalificado, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
+            f = {}
+            indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
+            f['descripcion'] = indicadorDetalle.descripcion
+            f['informacion'] = indicadorDetalle.informacion
+            f['puntajeMax'] = indicadorDetalle.puntaje_max
+            #f['tipo'] = indicadorDetalle.tipo
+            f['idIndicador'] = indicadorDetalle.id_indicador
+            niveles = []
+            listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
+            for nivel in listaNiveles:
+                aux3 = {}
+                aux3['idNivel'] = nivel.id_nivel
+                aux3['descripcion'] = nivel.descripcion
+                aux3['grado'] = nivel.grado
+                aux3['puntaje'] = nivel.puntaje
+                niveles.append(aux3)
+            f['listaNiveles'] = niveles
+            f['cantNiveles'] = len(niveles)
+            if notaIndicador is not None:
+                f['nota'] = notaIndicador.nota
+                f['comentario'] = notaIndicador.comentario
             else:
-                e['nota'] = None
-                e['comentario'] = None
+                f['nota'] = None
+                f['comentario'] = None
+            listaNotaInd.append(f)
+        e['listaNotaIndicador'] = listaNotaInd
+        listaNotaAsp.append(e)
+    d['listaNotaAspectos'] = listaNotaAsp
+    return d
 
-            listaNotaInd = []
-            aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
-            for indicador in aux3:
-                notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
-                f = {}
-                indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
-                f['descripcion'] = indicadorDetalle.descripcion
-                f['informacion'] = indicadorDetalle.informacion
-                f['puntajeMax'] = indicadorDetalle.puntaje_max
-                #f['tipo'] = indicadorDetalle.tipo
-                f['idIndicador'] = indicadorDetalle.id_indicador
-
-                niveles = []
-                listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
-                for nivel in listaNiveles:
-                    aux3 = {}
-                    aux3['idNivel'] = nivel.id_nivel
-                    aux3['descripcion'] = nivel.descripcion
-                    aux3['grado'] = nivel.grado
-                    aux3['puntaje'] = nivel.puntaje
-                    niveles.append(aux3)
-                f['listaNiveles'] = niveles
-                f['cantNiveles'] = len(niveles)
-
-                if notaIndicador is not None:
-                    f['nota'] = notaIndicador.nota
-                    f['comentario'] = notaIndicador.comentario
-                else:
-                    f['nota'] = None
-                    f['comentario'] = None
-                listaNotaInd.append(f)
-            e['listaNotaIndicador'] = listaNotaInd
-            listaNotaAsp.append(e)
-        d['listaNotaAspectos'] = listaNotaAsp
-        return d
-
-
-    if tipo == 3:
-        d = {}
-        if alumnoCalificacion is not None:
-            d['nota'] = alumnoCalificacion.nota
-            d['comentario']= alumnoCalificacion.comentario_alumno
-            d['comentarioJp']= alumnoCalificacion.comentario_jp
-            d['flgFalta']= alumnoCalificacion.flg_falta
-            d['flgCompleto'] = alumnoCalificacion.flg_completo
-        else:
-            d['nota'] = None
-            d['comentario']= None
-            d['comentarioJp']= None
-            d['flgFalta']= None
-            d['flgCompleto'] = None
-        listaNotaAsp = []
-
-        aux2 = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == idRubrica).all()
-        for aspecto in aux2:
-            e = {}
-            notaAspecto = Alumno_nota_aspecto.query.filter(and_(Alumno_nota_aspecto.id_rubrica == idRubrica, Alumno_nota_aspecto.id_alumno == idAlumno,  Alumno_nota_aspecto.id_actividad == idActividad,  Alumno_nota_aspecto.id_aspecto == aspecto.id_aspecto,  Alumno_nota_aspecto.id_calificador == idCalificador)).first()
-            aspectoDetalle = Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first()
-            e['descripcion'] = aspectoDetalle.descripcion
-            e['informacion'] = aspectoDetalle.informacion
-            e['puntajeMax'] = aspectoDetalle.puntaje_max
-            e['tipoClasificacion'] = aspectoDetalle.tipo_clasificacion
-            e['idAspecto'] = aspectoDetalle.id_aspecto
-            if notaAspecto is not None:
-                e['nota'] = notaAspecto.nota
-                e['comentario'] = notaAspecto.comentario
-            else:
-                e['nota'] = None
-                e['comentario'] = None
-
-            listaNotaInd = []
-            if aspecto.descripcion == "Evaluacion a miembros del grupo":
-                grupoAnalizado = Alumno_actividad.query(Alumno_actividad.id_grupo).filter(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_alumno == idAlumno).first()
-                listaAlumnosCoev = Grupo_alumno_horario.query(Grupo_alumno_horario.id_usuario).filter(and_(Grupo_alumno_horario.id_grupo == grupoAnalizado.id_grupo, Grupo_alumno_horario.id_usuario != idAlumno)).all()
-                for alumno in listaAlumnosCoev:
-                    indicadorCoev = Indicador.query(Indicador.id_indicador).join(Rubrica_aspecto_indicador, Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).filter(Indicador.id_alumno == alumno.id_usuario).first()
-                    notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicadorCoev.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
-                    f = {}
-                    f['descripcion'] = indicadorCoev.descripcion
-                    f['informacion'] = indicadorCoev.informacion
-                    f['puntajeMax'] = indicadorCoev.puntaje_max
-                    f['idIndicador'] = indicadorCoev.id_indicador
-                    niveles = []
-                    listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicadorCoev.id_indicador)
-                    for nivel in listaNiveles:
-                        aux3 = {}
-                        aux3['idNivel'] = nivel.id_nivel
-                        aux3['descripcion'] = nivel.descripcion
-                        aux3['grado'] = nivel.grado
-                        aux3['puntaje'] = nivel.puntaje
-                        niveles.append(aux3)
-                    f['listaNiveles'] = niveles
-                    f['cantNiveles'] = len(niveles)
-                    if notaIndicador is not None:
-                        f['nota'] = notaIndicador.nota
-                        f['comentario'] = notaIndicador.comentario
-                    else:
-                        f['nota'] = None
-                        f['comentario'] = None
-                    listaNotaInd.append(f)
-                e['listaNotaIndicador'] = listaNotaInd
-                listaNotaAsp.append(e)
-            else:
-                aux3 = Rubrica_aspecto_indicador.query.filter(Rubrica_aspecto_indicador.id_aspecto == aspecto.id_aspecto).all()
-                for indicador in aux3:
-                    notaIndicador = Alumno_nota_indicador.query.filter(and_(Alumno_nota_indicador.id_rubrica == idRubrica, Alumno_nota_indicador.id_alumno == idAlumno, Alumno_nota_indicador.id_actividad == idActividad, Alumno_nota_indicador.id_aspecto == aspecto.id_aspecto, Alumno_nota_indicador.id_indicador == indicador.id_indicador,  Alumno_nota_indicador.id_calificador == idCalificador)).first()
-                    f = {}
-                    indicadorDetalle = Indicador.query.filter_by(id_indicador = indicador.id_indicador).first()
-                    f['descripcion'] = indicadorDetalle.descripcion
-                    f['informacion'] = indicadorDetalle.informacion
-                    f['puntajeMax'] = indicadorDetalle.puntaje_max
-                    #f['tipo'] = indicadorDetalle.tipo
-                    f['idIndicador'] = indicadorDetalle.id_indicador
-
-                    niveles = []
-                    listaNiveles = Rubrica_aspecto_indicador_nivel.obtenerNiveles(idRubrica, indicador.id_indicador)
-                    for nivel in listaNiveles:
-                        aux3 = {}
-                        aux3['idNivel'] = nivel.id_nivel
-                        aux3['descripcion'] = nivel.descripcion
-                        aux3['grado'] = nivel.grado
-                        aux3['puntaje'] = nivel.puntaje
-                        niveles.append(aux3)
-                    f['listaNiveles'] = niveles
-                    f['cantNiveles'] = len(niveles)
-
-                    if notaIndicador is not None:
-                        f['nota'] = notaIndicador.nota
-                        f['comentario'] = notaIndicador.comentario
-                    else:
-                        f['nota'] = None
-                        f['comentario'] = None
-                    listaNotaInd.append(f)
-                e['listaNotaIndicador'] = listaNotaInd
-                listaNotaAsp.append(e)
-        d['listaNotaAspectos'] = listaNotaAsp
-        return d
-
-def calificarOtraRubrica(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto):
+def calificarAutoevaluacion(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto):
 
     calificacionIngresada = Alumno_actividad_calificacion(
         id_actividad = idActividad,
@@ -751,6 +716,53 @@ def calificarOtraRubrica(idActividad, idAlumno, idRubrica, nota, listaNotaAspect
                 id_rubrica=idRubrica,
                 id_aspecto=idAspecto,
                 id_calificador = idAlumno,
+                id_indicador=notaIndicador['idIndicador'],
+                nota=notaIndicador['nota'],
+                comentario=notaIndicador['comentario'],
+            )
+            Alumno_nota_indicador().addOne(notaIndicadorObjeto)
+
+    d = {}
+    d['message'] = "succeed"
+    return d
+
+def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto):
+
+    calificacionIngresada = Alumno_actividad_calificacion(
+        id_actividad = idActividad,
+        id_alumno = idAlumno,
+        id_rubrica = idRubrica,
+        id_calificador = idCalificador,
+        nota = nota,
+        fecha_revisado = func.current_timestamp(),
+        flg_completo = flgCompleto,
+        flg_falta = flgFalta
+    )
+
+    aux = Alumno_actividad_calificacion().addOne(calificacionIngresada)
+
+    for notaAspecto in listaNotaAspectos:
+        idAspecto = notaAspecto['idAspecto']
+        notaAspectoObjeto = Alumno_nota_aspecto(
+            id_actividad=idActividad,
+            id_alumno=idAlumno,
+            id_rubrica=idRubrica,
+            id_aspecto=idAspecto,
+            id_calificador = idCalificador,
+            nota=notaAspecto['nota'],
+            comentario=notaAspecto['comentario']
+        )
+        Alumno_nota_aspecto().addOne(notaAspectoObjeto)
+
+        listaNotaIndicador = notaAspecto['listaNotaIndicador']
+
+        for notaIndicador in listaNotaIndicador:
+            notaIndicadorObjeto = Alumno_nota_indicador(
+                id_actividad=idActividad,
+                id_alumno=idAlumno,
+                id_rubrica=idRubrica,
+                id_aspecto=idAspecto,
+                id_calificador = idCalificador,
                 id_indicador=notaIndicador['idIndicador'],
                 nota=notaIndicador['nota'],
                 comentario=notaIndicador['comentario'],
