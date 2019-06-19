@@ -109,5 +109,31 @@ class Obtener_coevaluacion(Resource):
 class Obtener_registro_horas(Resource):
     def post(self):
         data = request.get_json()
-        idActividad = data['idActividad']
-        return controller.obtenerRubrica(idActividad, 5)
+        tipo = data['tipo'] 
+        idActividadUHorario = data['idActividadUHorario']
+        idAlumno = data['idAlumno']
+        return controller.obtenerRegistroEsfuerzo(idAlumno, tipo, idActividadUHorario)
+
+class Obtener_registro_horas_individual(Resource):
+    def post(self):
+        data = request.get_json()
+        tipo = data['tipo'] 
+        idActividadUHorario = data['idActividadUHorario']
+        return controller.obtenerRegistroEsfuerzoIndividual(tipo, idActividadUHorario)
+
+class Crear_registro_horas(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividadUHorario = data['idActividadUHorario']
+        idUsuarioCreador = data['idUsuarioCreador']
+        tipo = data['tipo']
+        listaCategorias = data['listaCategorias']
+        return controller.crearRegistroHoras(idUsuarioCreador, tipo, idActividadUHorario, listaCategorias)
+
+class Registrar_horas(Resource):
+    def post(self):
+        data = request.get_json()
+        idRegistroEsfuerzo = data['idRegistroEsfuerzo']
+        idAlumno = data['idAlumno']
+        listaCategorias = data['listaCategorias']
+        return controller.registrarHoras(idRegistroEsfuerzo, idAlumno, listaCategorias)

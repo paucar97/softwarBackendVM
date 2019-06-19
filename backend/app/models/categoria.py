@@ -12,3 +12,9 @@ class Categoria(db.Model):
     descripcion = db.Column('DESCRIPCION', db.String(255), nullable = False)
     flg_activo = db.Column('FLG_ACTIVO', db.Integer, nullable = False, default = 1)
     fecha_registro = db.Column('FECHA_REGISTRO',db.DateTime, server_default = func.current_timestamp())
+
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.flush()
+        db.session.commit()
+        return obj.id_categoria
