@@ -120,3 +120,20 @@ def cargaMasivaHorarios(datos):
         Permiso_usuario_horario().addOne(objAlumnoHorario)
     print(df)
     return {'message' : 'leyo bien'}
+
+def getHorarios(horarios):
+    pass
+
+def cargaMasivaCursos(datos):
+    semestre = Semestre().getOne()
+    idSemestre = semestre.id_semestre
+    name = pathCargaMasivaCursoHorario + datos.filename
+    data = datos.read()
+    with open(name,'wb') as file:
+        file.write(data)
+    df = pd.read_excel(name,enconding = 'latin1')
+    longitud = len(df)
+
+    for i in range(longitud):
+        nombreCurso = df.iat(i,0)
+        codigoCurso = df.iat(i,1)
