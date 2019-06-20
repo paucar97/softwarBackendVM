@@ -153,5 +153,5 @@ api.add_resource(Obtener_registro_horas_individual,'/api/registro_horas/obtener_
 # AutoEvaluacion y Coevaluacion
 api.add_resource(Obtener_autoevaluacion,'/api/autoevaluacion/obtener_autoevaluacion')
 api.add_resource(Calificar_autoevaluacion,'/api/autoevaluacion/calificar_autoevaluacion')
-api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
+#api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
 api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacion')
