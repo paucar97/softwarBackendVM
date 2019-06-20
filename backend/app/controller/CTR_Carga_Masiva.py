@@ -121,9 +121,6 @@ def cargaMasivaHorarios(datos):
     print(df)
     return {'message' : 'leyo bien'}
 
-def getHorarios(horarios):
-    pass
-
 def cargaMasivaCursos(datos):
     semestre = Semestre().getOne()
     idSemestre = semestre.id_semestre
@@ -137,3 +134,4 @@ def cargaMasivaCursos(datos):
     for i in range(longitud):
         nombreCurso = df.iat(i,0)
         codigoCurso = df.iat(i,1)
+    return 
