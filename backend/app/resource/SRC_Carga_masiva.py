@@ -7,3 +7,9 @@ class Carga_masiva_horarios(Resource):
         file  = request.files.get(key)
 
         return cargaMasivaHorarios(file)
+    
+class Carga_masiva_cursos(Resource):
+    def post(self):
+        key = 'file 1'
+        file = request.files.get(key)
+        return cargaMasivaCursos(file)
