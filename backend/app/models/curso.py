@@ -22,3 +22,10 @@ class Curso(db.Model):
     @classmethod
     def getCursosActivos(self, id_semestre_activo):
         return Curso.query.filter_by(id_semestre=id_semestre_activo)
+
+    @classmethod
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush()
+        return obj.id_curso
