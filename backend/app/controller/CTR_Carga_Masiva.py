@@ -4,6 +4,9 @@ from app.commons.paths import *
 from app.models.usuario import Usuario
 from app.models.permiso_usuario_horario import Permiso_usuario_horario
 from app.models.semestre import Semestre
+from app.models.curso import Curso
+from app.models.horario import Horario
+from app.models.especialidad import Especialidad
 def SplitNombres( nombre ):
     u"""
     Autor original en código PHP: eduardoromero.
@@ -120,3 +123,27 @@ def cargaMasivaHorarios(datos):
         Permiso_usuario_horario().addOne(objAlumnoHorario)
     print(df)
     return {'message' : 'leyo bien'}
+
+def cargaMasivaCursos(datos):
+    semestre = Semestre().getOne()
+    idSemestre = semestre.id_semestre #
+    idEspecialidad = Especialidad().getIdInformatica().id_especialidad #
+    name = pathCargaMasivaCursoHorario + datos.filename
+    data = datos.read()
+    with open(name,'wb') as file:
+        file.write(data)
+    df = pd.read_excel(name,enconding = 'latin1')
+    longitud = len(df)
+
+    for i in range(longitud):
+        nombreCurso = df.iat(i,0)
+        codigoCurso = df.iat(i,1)
+        horarios = []
+        horarios = df.iat(i,2).split(',')
+        objCurso = Curso(id_especialidad = idEspecialidad,id_semestre =idSemestre,nombre = nombreCurso,codigo = codigoCurso)
+        idCurso = Curso().addOne(objCurso)
+        for horario in horarios:
+            pass
+            #objHorario= Horario(id_curso = idCurso,idSemestre)
+
+    return 
