@@ -545,6 +545,7 @@ def obtenerAutoevaluacion(idAlumno, idActividad):
     alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idAlumno)).first()
 
     d = {}
+    d['idRubrica'] = idRubrica
     if alumnoCalificacion is not None:
         d['nota'] = alumnoCalificacion.nota
         d['comentario']= alumnoCalificacion.comentario_alumno
@@ -615,6 +616,7 @@ def obtenerCoevaluacion(idCalificado, idActividad, idCalificador):
     alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idCalificado, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idCalificador)).first()
     
     d = {}
+    d['idRubrica'] = idRubrica
     if alumnoCalificacion is not None:
         d['nota'] = alumnoCalificacion.nota
         d['comentario']= alumnoCalificacion.comentario_alumno
