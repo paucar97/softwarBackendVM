@@ -143,6 +143,7 @@ def cargaMasivaCursos(datos):
         objCurso = Curso(id_especialidad = idEspecialidad,id_semestre =idSemestre,nombre = nombreCurso,codigo = codigoCurso)
         idCurso = Curso().addOne(objCurso)
         for horario in horarios:
-            objHorario= Horario(id_curso = idCurso,idSemestre)
+            pass
+            #objHorario= Horario(id_curso = idCurso,idSemestre)
 
     return 
