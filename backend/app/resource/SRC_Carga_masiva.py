@@ -12,4 +12,6 @@ class Carga_masiva_cursos(Resource):
     def post(self):
         key = 'file 1'
         file = request.files.get(key)
-        return cargaMasivaCursos(file)
+        idCurso = int(request.form['idCurso'])
+        idHorario = int(request.form['idHorario'])
+        return cargaMasivaCursos(file,idCurso,idHorario)

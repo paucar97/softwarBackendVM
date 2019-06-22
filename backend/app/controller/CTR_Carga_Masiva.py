@@ -91,7 +91,7 @@ def getCorreoPucp(correos):
         return correos
 
 
-def cargaMasivaHorarios(datos):
+def cargaMasivaHorarios(datos,,idCurso,idHorario):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     name = pathCargaMasivaAlumnoHorario+datos.filename
@@ -99,6 +99,8 @@ def cargaMasivaHorarios(datos):
     with open(name,'wb') as file:
         file.write(data)
     doc= codecs.open(name,'rU','latin1')
+    for i in range(7):
+        doc.readline()
     df = pd.read_csv(doc ,sep ='\t',encoding = 'latin1')
     df['E-mail'] = df['E-mail'].apply( lambda x: getCorreoPucp(x))
     df['nombres'] = df['Nombre'].apply(lambda x : SplitNombres(x)[0])

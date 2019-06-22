@@ -7,7 +7,7 @@ from app.models.rubrica_aspecto import Rubrica_aspecto
 class Alumno_nota_aspecto(db.Model):
     __tablename__ ='alumno_nota_aspecto'
 
-    alumno_actividad_calificacion =  db.relationship(Alumno_actividad_calificacion,backref = __tablename__,lazy =True)
+    
     rubrica_aspecto = db.relationship(Rubrica_aspecto,backref = __tablename__,lazy =True)
     
     id_actividad = db.Column('ID_ACTIVIDAD',db.Integer,primary_key = True)
