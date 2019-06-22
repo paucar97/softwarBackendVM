@@ -8,7 +8,7 @@ class Alumno_nota_aspecto(db.Model):
     __tablename__ ='alumno_nota_aspecto'
 
     
-    rubrica_aspecto = db.relationship(Rubrica_aspecto,backref = __tablename__,lazy =True)
+    
     
     id_actividad = db.Column('ID_ACTIVIDAD',db.Integer,primary_key = True, autoincrement = False)
     id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key = True, autoincrement = False)
