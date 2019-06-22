@@ -101,7 +101,8 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
             reg_resp.comentario_jp = respuesta
             db.session.commit()
             u = Usuario().getOneId(idAlumno)
-            envioCorreo(u.email,'RESPUESTA DE COMENTARIO',respuesta)
+            act = Actividad().getOne(idActividad)
+            envioCorreo(u.email,'RESPUESTA DE COMENTARIO EN LA ACTIVIDAD {}'.format(act.nombre),respuesta)
             d.message = "Respuesta agregada correctamente"
     except Exception as ex:
         d.opcode = 1
