@@ -360,12 +360,14 @@ def publicarNotificacionGeneral(idSemestre, idUsuario, mensaje, idActividad):
     return True
 
 def publicarNotificacionesAlumnos(idActividad):
-    alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0, Alumno_actividad.flg_calificado == 0)).all()
+    alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 0)).all()
 
     if len(alumnosFaltantesCalificados) > 0:
-        return 0
+        d['succeed'] = False
+        d['message'] = "Notas publicadas"
+        return d
 
-    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0)).all()
+    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 1)).all()
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
     mensaje = cursoActividad.codigo + " - Se registro la nota de la Actividad: " + actividadEvaluada.nombre
@@ -767,7 +769,7 @@ def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota,
                 id_calificador = idCalificador,
                 id_indicador=notaIndicador['idIndicador'],
                 nota=notaIndicador['nota'],
-                comentario=notaIndicador['comentario'],
+                comentario=notaIndicador['comentario']
             )
             Alumno_nota_indicador().addOne(notaIndicadorObjeto)
 

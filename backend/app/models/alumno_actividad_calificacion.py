@@ -19,9 +19,9 @@ class Alumno_actividad_calificacion(db.Model):
         ),
     )
 
-
-    id_calificador = db.Column('ID_CALIFICADOR',db.Integer, nullable=False)
-    nota = db.Column('NOTA',db.Float,nullable= True)
+    
+    id_calificador = db.Column('ID_CALIFICADOR',db.Integer, primary_key=True, nullable=False)
+    nota = db.Column('NOTA',db.Float, nullable= True)
     fecha_revisado = db.Column('FECHA_REVISADO',db.DateTime)
     fecha_modificado = db.Column('FECHA_MODIFICADO', db.DateTime)
     flg_completo = db.Column('FLG_COMPLETO', db.Integer, nullable = False)

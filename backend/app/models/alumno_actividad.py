@@ -8,11 +8,11 @@ class Alumno_actividad(db.Model):
     __tablename__ = 'alumno_actividad'
 
     actividad = db.relationship(Actividad,backref = __tablename__,lazy=True)
-    alumno = db.relationship(Permiso_usuario_horario,backref = __tablename__,lazy=True)
+    #alumno = db.relationship(Permiso_usuario_horario,backref = __tablename__,lazy=True)
     grupo = db.relationship(Grupo,backref = __tablename__,lazy=True)
 
     id_actividad = db.Column('ID_ACTIVIDAD',db.ForeignKey(Actividad.id_actividad),primary_key=True)
-    id_alumno = db.Column('ID_ALUMNO',db.ForeignKey(Permiso_usuario_horario.id_usuario),primary_key=True)
+    id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key=True, autoincrement = False)
     id_grupo = db.Column('ID_GRUPO',db.ForeignKey(Grupo.id_grupo), nullable=True)
 
     #Preguntar cual es la etapa
