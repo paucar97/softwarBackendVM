@@ -25,6 +25,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import aliased
 from statistics import *
 from collections import Counter
+from app.commons.utils import * 
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
@@ -99,6 +100,8 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         else:
             reg_resp.comentario_jp = respuesta
             db.session.commit()
+            u = Usuario().getOneId(idAlumno)
+            envioCorreo(u.email,'RESPUESTA DE COMENTARIO',respuesta)
             d.message = "Respuesta agregada correctamente"
     except Exception as ex:
         d.opcode = 1

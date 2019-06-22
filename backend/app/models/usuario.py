@@ -31,8 +31,14 @@ class Usuario(db.Model):
     def getOneId(self, idUsuario):
         return Usuario.query.filter_by(id_usuario=idUsuario).first()
 
+    @classmethod
     def addOne(self, obj):
-        db.session.add(obj)
-        db.session.flush()
-        db.session.commit()
-        return obj.id_usuario
+        u = Usuario.query.filter_by(codigo_pucp = obj.codigo_pucp).first()
+        if u is None:
+            db.session.add(obj)
+            db.session.flush()
+            db.session.commit()
+            return obj.id_usuario
+        else:
+            return u.id_usuario
+

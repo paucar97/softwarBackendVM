@@ -26,7 +26,18 @@ class Horario(db.Model):
     @classmethod
     def obtenerHorariosXCurso(self, idCurso):
         return Horario.query.filter_by(id_curso == idCurso).all()
-
+    
+    @classmethod
+    def addOne(self,nombreH,idCurso,idSemestre):
+        d = Horario.query.filter(and_(id_curso == idCurso,id_semestre == idSemestre,nombre == nombreH )).first()
+        if d is None:
+            objHorario = Horario(id_curso = idCurso,id_semestre=idSemestre,nombre = nombreH)
+            db.session.add(objHorario)
+            db.session.commit()
+            db.session.flush()
+            return objHorario.id_horario
+        else:
+            return d.id_horario
     #@classmethod
     #def getHorariosActivosProfesor(self, id_semestre_activo, idProfesor):
     #    puh = Permiso_usuario_horario().getHorarioActivo(id_semestre_activo, idProfesor)

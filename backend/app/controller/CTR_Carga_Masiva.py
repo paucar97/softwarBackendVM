@@ -91,7 +91,7 @@ def getCorreoPucp(correos):
         return correos
 
 
-def cargaMasivaHorarios(datos,,idCurso,idHorario):
+def cargaMasivaHorarios(datos,idCurso,idEspecialidad):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     name = pathCargaMasivaAlumnoHorario+datos.filename
@@ -107,12 +107,11 @@ def cargaMasivaHorarios(datos,,idCurso,idHorario):
     df['apellido_paterno']= df['Nombre'].apply(lambda x : SplitNombres(x)[1]) 
     df['apellido_materno'] = df['Nombre'].apply(lambda x : SplitNombres(x)[2]) 
     longitud = len(df)
+    
+    print(df)
     """
-    idCurso =
-    idHorario =
-    """
-
     for i in range(longitud):
+        idHorario = Horario().addOne(df.iat(i,2),idCurso,idEspecialidad)  
         codigoPucp =df.iat(i,0)
         nombre = df.iat(i,5)
         email = df.iat(i,4)
@@ -120,16 +119,16 @@ def cargaMasivaHorarios(datos,,idCurso,idHorario):
         apellidoMaterno = df.iat(i,7)
         objUsuario = Usuario(nombre = nombre,email = email,apellido_paterno = apellidoPaterno , 
         apellido_materno = apellidoMaterno, flg_admin =0 ,codigo_pucp = codigoPucp clave = codigoPucp)
-        idUsuario = Usuario().addOne(objUsuario) # se tiene q  modificar para ver si EXISTE se da su ID SINO -> se agrega y se da su ID
+        idUsuario = Usuario().addOne(objUsuario) 
         objAlumnoHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario = idUsuario, id_permiso = 2,id_semestre = idSemestre)
         Permiso_usuario_horario().addOne(objAlumnoHorario)
-    print(df)
+    """
     return {'message' : 'leyo bien'}
 
-def cargaMasivaCursos(datos):
+def cargaMasivaCursos(datos,idEspecialidad):
     semestre = Semestre().getOne()
     idSemestre = semestre.id_semestre #
-    idEspecialidad = Especialidad().getIdInformatica().id_especialidad #
+    
     name = pathCargaMasivaCursoHorario + datos.filename
     data = datos.read()
     with open(name,'wb') as file:
@@ -145,7 +144,9 @@ def cargaMasivaCursos(datos):
         objCurso = Curso(id_especialidad = idEspecialidad,id_semestre =idSemestre,nombre = nombreCurso,codigo = codigoCurso)
         idCurso = Curso().addOne(objCurso)
         for horario in horarios:
-            pass
-            #objHorario= Horario(id_curso = idCurso,idSemestre)
+            objHorario= Horario(id_curso = idCurso,id_semestre =idSemestre,nombre = horario)
+            Horario.addOne(objHorario)
+    return {'message' : 'leyo bien'}
 
-    return 
+def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso,idHorario):
+    pass
