@@ -17,3 +17,4 @@ def envioCorreo(destinatario,asunto,mensage):
     server.sendmail(correoSistemaSec,destinatario,me)
     server.quit()
     return
+

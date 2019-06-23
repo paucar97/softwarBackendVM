@@ -5,6 +5,16 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 def Login_Controlador(email,clave):
     usuario = Usuario().getOne(email,clave)
     semestreActivo = Semestre().getOne()
+    if semestreActivo is None and usuario.flg_admin == "1":
+            d = {}
+            d['idUser'] = usuario.id_usuario
+            d['codigoPUCP'] = usuario.codigo_pucp
+            d['nombre'] = usuario.nombre + ' ' + usuario.apellido_paterno
+            d['superUsuario'] = usuario.flg_admin
+            d['profesor'] = 0
+            d['jp'] = 0
+            d['alumno'] = 0
+            return d
     if usuario is None:
         return {'message':'error datos'}
     lista = Permiso_usuario_horario().getHorarioActivo(semestreActivo.id_semestre,usuario.id_usuario)

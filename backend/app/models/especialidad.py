@@ -8,3 +8,7 @@ class Especialidad(db.Model):
     nombre = db.Column('NOMBRE_ESPECIALIDAD', db.String(25))
     facultad = db.Column('NOMBRE_FACULTAD', db.String(25))
     #index1 = db.Index('idx_especialidad', id_especialidad, unique=True)
+
+    @classmethod
+    def getIdInformatica(self):
+        return Especialidad.query.filter(nombre = 'Ingeniería Informática').first() 

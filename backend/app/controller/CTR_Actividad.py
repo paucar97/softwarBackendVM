@@ -400,7 +400,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
         id_actividad = idActividad
     )
     idRubrica = Rubrica().addOne(rubricaObjeto)
-
+    """
     if tipo == 3:
         aspectoObjetoCoev = Aspecto(
             descripcion = "Evaluacion a miembros del grupo",
@@ -432,7 +432,7 @@ def crearRubrica(idActividad, idFlgEspecial, idUsuarioCreador, nombreRubrica, li
             )
             Rubrica_aspecto_indicador().addOne(rubricaAspectoIndicadorCoev)
             crearNivelesCoev(idRubrica, idAspectoCoev, idIndicadorCoev)
-
+    """
     for aspecto in listaAspectos:
         aspectoObjeto = Aspecto(
             descripcion = aspecto['descripcion'],
@@ -580,7 +580,7 @@ def crearRegistroHoras(idUsuarioCreador, tipo, idActividadUHorario, listaCategor
     else:
         registroEsfuerzoObjeto = Registro_esfuerzo(
             id_horario = idActividadUHorario,
-            usuarioCreador = idUsuarioCreador,
+            id_usuario_creador = idUsuarioCreador,
             tipo = tipo
         )
     

@@ -7,25 +7,25 @@ from app.models.rubrica_aspecto import Rubrica_aspecto
 class Alumno_nota_aspecto(db.Model):
     __tablename__ ='alumno_nota_aspecto'
 
-    alumno_actividad_calificacion =  db.relationship(Alumno_actividad_calificacion,backref = __tablename__,lazy =True)
-    rubrica_aspecto = db.relationship(Rubrica_aspecto,backref = __tablename__,lazy =True)
     
-    id_actividad = db.Column('ID_ACTIVIDAD',db.Integer,primary_key = True)
-    id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key = True)
-    id_rubrica = db.Column('ID_RUBRICA',db.Integer,primary_key = True)
-    id_aspecto = db.Column('ID_ASPECTO',db.Integer,primary_key = True)
+    
+    
+    id_actividad = db.Column('ID_ACTIVIDAD',db.Integer,primary_key = True, autoincrement = False)
+    id_alumno = db.Column('ID_ALUMNO',db.Integer,primary_key = True, autoincrement = False)
+    id_rubrica = db.Column('ID_RUBRICA',db.Integer,primary_key = True, autoincrement = False)
+    id_aspecto = db.Column('ID_ASPECTO',db.Integer,primary_key = True, autoincrement = False)
     id_calificador = db.Column('ID_CALIFICADOR', db.Integer, primary_key = True, autoincrement = False)
     
-    __table_args__=(
-        db.ForeignKeyConstraint(
-            ['ID_ACTIVIDAD','ID_ALUMNO'],
-            [Alumno_actividad_calificacion.id_actividad, Alumno_actividad_calificacion.id_alumno]
-        ),
-        db.ForeignKeyConstraint(
-            ['ID_RUBRICA','ID_ASPECTO'],
-            [Rubrica_aspecto.id_rubrica, Rubrica_aspecto.id_aspecto]
-        ),
-    )
+    #__table_args__=(
+    #    db.ForeignKeyConstraint(
+    #        ['ID_ACTIVIDAD','ID_ALUMNO'],
+    #        [Alumno_actividad_calificacion.id_actividad, Alumno_actividad_calificacion.id_alumno]
+    #    ),
+    #    db.ForeignKeyConstraint(
+    #        ['ID_RUBRICA','ID_ASPECTO'],
+    #        [Rubrica_aspecto.id_rubrica, Rubrica_aspecto.id_aspecto]
+    #    ),
+    #)
 
     nota = db.Column('NOTA',db.Float,nullable = True)
     comentario = db.Column('COMENTARIO',db.String(500),nullable = True)

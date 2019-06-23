@@ -25,6 +25,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import aliased
 from statistics import *
 from collections import Counter
+from app.commons.utils import * 
 
 def entregablesActividadXAlumno(idActividad):
     # get all users for this activity
@@ -99,6 +100,9 @@ def responderComentarioAlumno(idActividad, idAlumno, idProfesor, respuesta):
         else:
             reg_resp.comentario_jp = respuesta
             db.session.commit()
+            u = Usuario().getOneId(idAlumno)
+            act = Actividad().getOne(idActividad)
+            envioCorreo(u.email,'RESPUESTA DE COMENTARIO EN LA ACTIVIDAD {}'.format(act.nombre),respuesta)
             d.message = "Respuesta agregada correctamente"
     except Exception as ex:
         d.opcode = 1
@@ -360,12 +364,14 @@ def publicarNotificacionGeneral(idSemestre, idUsuario, mensaje, idActividad):
     return True
 
 def publicarNotificacionesAlumnos(idActividad):
-    alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0, Alumno_actividad.flg_calificado == 0)).all()
+    alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 0)).all()
 
     if len(alumnosFaltantesCalificados) > 0:
-        return 0
+        d['succeed'] = False
+        d['message'] = "Notas publicadas"
+        return d
 
-    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_falta == 0)).all()
+    alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 1)).all()
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
     mensaje = cursoActividad.codigo + " - Se registro la nota de la Actividad: " + actividadEvaluada.nombre
@@ -545,6 +551,7 @@ def obtenerAutoevaluacion(idAlumno, idActividad):
     alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idAlumno)).first()
 
     d = {}
+    d['idRubrica'] = idRubrica
     if alumnoCalificacion is not None:
         d['nota'] = alumnoCalificacion.nota
         d['comentario']= alumnoCalificacion.comentario_alumno
@@ -615,6 +622,7 @@ def obtenerCoevaluacion(idCalificado, idActividad, idCalificador):
     alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idCalificado, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica, Alumno_actividad_calificacion.id_calificador == idCalificador)).first()
     
     d = {}
+    d['idRubrica'] = idRubrica
     if alumnoCalificacion is not None:
         d['nota'] = alumnoCalificacion.nota
         d['comentario']= alumnoCalificacion.comentario_alumno
@@ -765,7 +773,7 @@ def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota,
                 id_calificador = idCalificador,
                 id_indicador=notaIndicador['idIndicador'],
                 nota=notaIndicador['nota'],
-                comentario=notaIndicador['comentario'],
+                comentario=notaIndicador['comentario']
             )
             Alumno_nota_indicador().addOne(notaIndicadorObjeto)
 
