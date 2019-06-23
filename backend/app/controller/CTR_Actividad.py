@@ -580,7 +580,7 @@ def crearRegistroHoras(idUsuarioCreador, tipo, idActividadUHorario, listaCategor
     else:
         registroEsfuerzoObjeto = Registro_esfuerzo(
             id_horario = idActividadUHorario,
-            usuarioCreador = idUsuarioCreador,
+            id_usuario_creador = idUsuarioCreador,
             tipo = tipo
         )
     
