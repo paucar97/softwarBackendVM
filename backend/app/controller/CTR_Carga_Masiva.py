@@ -7,6 +7,7 @@ from app.models.semestre import Semestre
 from app.models.curso import Curso
 from app.models.horario import Horario
 from app.models.especialidad import Especialidad
+from app.models.permiso_usuario_horario import Permiso_usuario_horario
 def SplitNombres( nombre ):
     u"""
     Autor original en código PHP: eduardoromero.
@@ -149,4 +150,43 @@ def cargaMasivaCursos(datos,idEspecialidad):
     return {'message' : 'leyo bien'}
 
 def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso,idHorario):
-    pass
+    semestre=Semestre().getOne()
+    idSemestre=semestre.id_semestre
+    name = pathCargaMasivaCursoHorario + datos.filename
+    with open(name,'wb') as file:
+        file.write(data)
+    df = pd.read_excel(name,enconding = 'latin1')
+    
+    longitud = len(df)
+
+    for i in range(longitud):
+        codigoCurso= df.iat(i,0)
+        codigoPucp = df.iat(i,1)
+        nombreCompleto = df.iat(i,2)
+        aux = SplitNombres(nombreCompleto)
+        nombres = aux[0]
+        apellidoPaterno = aux[1]
+        apellidoMaterno = aux[2]
+        email = df.iat(i,3)
+        objUsuario = Usuario(nombre = nombres,codigo_pucp = codigoPucp,email= email,clave = codigoPucp, apellido_paterno = apellidoPaterno, apellido_materno = apellidoMaterno
+        flg_admin =0)
+        idUsuario = Usuario().addOne(objUsuario)
+        idCurso = Curso().getOneClave(codigoCurso,idSemestre)
+        tipo = df.iat(i,4)
+        if tipo == 1:
+            horarios = str( df.iat(i,5)).split(',')
+            for horario in horarios:   
+                idHorario = Horario().getOneClave(idCurso,idSemestre,horario)
+                objUsuaHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario =idUsuario, id_permiso = 1,id_semestre = idSemestre)
+                Permiso_usuario_horario().addOne(objUsuaHorario)
+            
+        else:
+            horarios = Horario().getAll(idCurso,idSemestre)
+            for horario in horarios:
+                idHorario = horario.id_horario
+                objUsuaHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario =idUsuario, id_permiso = 3,id_semestre = idSemestre)
+                Permiso_usuario_horario().addOne(objUsuaHorario)
+            
+
+
+    return {'message' : 'leyo bien'}

@@ -29,3 +29,8 @@ class Curso(db.Model):
         db.session.commit()
         db.session.flush()
         return obj.id_curso
+    
+    @classmethod
+    def getOneClave(self,codCurso,idSemestre):
+        d = Curso.query.filter(and_(codigo == codCurso, id_semestre == idSemestre)).first()
+        return d.id_curso

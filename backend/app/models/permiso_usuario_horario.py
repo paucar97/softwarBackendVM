@@ -24,6 +24,7 @@ class Permiso_usuario_horario(db.Model):
 
     def addOne(self,obj):
         db.session.add(obj)
+        db.session.commit()
         db.session.flush()
         return 
 

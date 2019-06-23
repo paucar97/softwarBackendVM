@@ -42,4 +42,12 @@ class Horario(db.Model):
     #def getHorariosActivosProfesor(self, id_semestre_activo, idProfesor):
     #    puh = Permiso_usuario_horario().getHorarioActivo(id_semestre_activo, idProfesor)
     #    return Horario.query(Horario).join(puh, puh.id_horario == Horario.id_horario).subquery()
-  
+    @classmethod
+    def getOneClave(self,idCurso,idSemestre,horario):
+        d = Horario.query.filter(and_(id_curso == idCurso,id_semestre == idSemestre,nombre == horario)).first()
+        return d.id_horario
+        
+    @classmethod
+    def getAll(self,idCurso,idSemestre):
+        d = Horario.query.filter(and_(id_curso== idCurso, id_semestre == idSemestre)).all()
+        return d
