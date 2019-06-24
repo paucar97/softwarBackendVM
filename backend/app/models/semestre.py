@@ -12,3 +12,15 @@ class Semestre(db.Model):
     @classmethod
     def getOne(self):
         return Semestre.query.filter_by(flg_activo=1).first()
+
+    @classmethod
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush()
+        return 
+
+    @classmethod
+    def getAllNoActivos(self):
+        s = Semestre.query.filter_by(flg_activo = 0)
+        return s

@@ -16,3 +16,15 @@ class Semestre_especialidad(db.Model):
     id_coordinador = db.Column('ID_COORDINADOR', db.ForeignKey(Usuario.id_usuario))
     id_especialidad = db.Column('ID_ESPECIALIDAD', db.ForeignKey(Especialidad.id_especialidad), primary_key=True)
     id_semestre = db.Column('ID_SEMESTRE', db.ForeignKey(Semestre.id_semestre), primary_key=True)
+
+    @classmethod
+    def activacionSemestre(idSemestre):
+         aux = Semestre_especialidad.query.filter_by(id_semestre = idSemestre).all()
+
+         if aux == [] :
+             especialidades = especialidades().getAll()
+             for especialidad in especialidades:
+                 objSemestreEsp = Semestre_especialidad(id_especialidad = especialidad.id_especialidad,id_semestre = idSemestre)
+                 Semestre_especialidad().addOne(objSemestreEsp) 
+        else:
+            return
