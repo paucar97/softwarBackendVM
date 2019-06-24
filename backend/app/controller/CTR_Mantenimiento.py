@@ -48,15 +48,16 @@ def obtenerEspecialidadxSemestre():
     especialidades= Especialidad().getAll()
     lista = list()
     for especialidad in especialidades:
-        esp = Especialidad.getOne(especialidad.id_especialidad)
+        #esp = Especialidad.getOne(especialidad.id_especialidad)
         c = {}
-        c['id_especialidad'] = esp.id_especialidad
-        c['nombre'] = esp.nombre
+        c['id_especialidad'] = especialidad.id_especialidad
+        c['nombre'] = especialidad.nombre
         lista.append(c)
 
     listaE = {}
-    listaE['listaEspecialidades'] = lista
     
+    listaE['listaEspecialidades'] = lista
+    print(listaE)
     return listaE
 
 
