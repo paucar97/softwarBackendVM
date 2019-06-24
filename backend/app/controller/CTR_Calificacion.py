@@ -85,3 +85,10 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
                 notaTotal = notaTotal + nota
             notaAlumnoAspectoObjeto.updateNota(notaTotal)
     return {'message': 'termino'}
+
+def obtenerNotasFinales(idActividad):
+    actividad = Actividad().getOne(idActividad)
+    tipo = actividad.tipo
+    if tipo == 'I':
+        
+    else:

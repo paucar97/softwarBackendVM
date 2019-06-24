@@ -26,7 +26,7 @@ class Curso(db.Model):
 
     @classmethod
     def getCursosActivosxEspecialidad(self, idsemestre,idespecialidad):
-        d = Curso.query.filter(and_(id_semestre== idsemestre, id_especialidad == idespecialidad)).all()
+        d = Curso.query.filter(and_(Curso.id_semestre== idsemestre, Curso.id_especialidad == idespecialidad)).all()
         return d
 
     @classmethod
@@ -38,5 +38,5 @@ class Curso(db.Model):
     
     @classmethod
     def getOneClave(self,codCurso,idSemestre):
-        d = Curso.query.filter(and_(codigo == codCurso, id_semestre == idSemestre)).first()
+        d = Curso.query.filter(and_(Curso.codigo == codCurso, Curso.id_semestre == idSemestre)).first()
         return d.id_curso
