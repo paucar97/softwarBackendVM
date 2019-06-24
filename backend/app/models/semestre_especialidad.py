@@ -18,6 +18,14 @@ class Semestre_especialidad(db.Model):
     id_semestre = db.Column('ID_SEMESTRE', db.ForeignKey(Semestre.id_semestre), primary_key=True)
 
     @classmethod
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush()
+        return 
+
+
+    @classmethod
     def activacionSemestre(self,idSemestre):
          aux = Semestre_especialidad.query.filter_by(id_semestre = idSemestre).all()
 
