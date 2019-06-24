@@ -161,3 +161,6 @@ api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacio
 api.add_resource(EspecialidadesxSemestre,'/api/mantenimiento/especialidad_semestre')
 api.add_resource(CursosXEspecialidad,'/api/mantenimiento/curso_semestre')
 api.add_resource(NombreSemestreActivo,'/api/mantenimiento/nombre_semestre')
+api.add_resource(Activar_semestre,'/api/mantenimiento/semestre_activar')
+api.add_resource(Listar_semestres_no_activos,'/api/mantenimiento/semestres_no_activos')
+api.add_resource(Crear_semestre,'/api/mantenimiento/semestre/crear')
