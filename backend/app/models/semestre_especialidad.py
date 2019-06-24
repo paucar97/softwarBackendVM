@@ -26,7 +26,7 @@ class Semestre_especialidad(db.Model):
              for especialidad in especialidades:
                  objSemestreEsp = Semestre_especialidad(id_especialidad = especialidad.id_especialidad,id_semestre = idSemestre)
                  Semestre_especialidad().addOne(objSemestreEsp) 
-        else:
+         else:
             return
     def obtenerEspecialidadActivo(self,idsemestre):
         return Semestre.query.filter_by(id_semestre=idsemestre).all()
