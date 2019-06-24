@@ -22,7 +22,7 @@ class Semestre_especialidad(db.Model):
          aux = Semestre_especialidad.query.filter_by(id_semestre = idSemestre).all()
 
          if aux == [] :
-             especialidades = especialidades().getAll()
+             especialidades = Especialidad().getAll()
              for especialidad in especialidades:
                  objSemestreEsp = Semestre_especialidad(id_especialidad = especialidad.id_especialidad,id_semestre = idSemestre)
                  Semestre_especialidad().addOne(objSemestreEsp) 
