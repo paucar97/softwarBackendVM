@@ -18,7 +18,7 @@ class Semestre_especialidad(db.Model):
     id_semestre = db.Column('ID_SEMESTRE', db.ForeignKey(Semestre.id_semestre), primary_key=True)
 
     @classmethod
-    def activacionSemestre(idSemestre):
+    def activacionSemestre(self,idSemestre):
          aux = Semestre_especialidad.query.filter_by(id_semestre = idSemestre).all()
 
          if aux == [] :
