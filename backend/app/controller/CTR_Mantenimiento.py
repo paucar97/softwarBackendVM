@@ -45,7 +45,7 @@ def obtenerlistaSemestresNoActivos():
 
 def obtenerEspecialidadxSemestre():
     semestreActivo=Semestre.getOne()
-    especialidades=semestreActivo.getAll(semestreActivo.id_semestre)
+    especialidades= Especialidad().getAll()
     lista = list()
     for especialidad in especialidades:
         esp = Especialidad.getOne(especialidad.id_especialidad)
