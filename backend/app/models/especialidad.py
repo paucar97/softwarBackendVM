@@ -16,3 +16,5 @@ class Especialidad(db.Model):
     @classmethod
     def getAll(self):
         return Especialidad.query.all() 
+    def getOne(self,idespecialidad):
+        return Especialidad.query.filter(id_especialidad=idespecialidad).first()  

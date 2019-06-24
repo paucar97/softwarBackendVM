@@ -28,3 +28,5 @@ class Semestre_especialidad(db.Model):
                  Semestre_especialidad().addOne(objSemestreEsp) 
         else:
             return
+    def obtenerEspecialidadActivo(self,idsemestre):
+        return Semestre.query.filter_by(id_semestre=idsemestre).all()

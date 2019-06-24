@@ -1,5 +1,6 @@
 from . import db
 from app.models.semestre_especialidad import Semestre_especialidad
+from sqlalchemy import and_
 
 class Curso(db.Model):
     #name of table in DB
@@ -22,6 +23,11 @@ class Curso(db.Model):
     @classmethod
     def getCursosActivos(self, id_semestre_activo):
         return Curso.query.filter_by(id_semestre=id_semestre_activo)
+
+    @classmethod
+    def getCursosActivosxEspecialidad(self, idsemestre,idespecialidad):
+        d = Curso.query.filter(and_(id_semestre== idsemestre, id_especialidad == idespecialidad)).all()
+        return d
 
     @classmethod
     def addOne(self,obj):

@@ -24,3 +24,5 @@ class Semestre(db.Model):
     def getAllNoActivos(self):
         s = Semestre.query.filter_by(flg_activo = 0)
         return s
+    def getAll(self):
+        return Semestre.query.filter_by(flg_activo=0).all()

@@ -63,6 +63,7 @@ from app.resource.basic import Hello
 from app.resource.SRC_Grupo import *
 from app.resource.SRC_Co_evaluacion import *
 from app.resource.SRC_Alarma import *
+from app.resource.SRC_Mantenimiento import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 
@@ -156,3 +157,7 @@ api.add_resource(Calificar_autoevaluacion,'/api/autoevaluacion/calificar_autoeva
 api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
 api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacion')
 
+#Mantenimiento
+api.add_resource(EspecialidadesxSemestre,'/api/mantenimiento/especialidad_semestre')
+api.add_resource(CursosXEspecialidad,'/api/mantenimiento/curso_semestre')
+api.add_resource(NombreSemestreActivo,'/api/mantenimiento/nombre_semestre')

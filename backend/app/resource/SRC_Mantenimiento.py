@@ -18,3 +18,21 @@ class Activar_semestre(Resource):
         data = request.get_json()
         idSemestre = data['idSemestre']
         return activarSemestre(idSemestre)
+class Lista_Semestres_NoActivos(Resource):
+    def post(self):
+        return obtenerlistaSemestresNoActivos()
+
+class EspecialidadesxSemestre(Resource):
+    def post(self):
+        return obtenerEspecialidadxSemestre()
+
+class CursosXEspecialidad(Resource):
+    def post(self):
+        data  = request.get_json()
+        idEspecialidad = data['idEspecialidad']
+        return obtenerCursosxEspecialidad(idEspecialidad)
+
+class NombreSemestreActivo(Resource):
+    def post(self):
+        return obtenerNombreSemestreActivo()
+
