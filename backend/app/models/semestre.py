@@ -12,3 +12,7 @@ class Semestre(db.Model):
     @classmethod
     def getOne(self):
         return Semestre.query.filter_by(flg_activo=1).first()
+
+    @classmethod
+    def getAll(self):
+        return Semestre.query.filter_by(flg_activo=0).all()

@@ -16,3 +16,7 @@ class Semestre_especialidad(db.Model):
     id_coordinador = db.Column('ID_COORDINADOR', db.ForeignKey(Usuario.id_usuario))
     id_especialidad = db.Column('ID_ESPECIALIDAD', db.ForeignKey(Especialidad.id_especialidad), primary_key=True)
     id_semestre = db.Column('ID_SEMESTRE', db.ForeignKey(Semestre.id_semestre), primary_key=True)
+
+    @classmethod
+    def obtenerEspecialidadActivo(self,idsemestre):
+        return Semestre.query.filter_by(id_semestre=idsemestre).all()
