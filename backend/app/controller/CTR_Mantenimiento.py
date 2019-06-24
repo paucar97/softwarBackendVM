@@ -5,7 +5,7 @@ from app.models.especialidad import Especialidad
 from app.models.curso import Curso
 
 def crearSemestre(nombreSemestre):
-    objSemestre = Semestre(nombre = nombreSemestre,flag_activo = 0)
+    objSemestre = Semestre(nombre = nombreSemestre,flg_activo = 0)
     Semestre().addOne(objSemestre)
     return { 'message' : 'Se agrego correctamente'}
 
