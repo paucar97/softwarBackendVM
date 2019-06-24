@@ -11,4 +11,8 @@ class Especialidad(db.Model):
 
     @classmethod
     def getIdInformatica(self):
-        return Especialidad.query.filter(nombre = 'Ingeniería Informática').first() 
+        return Especialidad.query.filter(nombre = 'Ingeniería Informática').first()
+
+    @classmethod
+    def getOne(self,idespecialidad):
+        return Especialidad.query.filter(id_especialidad=idespecialidad).first()  
