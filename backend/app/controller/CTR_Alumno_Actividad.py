@@ -414,9 +414,34 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     idFeedbackActividad = Feedback_actividad.addOne(feedbackCreado)
     return idFeedbackActividad
 
+#def responderFeedbackActividad(idFeedbackActividad, idJpReviso, comentario, flgAprobado):
+    #Mandar notificacion
+
+
+
 def listarRevisiones(idProfesor):
-    cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor))
-    return cursosEnsenando
+    cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
+    print(cursosEnsenando)
+    actividadesRevisiones = db.session.query(Actividad.id_actividad).join(cursosEnsenando, cursosEnsenando.c.ID_HORARIO == Actividad.id_horario).filter(Actividad.flg_activo == 1).subquery()
+    print(actividadesRevisiones)
+    feedbacksActividad = db.session.query(Feedback_actividad).join(actividadesRevisiones, Feedback_actividad.id_actividad == actividadesRevisiones.c.ID_ACTIVIDAD).filter(Feedback_actividad.flg_respondido == 0).all()
+    
+    d = {}
+    listaFeedbacks = []
+    for feedback in feedbacksActividad:
+        e = {}
+        e['idFeedbackActividad'] = feedback.id_feedback_actividad
+        e['idActividad'] = feedback.actividad
+        e['flgAprobado'] = feedback.flag_aprobado
+        e['flgRespondido'] = feedback.flg_respondido
+        e['comentario'] = feedback.comentario
+        e['fechaCreacion'] = feedback.fecha_creacion
+        e['fechaAprobado'] = feedback.fecha_aprobado
+        e['idJpReviso'] = feedback.id_jp_reviso
+        e['idProfesorAprobo'] = feedback.id_profesor_aprobo
+        listaFeedbacks.append(e)
+    d['listaFeedbacks'] = listaFeedbacks    
+    return d
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}

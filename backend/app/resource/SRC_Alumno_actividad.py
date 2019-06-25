@@ -201,3 +201,9 @@ class Calificar_coevaluacion(Resource):
         flgCompleto = data['flgCompleto']
         
         return controller.calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)
+
+class Obtener_feedbacks_actividad(Resource):
+    def post(self):
+        data = request.get_json()
+        idProfesor = data['idProfesor']
+        return controller.listarRevisiones(idProfesor)

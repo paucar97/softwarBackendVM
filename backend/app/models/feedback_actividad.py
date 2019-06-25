@@ -18,7 +18,12 @@ class Feedback_actividad(db.Model):
     comentario = db.Column('COMENTARIO',db.String(100))
     flag_aprobado = db.Column('FLAG_APROBADO',db.Integer)
     flg_respondido = db.Column('FLG_RESPONDIDO', db.Integer, default = 0) 
+    
     def addOne(self,obj):
         db.session.add(obj)
         db.session.flush()
         return 
+    
+    @classmethod
+    def responderFeedback(self, idJp):
+        

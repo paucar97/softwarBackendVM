@@ -164,3 +164,7 @@ api.add_resource(NombreSemestreActivo,'/api/mantenimiento/nombre_semestre')
 api.add_resource(Activar_semestre,'/api/mantenimiento/semestre_activar')
 api.add_resource(Listar_semestres_no_activos,'/api/mantenimiento/semestres_no_activos')
 api.add_resource(Crear_semestre,'/api/mantenimiento/semestre/crear')
+
+#Feedbacks Actividad
+api.add_resource(Obtener_feedbacks_actividad,'/api/feedback_actividad/obtener_profesor')
+
