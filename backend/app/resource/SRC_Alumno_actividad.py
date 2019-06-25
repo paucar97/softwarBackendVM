@@ -102,15 +102,12 @@ class Editar_nota_grupo(Resource):
         idActividad = data['idActividad']
         idGrupo = data['idGrupo']
         idRubrica = data['idRubrica']
-        
-        data2 = data['calificacion']
-
-        nota = data2['nota']
-        listaNotaAspectos = data2['listaNotaAspectos']
+        nota = data['nota']
+        listaNotaAspectos = data['listaNotaAspectos']
         idJpAnt = data['idJpAnt']
         idJpN = data['idJpN']
-        flgFalta = data2['flgFalta']
-        flgCompleto = data2['flgCompleto']
+        flgFalta = data['flgFalta']
+        flgCompleto = data['flgCompleto']
         return controller.editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
 
 class Editar_nota_alumno_actividad(Resource):
