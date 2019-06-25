@@ -5,7 +5,7 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 def Login_Controlador(email,clave):
     usuario = Usuario().getOne(email,clave)
     semestreActivo = Semestre().getOne()
-    print(semestreActivo,usuario.flg_admin)
+    #print(semestreActivo,usuario.flg_admin)
     
     if semestreActivo == None and str(usuario.flg_admin) == "1":
             d = {}
