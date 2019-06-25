@@ -83,7 +83,10 @@ def obtenerCursosxEspecialidad(idespecialidad):
 def obtenerNombreSemestreActivo():
     semestreActivo=Semestre.getOne()
     s={}
-    s['id_semestre'] = semestreActivo.id_semestre
-    s['nombre'] = semestreActivo.nombre
-
+    if semestreActivo != None:
+        s['id_semestre'] = semestreActivo.id_semestre
+        s['nombre'] = semestreActivo.nombre
+    else:
+        s['id_semestre'] =0
+        s['nombre'] = '-'
     return s

@@ -149,7 +149,7 @@ def cargaMasivaCursos(datos,idEspecialidad):
             Horario.addOne(objHorario)
     return {'message' : 'leyo bien'}
 
-def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso,idHorario):
+def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     name = pathCargaMasivaCursoHorario + datos.filename
@@ -168,8 +168,7 @@ def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso,idHorario):
         apellidoPaterno = aux[1]
         apellidoMaterno = aux[2]
         email = df.iat(i,3)
-        objUsuario = Usuario(nombre = nombres,codigo_pucp = codigoPucp,email= email,clave = codigoPucp, apellido_paterno = apellidoPaterno, apellido_materno = apellidoMaterno
-        flg_admin =0)
+        objUsuario = Usuario(nombre = nombres,codigo_pucp = codigoPucp,email= email,clave = codigoPucp, apellido_paterno = apellidoPaterno, apellido_materno = apellidoMaterno,flg_admin =0)
         idUsuario = Usuario().addOne(objUsuario)
         idCurso = Curso().getOneClave(codigoCurso,idSemestre)
         tipo = df.iat(i,4)

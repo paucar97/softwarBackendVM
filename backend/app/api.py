@@ -64,6 +64,7 @@ from app.resource.SRC_Grupo import *
 from app.resource.SRC_Co_evaluacion import *
 from app.resource.SRC_Alarma import *
 from app.resource.SRC_Mantenimiento import *
+from app.resource.SRC_Carga_masiva import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 
@@ -165,3 +166,8 @@ api.add_resource(NombreSemestreActivo,'/api/mantenimiento/nombre_semestre')
 api.add_resource(Activar_semestre,'/api/mantenimiento/semestre_activar')
 api.add_resource(Listar_semestres_no_activos,'/api/mantenimiento/semestres_no_activos')
 api.add_resource(Crear_semestre,'/api/mantenimiento/semestre/crear')
+
+#Carga Masiva
+api.add_resource(Carga_masiva_horarios,'/api/carga-masiva/horarios')
+api.add_resource(Carga_masiva_cursos,'/api/carga-masiva/cursos')
+api.add_resource(Carga_masiva_profesor_jp,'/api/carga-masiva/profesor-jp')
