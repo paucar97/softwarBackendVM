@@ -414,6 +414,10 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     idFeedbackActividad = Feedback_actividad.addOne(feedbackCreado)
     return idFeedbackActividad
 
+def listarRevisiones(idProfesor):
+    cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor))
+    return cursosEnsenando
+
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
     actividad = Actividad.getOne(idActividad)
