@@ -1,4 +1,4 @@
-    from app.models import db
+from app.models import db
 from app.models.semestre import Semestre
 from app.models.semestre_especialidad import Semestre_especialidad
 from app.models.especialidad import Especialidad
@@ -44,14 +44,18 @@ def obtenerlistaSemestresNoActivos():
 
 
 def obtenerEspecialidadxSemestre():
-    semestreActivo = Semestre.getOne()
-    especialidades = Semestre_especialidad.obtenerEspecialidadActivo(semestreActivo.id_especialidad)
+    semestreActivo = Semestre().getOne()
+    idsemestre = semestreActivo.id_semestre
+    especialidades = Semestre_especialidad().obtenerEspecialidadActivo(idsemestre)
+    print(especialidades)
     lista = list()
     for especialidad in especialidades:
-        esp = Especialidad.getOne(especialidad.id_especialidad)
+        idespecialidad = especialidad.id_especialidad
+        print(idespecialidad)
+        esp = Especialidad().getOne(idespecialidad)
         c = {}
-        c['id_especialidad'] = especialidad.id_especialidad
-        c['nombre'] = especialidad.nombre
+        c['id_especialidad'] = esp.id_especialidad
+        c['nombre'] = esp.nombre
         lista.append(c)
 
     listaE = {}
@@ -62,7 +66,7 @@ def obtenerEspecialidadxSemestre():
 
 
 def obtenerCursosxEspecialidad(idespecialidad):
-    semestreActivo=Semestre.getOne()
+    semestreActivo=Semestre().getOne()
     listaCursos= Curso.getCursosActivosxEspecialidad(semestreActivo.id_semestre,idespecialidad)
     lista=list()
     for curso in listaCursos:
