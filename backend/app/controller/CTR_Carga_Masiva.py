@@ -110,26 +110,27 @@ def cargaMasivaHorarios(datos,idCurso,idEspecialidad):
     longitud = len(df)
     
     print(df)
-    """
+    
     for i in range(longitud):
-        idHorario = Horario().addOne(df.iat(i,2),idCurso,idEspecialidad)  
-        codigoPucp =df.iat(i,0)
-        nombre = df.iat(i,5)
-        email = df.iat(i,4)
-        apellidoPaterno = df.iat(i,6)
-        apellidoMaterno = df.iat(i,7)
+        idHorario = Horario().addOne(df.iat[i,2],idCurso,idEspecialidad)  
+        codigoPucp =df.iat[i,0]
+        nombre = df.iat[i,5]
+        email = df.iat[i,4]
+        apellidoPaterno = df.iat[i,6]
+        apellidoMaterno = df.iat[i,7]
         objUsuario = Usuario(nombre = nombre,email = email,apellido_paterno = apellidoPaterno , 
-        apellido_materno = apellidoMaterno, flg_admin =0 ,codigo_pucp = codigoPucp clave = codigoPucp)
+        apellido_materno = apellidoMaterno, flg_admin =0 ,codigo_pucp = codigoPucp, clave = codigoPucp)
         idUsuario = Usuario().addOne(objUsuario) 
         objAlumnoHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario = idUsuario, id_permiso = 2,id_semestre = idSemestre)
         Permiso_usuario_horario().addOne(objAlumnoHorario)
-    """
+    
     return {'message' : 'leyo bien'}
 
 def cargaMasivaCursos(datos,idEspecialidad):
     semestre = Semestre().getOne()
     idSemestre = semestre.id_semestre #
-    
+    print(datos)
+    print(idEspecialidad)
     name = pathCargaMasivaCursoHorario + datos.filename
     data = datos.read()
     with open(name,'wb') as file:
@@ -138,15 +139,15 @@ def cargaMasivaCursos(datos,idEspecialidad):
     longitud = len(df)
 
     for i in range(longitud):
-        nombreCurso = df.iat(i,0)
-        codigoCurso = df.iat(i,1)
+        nombreCurso = df.iat[i,0]
+        codigoCurso = df.iat[i,1]
         horarios = []
-        horarios = df.iat(i,2).split(',')
+        horarios = str(df.iat[i,2]).split(',')
         objCurso = Curso(id_especialidad = idEspecialidad,id_semestre =idSemestre,nombre = nombreCurso,codigo = codigoCurso)
         idCurso = Curso().addOne(objCurso)
         for horario in horarios:
-            objHorario= Horario(id_curso = idCurso,id_semestre =idSemestre,nombre = horario)
-            Horario.addOne(objHorario)
+            horario = horario.replace(' ','')
+            Horario().addOne(horario,idCurso,idSemestre)
     return {'message' : 'leyo bien'}
 
 def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso):
@@ -160,20 +161,20 @@ def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso):
     longitud = len(df)
 
     for i in range(longitud):
-        codigoCurso= df.iat(i,0)
-        codigoPucp = df.iat(i,1)
-        nombreCompleto = df.iat(i,2)
+        codigoCurso= df.iat[i,0]
+        codigoPucp = df.iat[i,1]
+        nombreCompleto = df.iat[i,2]
         aux = SplitNombres(nombreCompleto)
         nombres = aux[0]
         apellidoPaterno = aux[1]
         apellidoMaterno = aux[2]
-        email = df.iat(i,3)
+        email = df.iat[i,3]
         objUsuario = Usuario(nombre = nombres,codigo_pucp = codigoPucp,email= email,clave = codigoPucp, apellido_paterno = apellidoPaterno, apellido_materno = apellidoMaterno,flg_admin =0)
         idUsuario = Usuario().addOne(objUsuario)
         idCurso = Curso().getOneClave(codigoCurso,idSemestre)
-        tipo = df.iat(i,4)
+        tipo = df.iat[i,4]
         if tipo == 1:
-            horarios = str( df.iat(i,5)).split(',')
+            horarios = str( df.iat[i,5]).split(',')
             for horario in horarios:   
                 idHorario = Horario().getOneClave(idCurso,idSemestre,horario)
                 objUsuaHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario =idUsuario, id_permiso = 1,id_semestre = idSemestre)

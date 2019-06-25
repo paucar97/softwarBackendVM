@@ -116,4 +116,6 @@ def obtenerNotasFinales(idActividad):
             else:
                 d['nota'] = None
             rpta.append(d)        
-    return rpta
+    r={}
+    r['listaNotas'] = rpta 
+    return r
