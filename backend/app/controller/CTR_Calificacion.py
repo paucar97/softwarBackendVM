@@ -5,6 +5,7 @@ from app.models.actividad import Actividad
 from app.models.usuario import Usuario
 from app.models.grupo import Grupo
 from app.models.entregable import Entregable 
+from app.models.alumno_actividad_calificacion import Alumno_actividad_calificacion
 def obtenerAlumnosEntregableEntregado(idActividad):
     tipoActividad = Actividad().getOne(idActividad).tipo
 
@@ -89,4 +90,30 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
 def obtenerNotasFinales(idActividad):
     actividad = Actividad().getOne(idActividad)
     tipo = actividad.tipo
-    return
+    rpta =[]
+    if tipo == 'I':
+        listaAlumnos = Alumno_actividad_calificacion().getAllAlumnos(idActividad)
+        for alumno in listaAlumnos:
+            d = {}
+            auxAl = Usuario().getOneId(alumno.id_alumno)
+            d['idAlumno'] = alumno.id_alumno
+            d['codigoPucp'] = auxAl.codigo_pucp
+            d['nombreAlumno'] = auxAl.nombre + " " + auxAl.apellido_paterno + " " + auxAl.apellido_materno
+            d['nota'] = alumno.nota
+            rpta.append(d)
+    else:
+        listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
+        for grupo in listarGrupos:
+            d = {}
+            auxGrupo = Grupo().getOne(grupo.id_grupo).first()
+            d['idGrupo'] = auxGrupo.id_grupo
+            d['nombreGrupo' ] = auxGrupo.nombre
+            print(d)
+            auxAl = Alumno_actividad().getAlumnoGrupo(auxGrupo.id_grupo,idActividad).first()
+            auxAl2 = Alumno_actividad_calificacion().getNotaGrupo(idActividad,auxAl.id_alumno)
+            if auxAl2 != None:
+                d['nota'] = auxAl2.nota
+            else:
+                d['nota'] = None
+            rpta.append(d)        
+    return rpta

@@ -70,3 +70,7 @@ class Alumno_actividad(db.Model):
         d = Alumno_actividad.query.filter_by(id_actividad = idActividad,id_alumno = idUsuario).first()
         print(d)
         return d.id_grupo
+    
+    @classmethod
+    def getAlumnoGrupo(self,idGrupo,idActividad):
+        return Alumno_actividad.query.filter_by(id_actividad = idActividad,id_grupo = idGrupo)

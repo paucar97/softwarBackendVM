@@ -131,6 +131,7 @@ api.add_resource(Listar_comentarios_actividad, '/api/actividad/listar_comentario
 api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
 api.add_resource(Obtener_estadistica_actividad, '/api/actividad/estadistica')
 api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas')
+api.add_resource(Obtener_notas_finales,'/api/notas-finales')
 api.add_resource(Crear_alarma,'/api/actividad/alarma/crear')
 api.add_resource(Listar_alarma,'/api/alarma/listar')
 api.add_resource(Editar_alarma,'/api/alarma/editar')
