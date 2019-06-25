@@ -17,9 +17,11 @@ from app.models.aspecto import Aspecto
 from app.models.indicador import Indicador
 from app.models.rubrica_aspecto_indicador import Rubrica_aspecto_indicador
 from app.models.rubrica_aspecto_indicador_nivel import Rubrica_aspecto_indicador_nivel
+from app.models.feedback_actividad import Feedback_actividad
 from app.models.rubrica_aspecto import Rubrica_aspecto
 from app.commons.messages import ResponseMessage
 from app.models.grupo import Grupo
+from app.commons.utils import *
 from app.models.grupo_alumno_horario import Grupo_alumno_horario
 from sqlalchemy import *
 from sqlalchemy.orm import aliased
@@ -368,7 +370,7 @@ def publicarNotificacionesAlumnos(idActividad):
 
     if len(alumnosFaltantesCalificados) > 0:
         d['succeed'] = False
-        d['message'] = "Notas publicadas"
+        d['message'] = "Falta alumnos por calificar"
         return d
 
     alumnosCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 1)).all()
@@ -378,6 +380,8 @@ def publicarNotificacionesAlumnos(idActividad):
     semestre = Semestre.getOne()
 
     for alumno in alumnosCalificados:
+        alumnoAnalizado = Usuario.query.filter_by(id_usuario = alumno.id_alumno).first()
+        envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
         publicarNotificacionGeneral(semestre.id_semestre, alumno.id_alumno, mensaje, idActividad)
 
     Alumno_actividad.publicarNotas(idActividad)
@@ -385,12 +389,30 @@ def publicarNotificacionesAlumnos(idActividad):
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == idHorario.id_horario, Permiso_usuario_horario.id_permiso == 1))
 
     for profesor in profesoresHorario:
+        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario)
+        envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre)
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
 
 def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
+    actividadAnalizada = Actividad.query.filter_by(id_actividad = idActividad).first()
+    profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == actividadAnalizada.id_horario, Permiso_usuario_horario.id_permiso == 1))
+    semestre = Semestre.getOne()
 
+    for profesor in profesoresHorario:
+        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario)
+        envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.")
+        publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.", idActividad)
+    return 1
+
+    feedbackCreado = Feedback_actividad(
+        id_actividad = idActividad,
+        id_jp_reviso = idJpReviso,
+    )
+
+    idFeedbackActividad = Feedback_actividad.addOne(feedbackCreado)
+    return idFeedbackActividad
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
@@ -406,7 +428,7 @@ def publicarParaRevision(idActividad, idJpReviso):
             d['message'] = "Notas publicadas"
             return d
     if actividad.flg_confianza == 0:
-        crearSolicitudRevisionProfesor(idActividad, idJpReviso)
+        return crearSolicitudRevisionProfesor(idActividad, idJpReviso)
 
     #flgConfianza = Actividad().getOne(idActividad).flg_confianza
     #
@@ -535,7 +557,7 @@ def editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, lista
     listaAlumnosGrupo = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).all()
     try:
         for alumno in listaAlumnosGrupo:
-            d = (idActividad, alumno.id_alumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
+            d = editarNotaAlumno(idActividad, alumno.id_alumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
         return d
     except Exception as ex:
         d = {}
