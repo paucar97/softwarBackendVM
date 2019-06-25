@@ -185,7 +185,7 @@ class Calificar_autoevaluacion(Resource):
         flgFalta = data['flgFalta']
         listaNotaAspectos = data['listaNotaAspectos']
         flgCompleto = data['flgCompleto']
-        
+        print(data)
         return controller.calificarAutoevaluacion(idActividad, idAlumno, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)
 
 class Calificar_coevaluacion(Resource):
