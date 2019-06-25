@@ -89,6 +89,4 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
 def obtenerNotasFinales(idActividad):
     actividad = Actividad().getOne(idActividad)
     tipo = actividad.tipo
-    if tipo == 'I':
-        
-    else:
+    return
