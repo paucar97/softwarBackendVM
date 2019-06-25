@@ -18,15 +18,23 @@ class Semestre_especialidad(db.Model):
     id_semestre = db.Column('ID_SEMESTRE', db.ForeignKey(Semestre.id_semestre), primary_key=True)
 
     @classmethod
-    def activacionSemestre(idSemestre):
+    def addOne(self,obj):
+        db.session.add(obj)
+        db.session.commit()
+        db.session.flush()
+        return 
+
+
+    @classmethod
+    def activacionSemestre(self,idSemestre):
          aux = Semestre_especialidad.query.filter_by(id_semestre = idSemestre).all()
 
          if aux == [] :
-             especialidades = especialidades().getAll()
+             especialidades = Especialidad().getAll()
              for especialidad in especialidades:
                  objSemestreEsp = Semestre_especialidad(id_especialidad = especialidad.id_especialidad,id_semestre = idSemestre)
                  Semestre_especialidad().addOne(objSemestreEsp) 
-        else:
+         else:
             return
     def obtenerEspecialidadActivo(self,idsemestre):
         return Semestre.query.filter_by(id_semestre=idsemestre).all()

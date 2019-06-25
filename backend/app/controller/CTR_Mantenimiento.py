@@ -5,7 +5,7 @@ from app.models.especialidad import Especialidad
 from app.models.curso import Curso
 
 def crearSemestre(nombreSemestre):
-    objSemestre = Semestre(nombre = nombreSemestre,flag_activo = 0)
+    objSemestre = Semestre(nombre = nombreSemestre,flg_activo = 0)
     Semestre().addOne(objSemestre)
     return { 'message' : 'Se agrego correctamente'}
 
@@ -45,18 +45,19 @@ def obtenerlistaSemestresNoActivos():
 
 def obtenerEspecialidadxSemestre():
     semestreActivo=Semestre.getOne()
-    especialidades=semestreActivo.getAll(semestreActivo.id_semestre)
+    especialidades= Especialidad().getAll()
     lista = list()
     for especialidad in especialidades:
-        esp = Especialidad.getOne(especialidad.id_especialidad)
+        #esp = Especialidad.getOne(especialidad.id_especialidad)
         c = {}
-        c['id_especialidad'] = esp.id_especialidad
-        c['nombre'] = esp.nombre
+        c['id_especialidad'] = especialidad.id_especialidad
+        c['nombre'] = especialidad.nombre
         lista.append(c)
 
     listaE = {}
-    listaE['listaEspecialidades'] = lista
     
+    listaE['listaEspecialidades'] = lista
+    print(listaE)
     return listaE
 
 

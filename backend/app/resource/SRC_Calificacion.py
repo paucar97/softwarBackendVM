@@ -17,3 +17,9 @@ class Registrar_calificaciones(Resource):
         listaRubrica = data['listaRubrica']
 
         return registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica)
+
+class Obtener_notas_finales(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        return obtenerNotasFinales(idActividad)
