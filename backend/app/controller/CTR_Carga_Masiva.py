@@ -151,7 +151,7 @@ def cargaMasivaCursos(datos,idEspecialidad):
             Horario().addOne(horario,idCurso,idSemestre)
     return {'message' : 'leyo bien'}
 
-def cargaMasivaProfesorJP(datos,idEspecialidad,idCurso):
+def cargaMasivaProfesorJP(datos,idEspecialidad):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
     name = pathCargaMasivaCursoHorario + datos.filename

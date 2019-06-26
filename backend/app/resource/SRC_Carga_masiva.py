@@ -22,7 +22,7 @@ class Carga_masiva_profesor_jp(Resource):
         key = 'arch'
         file = request.files.get(key)
         idEspecialidad = request.form['idEspecialidad']
-        idCurso = request.form['idCurso']
         
         
-        return cargaMasivaProfesorJP(file,idEspecialidad,idCurso)
+        
+        return cargaMasivaProfesorJP(file,idEspecialidad)
