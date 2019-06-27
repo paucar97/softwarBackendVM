@@ -22,4 +22,5 @@ class Obtener_notas_finales(Resource):
     def post(self):
         data = request.get_json()
         idActividad = data['idActividad']
-        return obtenerNotasFinales(idActividad)
+        idRubrica = data['idRubrica']
+        return obtenerNotasFinales(idActividad,idRubrica)

@@ -87,12 +87,12 @@ def registrarCalificaciones(idAlumno,idActividad,idRubrica,listaRubrica):
             notaAlumnoAspectoObjeto.updateNota(notaTotal)
     return {'message': 'termino'}
 
-def obtenerNotasFinales(idActividad):
+def obtenerNotasFinales(idActividad,idRubrica):
     actividad = Actividad().getOne(idActividad)
     tipo = actividad.tipo
     rpta =[]
     if tipo == 'I':
-        listaAlumnos = Alumno_actividad_calificacion().getAllAlumnos(idActividad)
+        listaAlumnos = Alumno_actividad_calificacion().getAllAlumnos(idActividad,idRubrica)
         for alumno in listaAlumnos:
             d = {}
             auxAl = Usuario().getOneId(alumno.id_alumno)
@@ -110,7 +110,7 @@ def obtenerNotasFinales(idActividad):
             d['nombreGrupo' ] = auxGrupo.nombre
             print(d)
             auxAl = Alumno_actividad().getAlumnoGrupo(auxGrupo.id_grupo,idActividad).first()
-            auxAl2 = Alumno_actividad_calificacion().getNotaGrupo(idActividad,auxAl.id_alumno)
+            auxAl2 = Alumno_actividad_calificacion().getNotaGrupo(idActividad,auxAl.id_alumno,idRubrica)
             if auxAl2 != None:
                 d['nota'] = auxAl2.nota
             else:
