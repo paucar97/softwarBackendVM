@@ -90,3 +90,7 @@ def obtenerNombreSemestreActivo():
         s['id_semestre'] =0
         s['nombre'] = '-'
     return s
+
+def desactivarSemestre(idSemestre):
+    m = Semestre().desactivar(idSemestre)
+    return m

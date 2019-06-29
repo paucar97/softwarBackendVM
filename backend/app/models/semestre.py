@@ -37,3 +37,13 @@ class Semestre(db.Model):
         sem.flg_activo = 1
         db.session.commit()
         return
+
+    @classmethod
+    def desactivar(self,idSemestre):
+        semestre = Semestre.query.filter_by(id_semestre = idSemestre).first()
+        if semestre == None:
+            return {'mensage' : 'No hay semestre activo'}
+        else:
+            semestre.flg_activo =0
+            db.session.commit()
+            return {'mensage' : 'correcto'}

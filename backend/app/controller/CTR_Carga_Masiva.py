@@ -178,6 +178,7 @@ def cargaMasivaProfesorJP(datos,idEspecialidad):
         if tipo == "1":
             horarios = str( df.iat[i,5]).split(',')
             for horario in horarios:   
+                horario = horario.replace(' ','')
                 print(idCurso,horario,idSemestre)
                 idHorario = Horario().getOneClave(idCurso,idSemestre,horario)
                 objUsuaHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario =idUsuario, id_permiso = 1,id_semestre = idSemestre)
@@ -186,6 +187,7 @@ def cargaMasivaProfesorJP(datos,idEspecialidad):
         else:
             horarios = Horario().getAll(idCurso,idSemestre)
             for horario in horarios:
+                
                 idHorario = horario.id_horario
                 objUsuaHorario = Permiso_usuario_horario(id_horario = idHorario,id_usuario =idUsuario, id_permiso = 3,id_semestre = idSemestre)
                 Permiso_usuario_horario().addOne(objUsuaHorario)
