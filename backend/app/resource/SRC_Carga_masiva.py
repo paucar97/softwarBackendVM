@@ -3,7 +3,7 @@ from flask import Flask, request
 from app.controller.CTR_Carga_Masiva import *
 class Carga_masiva_horarios(Resource):
     def post(self):
-        key = 'file 1'
+        key = 'arch'
         file  = request.files.get(key)
         idCurso = int(request.form['idCurso'])
         idEspecialidad = int(request.form['idEspecialidad'])
@@ -11,7 +11,7 @@ class Carga_masiva_horarios(Resource):
     
 class Carga_masiva_cursos(Resource):
     def post(self):
-        key = 'file 1'
+        key = 'arch'
         file = request.files.get(key)
         idEspecialidad= request.form['idEspecialidad'] 
         
@@ -19,10 +19,10 @@ class Carga_masiva_cursos(Resource):
 
 class Carga_masiva_profesor_jp(Resource):
     def post(self):
-        key = 'file 1'
+        key = 'arch'
         file = request.files.get(key)
         idEspecialidad = request.form['idEspecialidad']
-        idCurso = request.form['idCurso']
-        idHorario = request.form['idHorario']
         
-        return cargaMasivaProfesorJP(file,idEspecialidad,idCurso,idHorario)
+        
+        
+        return cargaMasivaProfesorJP(file,idEspecialidad)

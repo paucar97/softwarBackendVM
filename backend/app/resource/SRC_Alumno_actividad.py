@@ -178,6 +178,7 @@ class Obtener_coevaluacion(Resource):
 class Calificar_autoevaluacion(Resource):
     def post(self):
         data = request.get_json()
+        print(data)
         idActividad = data['idActividad']
         idAlumno = data['idAlumno']
         nota = data['nota']

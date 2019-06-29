@@ -44,25 +44,29 @@ def obtenerlistaSemestresNoActivos():
 
 
 def obtenerEspecialidadxSemestre():
-    semestreActivo=Semestre.getOne()
-    especialidades= Especialidad().getAll()
+    semestreActivo = Semestre().getOne()
+    idsemestre = semestreActivo.id_semestre
+    especialidades = Semestre_especialidad().obtenerEspecialidadActivo(idsemestre)
+    print(especialidades)
     lista = list()
     for especialidad in especialidades:
-        #esp = Especialidad.getOne(especialidad.id_especialidad)
+        idespecialidad = especialidad.id_especialidad
+        print(idespecialidad)
+        esp = Especialidad().getOne(idespecialidad)
         c = {}
-        c['id_especialidad'] = especialidad.id_especialidad
-        c['nombre'] = especialidad.nombre
+        c['id_especialidad'] = esp.id_especialidad
+        c['nombre'] = esp.nombre
         lista.append(c)
 
     listaE = {}
     
     listaE['listaEspecialidades'] = lista
-    print(listaE)
+    
     return listaE
 
 
 def obtenerCursosxEspecialidad(idespecialidad):
-    semestreActivo=Semestre.getOne()
+    semestreActivo=Semestre().getOne()
     listaCursos= Curso.getCursosActivosxEspecialidad(semestreActivo.id_semestre,idespecialidad)
     lista=list()
     for curso in listaCursos:
@@ -79,7 +83,10 @@ def obtenerCursosxEspecialidad(idespecialidad):
 def obtenerNombreSemestreActivo():
     semestreActivo=Semestre.getOne()
     s={}
-    s['id_semestre'] = semestreActivo.id_semestre
-    s['nombre'] = semestreActivo.nombre
-
+    if semestreActivo != None:
+        s['id_semestre'] = semestreActivo.id_semestre
+        s['nombre'] = semestreActivo.nombre
+    else:
+        s['id_semestre'] =0
+        s['nombre'] = '-'
     return s

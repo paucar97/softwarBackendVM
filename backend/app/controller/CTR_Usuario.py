@@ -5,7 +5,9 @@ from app.models.permiso_usuario_horario import Permiso_usuario_horario
 def Login_Controlador(email,clave):
     usuario = Usuario().getOne(email,clave)
     semestreActivo = Semestre().getOne()
-    if semestreActivo is None and usuario.flg_admin == "1":
+    #print(semestreActivo,usuario.flg_admin)
+    
+    if semestreActivo == None and str(usuario.flg_admin) == "1":
             d = {}
             d['idUser'] = usuario.id_usuario
             d['codigoPUCP'] = usuario.codigo_pucp

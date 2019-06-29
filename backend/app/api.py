@@ -64,6 +64,7 @@ from app.resource.SRC_Grupo import *
 from app.resource.SRC_Co_evaluacion import *
 from app.resource.SRC_Alarma import *
 from app.resource.SRC_Mantenimiento import *
+from app.resource.SRC_Carga_masiva import *
 ##########################################################################################################
 ############################################ SERVICIOS ###################################################
 
@@ -131,6 +132,7 @@ api.add_resource(Listar_comentarios_actividad, '/api/actividad/listar_comentario
 api.add_resource(Listar_alumnos_destacados, '/api/actividad/alumnos_destaca')
 api.add_resource(Obtener_estadistica_actividad, '/api/actividad/estadistica')
 api.add_resource(Lista_alumnos_notas,'/api/alumnos/notas')
+api.add_resource(Obtener_notas_finales,'/api/notas-finales')
 api.add_resource(Crear_alarma,'/api/actividad/alarma/crear')
 api.add_resource(Listar_alarma,'/api/alarma/listar')
 api.add_resource(Editar_alarma,'/api/alarma/editar')
@@ -168,4 +170,9 @@ api.add_resource(Crear_semestre,'/api/mantenimiento/semestre/crear')
 
 #Feedbacks Actividad
 api.add_resource(Obtener_feedbacks_actividad,'/api/feedback_actividad/obtener_profesor')
+
+#Carga Masiva
+api.add_resource(Carga_masiva_horarios,'/api/carga-masiva/horarios')
+api.add_resource(Carga_masiva_cursos,'/api/carga-masiva/cursos')
+api.add_resource(Carga_masiva_profesor_jp,'/api/carga-masiva/profesor-jp')
 

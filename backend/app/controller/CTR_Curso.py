@@ -23,6 +23,7 @@ def listarCursos(idUsuario):
         d['idHorario']=listaIdHorario[i]
         curso=listaCursos[i]
         d['nombreCurso']=curso.nombre
+        d['idEspecialidad'] = curso.id_especialidad
         d['codigo']=curso.codigo
         listaCursoHorario.append(d)
 

@@ -749,7 +749,7 @@ def calificarAutoevaluacion(idActividad, idAlumno, idRubrica, nota, listaNotaAsp
         flg_completo = flgCompleto,
         flg_falta = flgFalta
     )
-
+    print(idActividad,idAlumno,idRubrica)
     aux = Alumno_actividad_calificacion().addOne(calificacionIngresada)
 
     for notaAspecto in listaNotaAspectos:

@@ -65,3 +65,11 @@ class Alumno_actividad_calificacion(db.Model):
         alumnoActividad.flg_completo = flgCompleto
         db.session.commit()
         return True
+
+    @classmethod
+    def getAllAlumnos(self,idActividad,idRubrica):
+        return Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad,id_rubrica = idRubrica).all()
+    
+    @classmethod
+    def getNotaGrupo(self,idActividad,idAlumno,idRubrica):
+        return Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno,id_rubrica = idRubrica).first()

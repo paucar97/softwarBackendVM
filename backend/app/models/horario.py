@@ -29,7 +29,7 @@ class Horario(db.Model):
     
     @classmethod
     def addOne(self,nombreH,idCurso,idSemestre):
-        d = Horario.query.filter(and_(id_curso == idCurso,id_semestre == idSemestre,nombre == nombreH )).first()
+        d = Horario.query.filter(and_(Horario.id_curso == idCurso,Horario.id_semestre == idSemestre,Horario.nombre == nombreH )).first()
         if d is None:
             objHorario = Horario(id_curso = idCurso,id_semestre=idSemestre,nombre = nombreH)
             db.session.add(objHorario)
@@ -44,10 +44,10 @@ class Horario(db.Model):
     #    return Horario.query(Horario).join(puh, puh.id_horario == Horario.id_horario).subquery()
     @classmethod
     def getOneClave(self,idCurso,idSemestre,horario):
-        d = Horario.query.filter(and_(id_curso == idCurso,id_semestre == idSemestre,nombre == horario)).first()
+        d = Horario.query.filter(and_(Horario.id_curso == idCurso,Horario.id_semestre == idSemestre,Horario.nombre == horario)).first()
         return d.id_horario
         
     @classmethod
     def getAll(self,idCurso,idSemestre):
-        d = Horario.query.filter(and_(id_curso== idCurso, id_semestre == idSemestre)).all()
+        d = Horario.query.filter(and_(Horario.id_curso== idCurso, Horario.id_semestre == idSemestre)).all()
         return d

@@ -37,4 +37,4 @@ class Semestre_especialidad(db.Model):
          else:
             return
     def obtenerEspecialidadActivo(self,idsemestre):
-        return Semestre.query.filter_by(id_semestre=idsemestre).all()
+        return Semestre_especialidad.query.filter_by(id_semestre=idsemestre).all()
