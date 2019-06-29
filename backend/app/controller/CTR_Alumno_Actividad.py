@@ -413,13 +413,18 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     d['idFeedbackActividad'] = idFeedbackActividad
     return d
 
-def responderFeedbackActividad(idFeedbackActividad, idJpReviso, comentario, flgAprobado):
+def publicarProfesor(idActividad):
+    feedbackActividad = Feedback_actividad.query.filter(and_(Feedback_actividad.id_actividad == idActividad, Feedback_actividad.flg_respondido == 0)).first()
+    aux2 = Feedback_actividad.responderFeedback(idFeedbackActividad, "Es conforme", 1)
     aux = publicarNotificacionesAlumnos(idActividad)
-    aux2 = Feedback_actividad.responderFeedback(idFeedbackActividad, idJpReviso, comentario, flgAprobado)
-    jpRevisado = Usuario.query.filter()
-    if flgAprobado == 0:
-        envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
-        
+        if aux == 0:
+            d['succeed'] = False
+            d['message'] = "Falta corregir alumnos en la Actividad"
+            return d
+        else:
+            d['succeed'] = True
+            d['message'] = "Notas publicadas"
+            return d
 
 def listarRevisiones(idProfesor):
     cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
