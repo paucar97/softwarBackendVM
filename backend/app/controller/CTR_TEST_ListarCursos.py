@@ -23,7 +23,7 @@ def obtenerCursosActivosXProfesor(idProfesor):
 
     #print(listaCursos)
 
-    data = db.session.query(listaCursos.c.ID_CURSO, listaCursos.c.NOMBRE, listaCursos.c.CODIGO, listaHorarios.c.ID_HORARIO, listaHorarios.c.NOMBRE).join(listaHorarios, listaCursos.c.ID_CURSO == listaHorarios.c.ID_CURSO)
+    data = db.session.query(listaCursos.c.ID_CURSO, listaCursos.c.ID_ESPECIALIDAD, listaCursos.c.NOMBRE, listaCursos.c.CODIGO, listaHorarios.c.ID_HORARIO, listaHorarios.c.NOMBRE).join(listaHorarios, listaCursos.c.ID_CURSO == listaHorarios.c.ID_CURSO)
     #data = db.session.query(listaCursos.c.id_curso, listaCursos.c.nombre, listaCursos.c.codigo, listaHorarios.c.nombre).join(listaHorarios, listaCursos.c.id_curso == listaHorarios.c.id_curso)
     #data = db.session.query(listaCursos.id_curso, listaCursos.nombre, listaCursos.codigo, listaHorarios.nombre).join(listaHorarios, listaCursos.id_curso == listaHorarios.id_curso)
     #data = db.session.query(Curso.id_curso, Curso.nombre, Curso.codigo, listaHorarios.nombre).join(listaHorarios, listaCursos.id_curso == listaHorarios.id_curso)
@@ -31,9 +31,10 @@ def obtenerCursosActivosXProfesor(idProfesor):
 
     res = []
 
-    for idc, nomc, cod, idh, nomh in data.all():
+    for idc, ide, nomc, cod, idh, nomh in data.all():
         aux = {}
         aux['idcurso'] = idc
+        aux['idespecialidad'] = ide
         aux['nombre'] = nomc
         aux['codigo'] = cod
         aux['idhorario'] = idh
@@ -44,5 +45,5 @@ def obtenerCursosActivosXProfesor(idProfesor):
     d['listaCursos'] = res
     d['cantCursos'] = len(res)
 
-    print(d)
+    #print(d)
     return d
