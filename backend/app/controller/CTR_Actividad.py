@@ -495,21 +495,27 @@ def obtenerRegistroEsfuerzoIndividual(tipo, idActividadUHorario):
     else:
         registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_horario == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
     
-    d = {}
-    d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
-    d['tipo'] = registroEsfuerzoAnalizado.tipo
-    d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
+    if registroEsfuerzoAnalizado is not None:
+        d = {}
+        d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
+        d['tipo'] = registroEsfuerzoAnalizado.tipo
+        d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
 
-    categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
+        categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
 
-    listaCategorias = []
-    for categoria in categoriasAnalizadas:
-        e = {}
-        e['idCategoria'] = categoria.id_categoria
-        e['descripcion'] = categoria.descripcion
-        listaCategorias.append(e)    
-    d['listaCategorias'] = listaCategorias
-    return d
+        listaCategorias = []
+        for categoria in categoriasAnalizadas:
+            e = {}
+            e['idCategoria'] = categoria.id_categoria
+            e['descripcion'] = categoria.descripcion
+            listaCategorias.append(e)    
+        d['listaCategorias'] = listaCategorias
+        return d
+    else:    
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe Registro de Hora creado"
+        return d
 
 def obtenerRegistroEsfuerzo(idAlumno, tipo, idActividadUHorario):
     if tipo == 1:
@@ -517,32 +523,38 @@ def obtenerRegistroEsfuerzo(idAlumno, tipo, idActividadUHorario):
     else:
         registroEsfuerzoAnalizado = Registro_esfuerzo.query.filter(and_(Registro_esfuerzo.id_horario == idActividadUHorario, Registro_esfuerzo.flg_activo == 1)).first()
     
-    d = {}
-    d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
-    d['tipo'] = registroEsfuerzoAnalizado.tipo
-    d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
+    if registroEsfuerzoAnalizado is not None:
+        d = {}
+        d['idRegistroEsfuerzo'] = registroEsfuerzoAnalizado.id_registro_esfuerzo
+        d['tipo'] = registroEsfuerzoAnalizado.tipo
+        d['idUsuarioCreador'] = registroEsfuerzoAnalizado.id_usuario_creador
 
-    categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
+        categoriasAnalizadas = Categoria.query.filter(and_(Categoria.id_registro_esfuerzo == registroEsfuerzoAnalizado.id_registro_esfuerzo, Categoria.flg_activo == 1)).all()
 
-    listaCategorias = []
-    for categoria in categoriasAnalizadas:
-        e = {}
-        e['idCategoria'] = categoria.id_categoria
-        e['descripcion'] = categoria.descripcion
-        
-        respuestasCategoria = Categoria_respuesta_alumno.query.filter(and_(Categoria_respuesta_alumno.id_categoria == categoria.id_categoria, Categoria_respuesta_alumno.id_alumno == idAlumno, Categoria_respuesta_alumno.flg_activo == 1)).all()
-        listaRespuestas = []
-        if respuestasCategoria is not None:
-            for respuesta in respuestasCategoria:
-                f = {}
-                f['descripcion'] = respuesta.descripcion
-                f['horasPlanificadas'] = respuesta.horas_planificadas
-                f['horasReales'] = respuesta.horas_reales
-                listaRespuestas.append(f)
-        e['listaRespuestas'] = listaRespuestas
-        listaCategorias.append(e)    
-    d['listaCategorias'] = listaCategorias
-    return d
+        listaCategorias = []
+        for categoria in categoriasAnalizadas:
+            e = {}
+            e['idCategoria'] = categoria.id_categoria
+            e['descripcion'] = categoria.descripcion
+            
+            respuestasCategoria = Categoria_respuesta_alumno.query.filter(and_(Categoria_respuesta_alumno.id_categoria == categoria.id_categoria, Categoria_respuesta_alumno.id_alumno == idAlumno, Categoria_respuesta_alumno.flg_activo == 1)).all()
+            listaRespuestas = []
+            if respuestasCategoria is not None:
+                for respuesta in respuestasCategoria:
+                    f = {}
+                    f['descripcion'] = respuesta.descripcion
+                    f['horasPlanificadas'] = respuesta.horas_planificadas
+                    f['horasReales'] = respuesta.horas_reales
+                    listaRespuestas.append(f)
+            e['listaRespuestas'] = listaRespuestas
+            listaCategorias.append(e)    
+        d['listaCategorias'] = listaCategorias
+        return d
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No existe Registro de Hora creado"
+        return d
 
 def registrarHoras(idRegistroEsfuerzo, idAlumno, listaCategorias):
     try:
