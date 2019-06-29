@@ -156,6 +156,7 @@ api.add_resource(Obtener_autoevaluacion,'/api/autoevaluacion/obtener_autoevaluac
 api.add_resource(Calificar_autoevaluacion,'/api/autoevaluacion/calificar_autoevaluacion')
 api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
 api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacion')
+api.add_resource(Obtener_notas_coevaluacion, '/api/coevaluacion/obtener_notas_grupos')
 
 #Mantenimiento
 api.add_resource(EspecialidadesxSemestre,'/api/mantenimiento/especialidad_semestre')

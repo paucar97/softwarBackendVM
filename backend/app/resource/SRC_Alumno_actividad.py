@@ -207,3 +207,10 @@ class Obtener_feedbacks_actividad(Resource):
         data = request.get_json()
         idProfesor = data['idProfesor']
         return controller.listarRevisiones(idProfesor)
+
+class Obtener_notas_coevaluacion(Resource):
+    def post(self):
+        data = request.get_json()
+        idGrupo = data['idGrupo']
+        idActividad = data['idActividad']
+        return controller.sumaCoevaluacion(idGrupo, idActividad)
