@@ -414,15 +414,16 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     return d
 
 def responderFeedbackActividad(idFeedbackActividad, idJpReviso, comentario, flgAprobado):
-    #Mandar notificacion
-    if flgAprobado == 1:
-        aux = publicarNotificacionesAlumnos(idActividad)
+    aux = publicarNotificacionesAlumnos(idActividad)
+    aux2 = Feedback_actividad.responderFeedback(idFeedbackActividad, idJpReviso, comentario, flgAprobado)
+    jpRevisado = Usuario.query.filter()
+    if flgAprobado == 0:
+        envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
+        
 
 def listarRevisiones(idProfesor):
     cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
-    print(cursosEnsenando)
     actividadesRevisiones = db.session.query(Actividad.id_actividad).join(cursosEnsenando, cursosEnsenando.c.ID_HORARIO == Actividad.id_horario).filter(Actividad.flg_activo == 1).subquery()
-    print(actividadesRevisiones)
     feedbacksActividad = db.session.query(Feedback_actividad).join(actividadesRevisiones, Feedback_actividad.id_actividad == actividadesRevisiones.c.ID_ACTIVIDAD).filter(Feedback_actividad.flg_respondido == 0).all()
     
     d = {}
