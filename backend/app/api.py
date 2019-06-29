@@ -158,6 +158,7 @@ api.add_resource(Obtener_autoevaluacion,'/api/autoevaluacion/obtener_autoevaluac
 api.add_resource(Calificar_autoevaluacion,'/api/autoevaluacion/calificar_autoevaluacion')
 api.add_resource(Obtener_coevaluacion,'/api/coevaluacion/obtener_coevaluacion')
 api.add_resource(Calificar_coevaluacion,'/api/coevaluacion/calificar_coevaluacion')
+api.add_resource(Obtener_notas_coevaluacion, '/api/coevaluacion/obtener_notas_grupos')
 
 #Mantenimiento
 api.add_resource(EspecialidadesxSemestre,'/api/mantenimiento/especialidad_semestre')
@@ -167,7 +168,11 @@ api.add_resource(Activar_semestre,'/api/mantenimiento/semestre_activar')
 api.add_resource(Listar_semestres_no_activos,'/api/mantenimiento/semestres_no_activos')
 api.add_resource(Crear_semestre,'/api/mantenimiento/semestre/crear')
 
+#Feedbacks Actividad
+api.add_resource(Obtener_feedbacks_actividad,'/api/feedback_actividad/obtener_profesor')
+
 #Carga Masiva
 api.add_resource(Carga_masiva_horarios,'/api/carga-masiva/horarios')
 api.add_resource(Carga_masiva_cursos,'/api/carga-masiva/cursos')
 api.add_resource(Carga_masiva_profesor_jp,'/api/carga-masiva/profesor-jp')
+

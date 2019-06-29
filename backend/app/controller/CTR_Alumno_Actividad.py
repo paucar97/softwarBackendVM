@@ -62,9 +62,6 @@ def entregablesActividadXAlumno(idActividad):
 
     return d
 
-    
-
-
 def ingresarComentarioAlumno(idActividad, idAlumno, comentario):
     # test if exists
     d = ResponseMessage()
@@ -412,11 +409,38 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     )
 
     idFeedbackActividad = Feedback_actividad.addOne(feedbackCreado)
-    return idFeedbackActividad
+    d = {}
+    d['idFeedbackActividad'] = idFeedbackActividad
+    return d
+
+def responderFeedbackActividad(idFeedbackActividad, idJpReviso, comentario, flgAprobado):
+    #Mandar notificacion
+    if flgAprobado == 1:
+        aux = publicarNotificacionesAlumnos(idActividad)
 
 def listarRevisiones(idProfesor):
-    cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor))
-    return cursosEnsenando
+    cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
+    print(cursosEnsenando)
+    actividadesRevisiones = db.session.query(Actividad.id_actividad).join(cursosEnsenando, cursosEnsenando.c.ID_HORARIO == Actividad.id_horario).filter(Actividad.flg_activo == 1).subquery()
+    print(actividadesRevisiones)
+    feedbacksActividad = db.session.query(Feedback_actividad).join(actividadesRevisiones, Feedback_actividad.id_actividad == actividadesRevisiones.c.ID_ACTIVIDAD).filter(Feedback_actividad.flg_respondido == 0).all()
+    
+    d = {}
+    listaFeedbacks = []
+    for feedback in feedbacksActividad:
+        e = {}
+        e['idFeedbackActividad'] = feedback.id_feedback_actividad
+        e['idActividad'] = feedback.actividad
+        e['flgAprobado'] = feedback.flag_aprobado
+        e['flgRespondido'] = feedback.flg_respondido
+        e['comentario'] = feedback.comentario
+        e['fechaCreacion'] = feedback.fecha_creacion
+        e['fechaAprobado'] = feedback.fecha_aprobado
+        e['idJpReviso'] = feedback.id_jp_reviso
+        e['idProfesorAprobo'] = feedback.id_profesor_aprobo
+        listaFeedbacks.append(e)
+    d['listaFeedbacks'] = listaFeedbacks    
+    return d
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
@@ -806,3 +830,42 @@ def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota,
     d = {}
     d['message'] = "succeed"
     return d
+
+def sumaCoevaluacion(idGrupo, idActividad):
+    try:
+        rubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3)).first()
+        miembrosGrupo = Grupo_alumno_horario.query.filter(Grupo_alumno_horario.id_grupo == idGrupo).all()
+        aspectos = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == rubrica.id_rubrica).subquery()
+        listaNotas = []
+        for miembro in miembrosGrupo:
+            e = {}
+            e['idAlumno'] = miembro.id_alumno
+            alumnoAnalizado = Usuario.query.filter_by(id_usuario = miembro.id_alumno)
+            e['nombreAlumno'] = alumnoAnalizado.nombre
+            e['codigoAlumno'] = alumnoAnalizado.codigo_pucp
+            e['idAlumno'] = miembro.id_alumno
+            sumaDesempeno = 0
+            sumaCriterio = 0
+            sumaCheck = 0
+            aspectosAlumno = db.session.query(aspectos.c.ID_ASPECTO, aspectos.C.TIPO_CLASIFICACION,Alumno_nota_aspecto.nota).join(Alumno_nota_aspecto, and_(aspectos.C.ID_ASPECTO == Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_alumno == miembro.id_alumno)).all()
+            for aspecto in aspectosAlumno:
+                if aspecto.tipo_clasificacion == 1:
+                    sumaDesempeno = sumaDesempeno + aspecto.nota
+                if aspecto.tipo_clasificacion == 2:
+                    sumaCriterio = sumaCriterio + aspecto.nota
+                if aspecto.tipo_clasificacion == 3:
+                    if aspecto.nota == 1:
+                        sumaCheck = sumaCheck + 1
+            e['sumaDesempeno'] = sumaDesempeno
+            e['sumaCriterio'] = sumaCriterio
+            listaNotas.append(e)
+        d = {}
+        d['listaNotas'] = listaNotas
+        
+        return d
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d
+            
