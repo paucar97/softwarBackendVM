@@ -378,7 +378,8 @@ def publicarNotificacionesAlumnos(idActividad):
 
     for alumno in alumnosCalificados:
         alumnoAnalizado = Usuario.query.filter_by(id_usuario = alumno.id_alumno).first()
-        envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
+        print(alumnoAnalizado.email)
+        #envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
         publicarNotificacionGeneral(semestre.id_semestre, alumno.id_alumno, mensaje, idActividad)
 
     Alumno_actividad().publicarNotas(idActividad)
@@ -387,7 +388,8 @@ def publicarNotificacionesAlumnos(idActividad):
 
     for profesor in profesoresHorario:
         profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario)
-        envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre)
+        print(profesorAnalizado.email)
+        #envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre)
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
     return 1
 
