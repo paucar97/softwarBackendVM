@@ -398,7 +398,7 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     actividadAnalizada = Actividad.query.filter_by(id_actividad = idActividad).first()
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == actividadAnalizada.id_horario, Permiso_usuario_horario.id_permiso == 1))
     semestre = Semestre().getOne()
-
+    actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
     for profesor in profesoresHorario:
         profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario).first()
         print(profesorAnalizado.email)
