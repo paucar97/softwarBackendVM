@@ -846,11 +846,11 @@ def sumaCoevaluacion(idGrupo, idActividad):
     listaNotas = []
     for miembro in miembrosGrupo:
         e = {}
-        e['idAlumno'] = miembro.id_alumno
-        alumnoAnalizado = Usuario.query.filter_by(id_usuario = miembro.id_alumno)
+        e['idAlumno'] = miembro.id_usuario
+        alumnoAnalizado = Usuario.query.filter_by(id_usuario = miembro.id_usuario)
         e['nombreAlumno'] = alumnoAnalizado.nombre
         e['codigoAlumno'] = alumnoAnalizado.codigo_pucp
-        e['idAlumno'] = miembro.id_alumno
+        e['idAlumno'] = miembro.id_usuario
         sumaDesempeno = 0
         sumaCriterio = 0
         sumaCheck = 0
