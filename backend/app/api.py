@@ -123,7 +123,6 @@ api.add_resource(Obtener_rubricas_pasadas, '/api/actividad/obtener_rubricas_pasa
 
 api.add_resource(Calificar_alumno_actividad, '/api/actividad/alumnos/calificar')
 api.add_resource(Editar_nota_alumno_actividad, '/api/actividad/alumnos/editar_nota')
-api.add_resource(Publicar_calificacion_para_revision, '/api/actividad/jp/publicar_calificacion')
 api.add_resource(Obtener_nota_alumno, '/api/actividad/alumnos/obtener_nota_alumno')
 api.add_resource(Ingresar_comentario_alumno, '/api/actividad/ingresar_comentario_alumno')
 api.add_resource(Responder_comentario_alumno, '/api/actividad/responder_comentario_alumno')
