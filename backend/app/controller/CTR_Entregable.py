@@ -1,6 +1,7 @@
 from app.models.entregable import Entregable
 from app.commons.paths import pathTest,urlDecarga
 from app.models.actividad import Actividad
+from app.models.grupo_alumno_horario import Grupo_alumno_horario
 import io
 def crearEntregableObjeto(idActividad,idUsuario,fechaEntrega,tipo,nombreArchivo = None,url=None,path=None,doc=None):
     if doc == None:
