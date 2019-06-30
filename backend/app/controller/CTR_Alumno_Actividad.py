@@ -859,9 +859,9 @@ def sumaCoevaluacion(idGrupo, idActividad):
         for idAspecto,notaQ in aspectosAlumno:
             tipoClasificacion =  Aspecto.query.filter_by(id_aspecto = idAspecto).first().tipo_clasificacion
             if tipoClasificacion == 1:
-                sumaDesempeno = sumaDesempeno + aspecto.nota
+                sumaDesempeno = sumaDesempeno + notaQ
             if tipoClasificacion == 2:
-                sumaCriterio = sumaCriterio + aspecto.nota
+                sumaCriterio = sumaCriterio + notaQ
             if tipoClasificacion == 3:
                 if notaQ == 1:
                     sumaCheck = sumaCheck + 1
