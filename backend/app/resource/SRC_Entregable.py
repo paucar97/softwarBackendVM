@@ -32,7 +32,12 @@ class Subir_entregable(Resource):
         elif tipo == 2:
             url = request.form['url']
         else:
-            listaFiles= request.files
+            cantidadFiles = int(request.form['cantidadFiles'])
+            listaFiles=[]
+            for i in range(1,cantidadFiles+1):
+                key = 'file {}'.format(i)
+                #rint(key)p
+                listaFiles.append(request.files.get(key))
             url = request.form['url']
         
 
