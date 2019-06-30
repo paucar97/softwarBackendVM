@@ -31,7 +31,7 @@ class Entregable(db.Model):
     def json(self):
         d={}
         d['idEntregable']=self.id_entregable
-        d['urlEntregalbe'] =self.url_entregable
+        d['urlEntregable'] =self.url_entregable
         d['nombreArchivo'] = self.nombre_archivo
         d['fechaCredo'] = self.fecha_creado.__str__()
         d['flgActivo'] = self.flg_activo
