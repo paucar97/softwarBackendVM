@@ -840,7 +840,7 @@ def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota,
 
 def sumaCoevaluacion(idGrupo, idActividad):
     #try:
-    rubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3)).first()
+    rubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3,Rubrica.flg_activo == 1)).first()
     miembrosGrupo = Grupo_alumno_horario.query.filter(Grupo_alumno_horario.id_grupo == idGrupo).all()
     aspectos = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == rubrica.id_rubrica).subquery()
     listaNotas = []
