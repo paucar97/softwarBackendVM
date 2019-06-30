@@ -839,40 +839,40 @@ def calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota,
     return d
 
 def sumaCoevaluacion(idGrupo, idActividad):
-    try:
-        rubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3)).first()
-        miembrosGrupo = Grupo_alumno_horario.query.filter(Grupo_alumno_horario.id_grupo == idGrupo).all()
-        aspectos = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == rubrica.id_rubrica).subquery()
-        listaNotas = []
-        for miembro in miembrosGrupo:
-            e = {}
-            e['idAlumno'] = miembro.id_alumno
-            alumnoAnalizado = Usuario.query.filter_by(id_usuario = miembro.id_alumno)
-            e['nombreAlumno'] = alumnoAnalizado.nombre
-            e['codigoAlumno'] = alumnoAnalizado.codigo_pucp
-            e['idAlumno'] = miembro.id_alumno
-            sumaDesempeno = 0
-            sumaCriterio = 0
-            sumaCheck = 0
-            aspectosAlumno = db.session.query(aspectos.c.ID_ASPECTO, aspectos.C.TIPO_CLASIFICACION,Alumno_nota_aspecto.nota).join(Alumno_nota_aspecto, and_(aspectos.C.ID_ASPECTO == Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_alumno == miembro.id_alumno)).all()
-            for aspecto in aspectosAlumno:
-                if aspecto.tipo_clasificacion == 1:
-                    sumaDesempeno = sumaDesempeno + aspecto.nota
-                if aspecto.tipo_clasificacion == 2:
-                    sumaCriterio = sumaCriterio + aspecto.nota
-                if aspecto.tipo_clasificacion == 3:
-                    if aspecto.nota == 1:
-                        sumaCheck = sumaCheck + 1
-            e['sumaDesempeno'] = sumaDesempeno
-            e['sumaCriterio'] = sumaCriterio
-            listaNotas.append(e)
-        d = {}
-        d['listaNotas'] = listaNotas
-        
-        return d
-    except Exception as ex:
-        d = {}
-        d['succeed'] = False
-        d['message'] = str(ex)
-        return d
+    #try:
+    rubrica = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == 3)).first()
+    miembrosGrupo = Grupo_alumno_horario.query.filter(Grupo_alumno_horario.id_grupo == idGrupo).all()
+    aspectos = Rubrica_aspecto.query.filter(Rubrica_aspecto.id_rubrica == rubrica.id_rubrica).subquery()
+    listaNotas = []
+    for miembro in miembrosGrupo:
+        e = {}
+        e['idAlumno'] = miembro.id_alumno
+        alumnoAnalizado = Usuario.query.filter_by(id_usuario = miembro.id_alumno)
+        e['nombreAlumno'] = alumnoAnalizado.nombre
+        e['codigoAlumno'] = alumnoAnalizado.codigo_pucp
+        e['idAlumno'] = miembro.id_alumno
+        sumaDesempeno = 0
+        sumaCriterio = 0
+        sumaCheck = 0
+        aspectosAlumno = db.session.query(aspectos.c.ID_ASPECTO, aspectos.C.TIPO_CLASIFICACION,Alumno_nota_aspecto.nota).join(Alumno_nota_aspecto, and_(aspectos.C.ID_ASPECTO == Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_alumno == miembro.id_alumno)).all()
+        for aspecto in aspectosAlumno:
+            if aspecto.tipo_clasificacion == 1:
+                sumaDesempeno = sumaDesempeno + aspecto.nota
+            if aspecto.tipo_clasificacion == 2:
+                sumaCriterio = sumaCriterio + aspecto.nota
+            if aspecto.tipo_clasificacion == 3:
+                if aspecto.nota == 1:
+                    sumaCheck = sumaCheck + 1
+        e['sumaDesempeno'] = sumaDesempeno
+        e['sumaCriterio'] = sumaCriterio
+        listaNotas.append(e)
+    d = {}
+    d['listaNotas'] = listaNotas
+    
+    return d
+    #except Exception as ex:
+    #    d = {}
+    #    d['succeed'] = False
+    #    d['message'] = str(ex)
+    #    return d
             
