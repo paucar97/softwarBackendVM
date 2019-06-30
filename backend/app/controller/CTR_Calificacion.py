@@ -92,15 +92,26 @@ def obtenerNotasFinales(idActividad,idRubrica):
     tipo = actividad.tipo
     rpta =[]
     if tipo == 'I':
+        lstIdAlumnos = [reg.id_alumno  for reg in Alumno_actividad().getAllAlumnos(idActividad)]
+
         listaAlumnos = Alumno_actividad_calificacion().getAllAlumnos(idActividad,idRubrica)
         for alumno in listaAlumnos:
             d = {}
             auxAl = Usuario().getOneId(alumno.id_alumno)
             d['idAlumno'] = alumno.id_alumno
+            lstIdAlumnos.remove(alumno.id_alumno)
             d['codigoPucp'] = auxAl.codigo_pucp
             d['nombreAlumno'] = auxAl.nombre + " " + auxAl.apellido_paterno + " " + auxAl.apellido_materno
             d['nota'] = alumno.nota
             rpta.append(d)
+        for idAlumno in lstIdAlumnos:
+            d={}
+            auxAl = Usuario().getOneId(idAlumno)
+            d['idAlumno'] = idAlumno
+            d['codigoPucp'] = auxAl.codigo_pucp
+            d['nombreAlumno'] = auxAl.nombre + " " + auxAl.apellido_paterno + " " + auxAl.apellido_materno
+            d['nota'] = '--'
+            rpta.append(d)          
     else:
         listarGrupos = Alumno_actividad().getAllGrupos(idActividad)
         for grupo in listarGrupos:

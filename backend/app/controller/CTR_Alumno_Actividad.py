@@ -415,16 +415,17 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
 
 def publicarProfesor(idActividad):
     feedbackActividad = Feedback_actividad.query.filter(and_(Feedback_actividad.id_actividad == idActividad, Feedback_actividad.flg_respondido == 0)).first()
-    aux2 = Feedback_actividad.responderFeedback(idFeedbackActividad, "Es conforme", 1)
+    aux2 = Feedback_actividad().responderFeedback(idFeedbackActividad, "Es conforme", 1)
     aux = publicarNotificacionesAlumnos(idActividad)
-        if aux == 0:
-            d['succeed'] = False
-            d['message'] = "Falta corregir alumnos en la Actividad"
-            return d
-        else:
-            d['succeed'] = True
-            d['message'] = "Notas publicadas"
-            return d
+    d= {}
+    if aux == 0:
+        d['succeed'] = False
+        d['message'] = "Falta corregir alumnos en la Actividad"
+        return d
+    else:
+        d['succeed'] = True
+        d['message'] = "Notas publicadas"
+        return d
 
 def listarRevisiones(idProfesor):
     cursosEnsenando = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_permiso == 1, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
@@ -517,20 +518,21 @@ def obtenerEstadisticaActividad(idActividad):
     return d
 
 def listarAlumnosNotas(idActividad):
-    almact_fltr = Alumno_actividad_calificacion.query.filter(Alumno_actividad_calificacion.id_actividad == idActividad).subquery()
-    data = db.session.query(Usuario.codigo_pucp, Usuario.nombre_completo, almact_fltr.c.NOTA).join(almact_fltr, almact_fltr.c.ID_ALUMNO == Usuario.id_usuario).order_by(almact_fltr.c.NOTA.desc())
+    idRubricaEvaluacion = Rubrica().getIdRubricaEvaluacion(idActividad)
+    lstAlumnosCalificados = Alumno_actividad_calificacion().getAllAlumnos(idActividad, idRubricaEvaluacion)
+
     d = {}
     notas = []
     faltas = 0
-    for _,_,nota in data.all():
-        if nota != None:
-            try:
-                notas.append(int(float(nota)))
-            except:
-                print("Error en castear la nota")
-        else:
-            faltas += 1
-            #print("Nota Nula")
+    for reg in lstAlumnosCalificados:
+        try:
+            notas.append(int(float(reg.nota)))
+            
+            if reg.flg_falta == 1:
+                faltas += 1
+        except:
+            print("Error en castear la nota")
+        
     d['listaNotas'] = notas
     notas  = dict(Counter(notas))
     frecuencia = [(k, v) for k, v in notas.items()]
@@ -541,13 +543,11 @@ def listarAlumnosNotas(idActividad):
         aux['frecuencia'] = frecuencia
         d['notaFrecuencia'].append(aux)
 
-    cantidadNotas = len(notas)
-    total = cantidadNotas + faltas
+    cantidadNotas = len(d['listaNotas'])
 
-
-    d['cantidadNotas'] = cantidadNotas
+    d['cantidadNotas'] = cantidadNotas - faltas
     d['cantidadFalta'] = faltas
-    d['cantidadTotal'] = cantidadNotas + faltas
+    d['cantidadTotal'] = cantidadNotas 
 
     return d
 """
