@@ -36,3 +36,8 @@ class NombreSemestreActivo(Resource):
     def post(self):
         return obtenerNombreSemestreActivo()
 
+class Desactivar_semestre(Resource):
+    def post(self):
+        data = request.get_json()
+        idSemestre = data['idSemestre']
+        return desactivarSemestre(idSemestre)
