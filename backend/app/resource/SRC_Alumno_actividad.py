@@ -227,3 +227,21 @@ class Publicar_notas_profesor(Resource):
         data = request.get_json()
         idActividad = data['idActividad']
         return controller.publicarProfesor(idActividad)
+
+class Obtener_nota_grupo_publicada(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idGrupo = data['idGrupo']
+        idJp = data['idJp']
+
+        return controller.obtenerNotaGrupoPublicada(idActividad, idGrupo, idJp)
+
+class Obtener_nota_alumno_publicada(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlumno = data['idAlumno']
+        idActividad = data['idActividad']
+        tipo = data['tipo']
+        idCalificador = data['idCalificador']
+        return controller.obtenerNotaAlumnoPublicada(idAlumno, idActividad, tipo, idCalificador)

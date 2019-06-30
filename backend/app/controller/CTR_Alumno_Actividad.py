@@ -899,3 +899,48 @@ def sumaCoevaluacion(idGrupo, idActividad):
     #    d['message'] = str(ex)
     #    return d
             
+def obtenerNotaAlumnoPublicada(idAlumno, idActividad, tipo, idCalificador):
+    #actividadSolicitada = Actividad.query.filter(and_(Actividad.id_actividad == idActividad)).first()
+    #if actividadSolicitada.flg_multicalificable == 0:
+    aux = Alumno_actividad.query.filter(and_(Alumno_actividad.id_alumno == idAlumno, Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_publicado == 1)).first()
+    if aux is not None:
+        actividadAnalizada = Rubrica.query.filter(and_(Rubrica.id_actividad == idActividad, Rubrica.tipo == tipo,Rubrica.flg_activo==1)).first()
+        
+        d = {}
+
+        d['flgCalificado'] = aux.flg_calificado
+        d['idActividad']= idActividad
+        d['idAlumno']= idAlumno
+
+        actividadAux = Actividad.query.filter(Actividad.id_actividad == idActividad).first()
+        if actividadAux.flg_multicalificable == 1:
+            d['idCalificador']= idCalificador
+        else:
+            alumnoCalificacion = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_rubrica == actividadAnalizada.id_rubrica)).first()
+            if alumnoCalificacion is None:
+                d['idCalificador']= idCalificador
+            else:
+                d['idCalificador']= alumnoCalificacion.id_calificador
+
+        d['idGrupo']= aux.id_grupo
+        d['flgEntregable']= aux.flag_entregable
+        d['idRubrica'] = actividadAnalizada.id_rubrica
+
+        d['calificacion']= listarCalificacion(idAlumno, idActividad, idCalificador, actividadAnalizada.id_rubrica)
+        
+        return d
+    else:
+        d = {}
+        d['succeed'] = False
+        d['message'] = "No se encontro nota publicada para el alumno"
+        return d
+
+def obtenerNotaGrupoPublicada(idActividad, idGrupo, idJp):
+    try:
+        alumnoReferencia = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).first()
+        return obtenerNotaAlumnoPublicada(alumnoReferencia.id_alumno, idActividad, 4, idJp)
+    except Exception as ex:
+        d = {}
+        d['succeed'] = False
+        d['message'] = str(ex)
+        return d

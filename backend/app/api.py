@@ -179,3 +179,6 @@ api.add_resource(Publicar_calificacion_para_revision,'/api/publicar-notas/jp_sol
 api.add_resource(Listar_revisiones_profesor,'/api/publicar-notas/obtener_revisiones_profesor')
 api.add_resource(Publicar_notas_profesor,'/api/publicar-notas/publicar_notas_directo_profesor')
 
+# -- notas publicadas
+api.add_resource(Obtener_nota_grupo_publicada,'/api/actividad/alumnos/obtener_nota_grupo_publicada')
+api.add_resource(Obtener_nota_alumno_publicada, '/api/actividad/alumnos/obtener_nota_alumno_publicada')
