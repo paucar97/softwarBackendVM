@@ -397,11 +397,12 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadAnalizada = Actividad.query.filter_by(id_actividad = idActividad).first()
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == actividadAnalizada.id_horario, Permiso_usuario_horario.id_permiso == 1))
-    semestre = Semestre.getOne()
+    semestre = Semestre().getOne()
 
     for profesor in profesoresHorario:
-        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario)
-        envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.")
+        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario).first()
+        print(profesorAnalizado.email)
+        #envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.")
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.", idActividad)
     return 1
 
@@ -410,7 +411,7 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
         id_jp_reviso = idJpReviso,
     )
 
-    idFeedbackActividad = Feedback_actividad.addOne(feedbackCreado)
+    idFeedbackActividad = Feedback_actividad().addOne(feedbackCreado)
     d = {}
     d['idFeedbackActividad'] = idFeedbackActividad
     return d
