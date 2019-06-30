@@ -359,7 +359,7 @@ def publicarNotificacionGeneral(idSemestre, idUsuario, mensaje, idActividad):
         nombre = mensaje,
         id_actividad = idActividad
     )
-    Notificacion.addOne(notificacion)
+    Notificacion().addOne(notificacion)
     return True
 
 def publicarNotificacionesAlumnos(idActividad):
@@ -374,14 +374,14 @@ def publicarNotificacionesAlumnos(idActividad):
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
     mensaje = cursoActividad.codigo + " - Se registro la nota de la Actividad: " + actividadEvaluada.nombre
-    semestre = Semestre.getOne()
+    semestre = Semestre().getOne()
 
     for alumno in alumnosCalificados:
         alumnoAnalizado = Usuario.query.filter_by(id_usuario = alumno.id_alumno).first()
         envioCorreo(alumnoAnalizado.email, "SEC2 - Registro de Notas", mensaje)
         publicarNotificacionGeneral(semestre.id_semestre, alumno.id_alumno, mensaje, idActividad)
 
-    Alumno_actividad.publicarNotas(idActividad)
+    Alumno_actividad().publicarNotas(idActividad)
     idHorario = db.session.query(Actividad.id_actividad, Horario.id_horario).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).first()
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == idHorario.id_horario, Permiso_usuario_horario.id_permiso == 1))
 
