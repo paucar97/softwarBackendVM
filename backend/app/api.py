@@ -176,3 +176,7 @@ api.add_resource(Carga_masiva_horarios,'/api/carga-masiva/horarios')
 api.add_resource(Carga_masiva_cursos,'/api/carga-masiva/cursos')
 api.add_resource(Carga_masiva_profesor_jp,'/api/carga-masiva/profesor-jp')
 
+api.add_resource(Publicar_calificacion_para_revision,'/api/publicar-notas/jp_solicitud_publicar')
+api.add_resource(Listar_revisiones_profesor,'/api/publicar-notas/obtener_revisiones_profesor')
+api.add_resource(Publicar_notas_profesor,'/api/publicar-notas/publicar_notas_directo_profesor')
+
