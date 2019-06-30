@@ -1,5 +1,6 @@
 from app.models.entregable import Entregable
 from app.commons.paths import pathTest,urlDecarga
+from app.models.actividad import Actividad
 import io
 def crearEntregableObjeto(idActividad,idUsuario,fechaEntrega,tipo,nombreArchivo = None,url=None,path=None,doc=None):
     if doc == None:
@@ -40,14 +41,24 @@ def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega =None
 
 
 def mostrarEntregable(idActividad,idUsuario):
+    actividad  = Actividad().getOne(idActividad).tipo
+    if tipo == 'I':
+        listaEntregables = Entregable().getAll(idActividad,idUsuario)
+        d=[]
+        
+        for entregable in listaEntregables:
+            #print(entregable.json())
+            d.append(entregable.json())
+        return d
+    else:
+        listaIntegrante = Grupo_alumno_horario().getAll(idUsuario)
+        d = []
+        for integrante in listaIntegrante:
+            listaEntregables = Entregable().getAll(idActividad,integrante.id_usuario)
+            for entregable in listaEntregables:
+                d.append(entregable.json())
+        return d 
 
-    listaEntregables = Entregable().getAll(idActividad,idUsuario)
-    d=[]
-    
-    for entregable in listaEntregables:
-        #print(entregable.json())
-        d.append(entregable.json())
-    return d
 
 
 def descargaEntregable(idEntregable):
