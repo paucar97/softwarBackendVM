@@ -534,7 +534,9 @@ def listarAlumnosNotas(idActividad):
             
             if reg.flg_falta == 1:
                 faltas += 1
-        except:
+        except Exception as ex:
+            print(reg)
+            print(str(ex))
             print("Error en castear la nota")
         
     d['listaNotas'] = notas
