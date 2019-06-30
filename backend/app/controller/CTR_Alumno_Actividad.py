@@ -856,14 +856,14 @@ def sumaCoevaluacion(idGrupo, idActividad):
         sumaCheck = 0
         aspectosAlumno = db.session.query(aspectos.c.ID_ASPECTO,Alumno_nota_aspecto.nota).join(Alumno_nota_aspecto, and_(aspectos.c.ID_ASPECTO == Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_alumno == miembro.id_usuario)).all()
         print(aspectosAlumno)
-        for aspecto in aspectosAlumno:
-            tipoClasificacion =  Aspecto.query.filter_by(id_aspecto = aspecto.id_aspecto).first().tipo_clasificacion
+        for idAspecto,notaQ in aspectosAlumno:
+            tipoClasificacion =  Aspecto.query.filter_by(id_aspecto = idAspecto).first().tipo_clasificacion
             if tipoClasificacion == 1:
                 sumaDesempeno = sumaDesempeno + aspecto.nota
             if tipoClasificacion == 2:
                 sumaCriterio = sumaCriterio + aspecto.nota
             if tipoClasificacion == 3:
-                if aspecto.nota == 1:
+                if notaQ == 1:
                     sumaCheck = sumaCheck + 1
         e['sumaDesempeno'] = sumaDesempeno
         e['sumaCriterio'] = sumaCriterio
