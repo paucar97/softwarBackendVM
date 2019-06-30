@@ -364,7 +364,7 @@ def publicarNotificacionGeneral(idSemestre, idUsuario, mensaje, idActividad):
 
 def publicarNotificacionesAlumnos(idActividad):
     alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 0)).all()
-
+    d={}
     if len(alumnosFaltantesCalificados) > 0:
         d['succeed'] = False
         d['message'] = "Falta alumnos por calificar"
