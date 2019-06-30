@@ -856,10 +856,26 @@ def sumaCoevaluacion(idGrupo, idActividad):
         sumaCheck = 0
         aspectosAlumno = db.session.query(aspectos.c.ID_ASPECTO,Alumno_nota_aspecto.nota).join(Alumno_nota_aspecto, and_(aspectos.c.ID_ASPECTO == Alumno_nota_aspecto.id_aspecto, Alumno_nota_aspecto.id_alumno == miembro.id_usuario)).all()
         print(aspectosAlumno)
-        nombreAspectos = []
+        lstAspectos = []
         for idAspecto,notaQ in aspectosAlumno:
+            
             aspecto = Aspecto.query.filter_by(id_aspecto = idAspecto).first()
-            nombreAspectos.append(aspecto.descripcion)
+            indice = 0
+            esta = False
+            for i in lstAspectos:
+                if i['nombreAspecto'] == aspecto.descripcion:
+                    esta = True
+                    lstAspectos[indice]['nota'] += notaQ
+                    lstAspectos[indice]['maxPuntaje'] += aspecto.puntaje_max  
+                    break
+                indice += 1
+            if esta == False:
+                aux = {}
+                aux['nombreAspecto'] = aspecto.descripcion
+                aux['nota'] = notaQ
+                aux['maxPuntaje'] = aspecto.puntaje_max
+                lstAspectos.append(aux)
+            
             tipoClasificacion =  aspecto.tipo_clasificacion
             if tipoClasificacion == 1:
                 sumaDesempeno = sumaDesempeno + notaQ
@@ -871,7 +887,7 @@ def sumaCoevaluacion(idGrupo, idActividad):
         e['sumaDesempeno'] = sumaDesempeno
         e['sumaCriterio'] = sumaCriterio
         e['sumaCheck'] = sumaCheck
-        e['nombreAspectos'] = nombreAspectos
+        e['nombreAspectos'] = lstAspectos
         listaNotas.append(e)
     d = {}
     d['listaNotas'] = listaNotas
