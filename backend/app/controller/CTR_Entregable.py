@@ -41,8 +41,8 @@ def subirEntregable(idActividad,idUsuario,listaFiles,url,tipo,fechaEntrega =None
 
 
 def mostrarEntregable(idActividad,idUsuario):
-    actividad  = Actividad().getOne(idActividad).tipo
-    if tipo == 'I':
+    actividad  = Actividad().getOne(idActividad)
+    if actividad.tipo == 'I':
         listaEntregables = Entregable().getAll(idActividad,idUsuario)
         d=[]
         
