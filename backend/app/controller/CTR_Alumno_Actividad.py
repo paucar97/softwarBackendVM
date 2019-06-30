@@ -387,7 +387,7 @@ def publicarNotificacionesAlumnos(idActividad):
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == idHorario.id_horario, Permiso_usuario_horario.id_permiso == 1))
 
     for profesor in profesoresHorario:
-        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario)
+        profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario).first()
         print(profesorAnalizado.email)
         #envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre)
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
