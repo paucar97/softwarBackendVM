@@ -102,7 +102,10 @@ def obtenerNotasFinales(idActividad,idRubrica):
             lstIdAlumnos.remove(alumno.id_alumno)
             d['codigoPucp'] = auxAl.codigo_pucp
             d['nombreAlumno'] = auxAl.nombre + " " + auxAl.apellido_paterno + " " + auxAl.apellido_materno
-            d['nota'] = alumno.nota
+            if alumno.flg_falta == 1:
+                d['nota'] = 'F'
+            else:
+                d['nota'] = alumno.nota
             rpta.append(d)
         for idAlumno in lstIdAlumnos:
             d={}
