@@ -119,3 +119,10 @@ def existeAgrupacionHorario(idHorario):
         return {'message' : False}
     else:
         return {'message' : True}
+
+def obtenerGrupo(idUsuario,idActividad):
+    try:
+        idGrupo = Alumno_actividad().getIdGrupo(idActividad,idUsuario)
+    except:
+        return { 'idGrupo' : 0}
+    return { 'idGrupo' : idGrupo}

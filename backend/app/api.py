@@ -182,3 +182,6 @@ api.add_resource(Publicar_notas_profesor,'/api/publicar-notas/publicar_notas_dir
 # -- notas publicadas
 api.add_resource(Obtener_nota_grupo_publicada,'/api/actividad/alumnos/obtener_nota_grupo_publicada')
 api.add_resource(Obtener_nota_alumno_publicada, '/api/actividad/alumnos/obtener_nota_alumno_publicada')
+
+# las caletas
+api.add_resource(Obtener_grupo,'/api/grupo/pertenece')

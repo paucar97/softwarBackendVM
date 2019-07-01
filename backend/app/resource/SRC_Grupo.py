@@ -73,3 +73,10 @@ class Existe_agrupacion_horario(Resource):
         data = request.get_json()
         idHorario = data['idHorario']
         return existeAgrupacionHorario(idHorario)
+
+class Obtener_grupo(Resource):
+    def post(self):
+        data = request.get_json()
+        idUsuario = data['idUsuario']
+        idActividad = data['idActividad']
+        return obtenerGrupo(idUsuario,idActividad)
