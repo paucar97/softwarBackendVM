@@ -226,7 +226,8 @@ class Publicar_notas_profesor(Resource):
     def post(Self):
         data = request.get_json()
         idActividad = data['idActividad']
-        return controller.publicarProfesor(idActividad)
+        idProfesor = data['idProfesor']
+        return controller.publicarProfesor(idActividad, idProfesor)
 
 class Obtener_nota_grupo_publicada(Resource):
     def post(self):
