@@ -25,9 +25,10 @@ class Feedback_actividad(db.Model):
         return 
     
     @classmethod
-    def responderFeedback(self, idFeedbackActividad, idJpReviso, flgAprobado):
+    def responderFeedback(self, idFeedbackActividad, comentario, flgAprobado, idProfesor):
         feedbackAnalizando = Feedback_actividad.query.filter(and_(Feedback_actividad.id_feedback_actividad == idFeedbackActividad)).first()
         feedbackAnalizando.comentario = comentario
         feedbackAnalizando.flag_aprobado = flgAprobado
+        feedbackAnalizando.id_profesor_aprobo = idProfesor
         aux = db.session.commit()
         return aux

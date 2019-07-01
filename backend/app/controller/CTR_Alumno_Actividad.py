@@ -391,20 +391,40 @@ def publicarNotificacionesAlumnos(idActividad):
         print(profesorAnalizado.email)
         #envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre)
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre, idActividad)
-    return 1
+    
+    d['succeed'] = True
+    d['message'] = "Notas publicadas"
+    return d
 
 def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
+    alumnosFaltantesCalificados = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.flg_calificado == 0)).all()
+    d={}
+    if len(alumnosFaltantesCalificados) > 0:
+        d['succeed'] = False
+        d['message'] = "Falta alumnos por calificar"
+        return d
+
     cursoActividad = db.session.query(Actividad.id_actividad, Curso.codigo).filter(Actividad.id_actividad == idActividad).join(Horario, Actividad.id_horario == Horario.id_horario).join(Curso, Horario.id_curso == Curso.id_curso).first()
     actividadAnalizada = Actividad.query.filter_by(id_actividad = idActividad).first()
     profesoresHorario = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_horario == actividadAnalizada.id_horario, Permiso_usuario_horario.id_permiso == 1))
     semestre = Semestre().getOne()
     actividadEvaluada = Actividad.query.filter_by(id_actividad = idActividad).first()
+
+    aux = Feedback_actividad(
+        id_actividad = idActividad,
+        id_jp_reviso = idJpReviso
+    )
+
+    aux2 = Feedback_actividad().addOne(aux)
+
     for profesor in profesoresHorario:
         profesorAnalizado = Usuario.query.filter_by(id_usuario = profesor.id_usuario).first()
         print(profesorAnalizado.email)
         #envioCorreo(profesorAnalizado.email, "SEC2 - Registro de Notas", cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.")
         publicarNotificacionGeneral(semestre.id_semestre, profesor.id_usuario, cursoActividad.codigo + " - Se registraron las notas de la Actividad: " + actividadEvaluada.nombre + ". Favor de revisar estas para aprobacion.", idActividad)
-    return 1
+    d['succeed'] = True
+    d['message'] = "Notas publicadas"
+    return d 
 
     feedbackCreado = Feedback_actividad(
         id_actividad = idActividad,
@@ -416,12 +436,13 @@ def crearSolicitudRevisionProfesor(idActividad, idJpReviso):
     d['idFeedbackActividad'] = idFeedbackActividad
     return d
 
-def publicarProfesor(idActividad):
+def publicarProfesor(idActividad, idProfesor):
     feedbackActividad = Feedback_actividad.query.filter(and_(Feedback_actividad.id_actividad == idActividad, Feedback_actividad.flg_respondido == 0)).first()
-    aux2 = Feedback_actividad().responderFeedback(idFeedbackActividad, "Es conforme", 1)
+    if feedbackActividad is not None:
+        aux2 = Feedback_actividad().responderFeedback(feedbackActividad.id_feedback_actividad, "Es conforme", 1, idProfesor)
     aux = publicarNotificacionesAlumnos(idActividad)
     d= {}
-    if aux == 0:
+    if aux['succeed'] == False:
         d['succeed'] = False
         d['message'] = "Falta corregir alumnos en la Actividad"
         return d
@@ -440,24 +461,25 @@ def listarRevisiones(idProfesor):
     for feedback in feedbacksActividad:
         e = {}
         e['idFeedbackActividad'] = feedback.id_feedback_actividad
-        e['idActividad'] = feedback.actividad
+        e['idActividad'] = feedback.id_actividad
         e['flgAprobado'] = feedback.flag_aprobado
         e['flgRespondido'] = feedback.flg_respondido
         e['comentario'] = feedback.comentario
-        e['fechaCreacion'] = feedback.fecha_creacion
-        e['fechaAprobado'] = feedback.fecha_aprobado
+        e['fechaCreacion'] = convertDatetime(feedback.fecha_creacion)
+        e['fechaAprobado'] = convertDatetime(feedback.fecha_aprobado)
         e['idJpReviso'] = feedback.id_jp_reviso
         e['idProfesorAprobo'] = feedback.id_profesor_aprobo
         listaFeedbacks.append(e)
     d['listaFeedbacks'] = listaFeedbacks    
     return d
+    return 1
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
     actividad = Actividad.getOne(idActividad)
     if actividad.flg_confianza == 1:
         aux = publicarNotificacionesAlumnos(idActividad)
-        if aux == 0:
+        if aux['succeed'] == False:
             d['succeed'] = False
             d['message'] = "Falta corregir alumnos en la Actividad"
             return d
