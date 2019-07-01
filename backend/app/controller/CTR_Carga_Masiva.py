@@ -95,6 +95,8 @@ def getCorreoPucp(correos):
 def cargaMasivaHorarios(datos,idCurso,idEspecialidad):
     semestre=Semestre().getOne()
     idSemestre=semestre.id_semestre
+    print("="*20)
+    print(idSemestre)
     name = pathCargaMasivaAlumnoHorario+datos.filename
     data = datos.read()
     with open(name,'wb') as file:
@@ -113,7 +115,7 @@ def cargaMasivaHorarios(datos,idCurso,idEspecialidad):
     
     
     for i in range(longitud):
-        idHorario = Horario().addOne(str(df.iat[i,2]),idCurso,idEspecialidad)  
+        idHorario = Horario().addOne(str(df.iat[i,2]),idCurso,idSemestre)  
         codigoPucp = str(df.iat[i,0])
         nombre = str(df.iat[i,5])
         email = str(df.iat[i,4])

@@ -6,7 +6,8 @@ def Login_Controlador(email,clave):
     usuario = Usuario().getOne(email,clave)
     semestreActivo = Semestre().getOne()
     #print(semestreActivo,usuario.flg_admin)
-    
+    if usuario is None:
+        return {'message':'error datos'}
     if semestreActivo == None and str(usuario.flg_admin) == "1":
             d = {}
             d['idUser'] = usuario.id_usuario
@@ -17,8 +18,7 @@ def Login_Controlador(email,clave):
             d['jp'] = 0
             d['alumno'] = 0
             return d
-    if usuario is None:
-        return {'message':'error datos'}
+    
     lista = Permiso_usuario_horario().getHorarioActivo(semestreActivo.id_semestre,usuario.id_usuario)
     contProfesor =0
     contJP = 0

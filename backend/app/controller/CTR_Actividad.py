@@ -633,7 +633,9 @@ def CrearActividad(idhorario, Nombre, tipo1, descripcion, fechaInicio, fechaFin,
     idActividad= Actividad().addOne(actividadObjeto)
 
     listaAlumnos= Permiso_usuario_horario().getAll(idSemestre,idhorario)
+    print(idSemestre,idhorario)
     listaIdAlumnos=[]
+    print(listaAlumnos)
     for usuario in listaAlumnos:
         if usuario.id_permiso== 2: #Alumnos
             listaIdAlumnos.append(usuario.id_usuario)

@@ -8,7 +8,13 @@ from app.models.curso import Curso
 from sqlalchemy import and_
 
 def obtenerCursosActivosXProfesor(idProfesor):
-    semestreActivo = Semestre().getOne().id_semestre
+    try:
+        semestreActivo = Semestre().getOne().id_semestre
+    except:        
+        d = {}
+        d['listaCursos'] = []
+        d['cantCursos'] = 0
+        return d
     #listaHorarios = Permiso_usuario_horario().getHorarioActivo(semestreActivo.id_semestre, idProfesor)
     #puh = Permiso_usuario_horario.query.filter(and_(Permiso_usuario_horario.id_semestre == semestreActivo.id_semestre, Permiso_usuario_horario.id_usuario == idProfesor)).subquery()
     #puh = Permiso_usuario_horario().getHorarioActivo(semestreActivo.id_semestre, idProfesor)
