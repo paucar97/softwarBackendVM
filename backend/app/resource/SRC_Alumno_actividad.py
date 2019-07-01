@@ -193,14 +193,7 @@ class Calificar_coevaluacion(Resource):
         flgFalta = data['flgFalta']
         listaNotaAspectos = data['listaNotaAspectos']
         flgCompleto = data['flgCompleto']
-        
         return controller.calificarCoevaluacion(idActividad, idAlumno, idCalificador, idRubrica, nota, listaNotaAspectos, flgFalta, flgCompleto)
-
-class Obtener_feedbacks_actividad(Resource):
-    def post(self):
-        data = request.get_json()
-        idProfesor = data['idProfesor']
-        return controller.listarRevisiones(idProfesor)
 
 class Obtener_notas_coevaluacion(Resource):
     def post(self):
@@ -235,7 +228,6 @@ class Obtener_nota_grupo_publicada(Resource):
         idActividad = data['idActividad']
         idGrupo = data['idGrupo']
         idJp = data['idJp']
-
         return controller.obtenerNotaGrupoPublicada(idActividad, idGrupo, idJp)
 
 class Obtener_nota_alumno_publicada(Resource):

@@ -461,17 +461,18 @@ def listarRevisiones(idProfesor):
     for feedback in feedbacksActividad:
         e = {}
         e['idFeedbackActividad'] = feedback.id_feedback_actividad
-        e['idActividad'] = feedback.actividad
+        e['idActividad'] = feedback.id_actividad
         e['flgAprobado'] = feedback.flag_aprobado
         e['flgRespondido'] = feedback.flg_respondido
         e['comentario'] = feedback.comentario
-        e['fechaCreacion'] = feedback.fecha_creacion
-        e['fechaAprobado'] = feedback.fecha_aprobado
+        e['fechaCreacion'] = convertDatetime(feedback.fecha_creacion)
+        e['fechaAprobado'] = convertDatetime(feedback.fecha_aprobado)
         e['idJpReviso'] = feedback.id_jp_reviso
         e['idProfesorAprobo'] = feedback.id_profesor_aprobo
         listaFeedbacks.append(e)
     d['listaFeedbacks'] = listaFeedbacks    
     return d
+    return 1
 
 def publicarParaRevision(idActividad, idJpReviso):
     d = {}
