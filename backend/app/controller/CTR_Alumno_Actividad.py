@@ -344,6 +344,8 @@ def calificarAlumno(idActividad, idAlumno, idRubrica, idJp, nota, listaNotaAspec
 
 def editarNotaAlumno(idActividad, idAlumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto):
     aux = Alumno_actividad_calificacion().editarNotaAlumno(idActividad, idAlumno, idJpAnt, idJpN, nota, flgFalta, flgCompleto)
+    print(idActividad, idAlumno, idRubrica)
+    #Alumno_actividad_calificacion().updateOneNota(idActividad,idAlumno,idRubrica,nota)
     for notaAspecto in listaNotaAspectos:
         idAspecto = notaAspecto['idAspecto']
         Alumno_nota_aspecto().updateNota(idActividad, idRubrica, idAspecto, idAlumno, notaAspecto['nota'], notaAspecto['comentario'])
@@ -621,14 +623,18 @@ def obtenerNotaGrupo(idActividad, idGrupo, idJp):
 
 def editarNotaGrupo(idActividad, idGrupo, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto):
     listaAlumnosGrupo = Alumno_actividad.query.filter(and_(Alumno_actividad.id_actividad == idActividad, Alumno_actividad.id_grupo == idGrupo)).all()
+    
     try:
         for alumno in listaAlumnosGrupo:
+            print(alumno)
             d = editarNotaAlumno(idActividad, alumno.id_alumno, idRubrica, idJpAnt, idJpN, nota, listaNotaAspectos, flgFalta, flgCompleto)
         return d
     except Exception as ex:
         d = {}
         d['succeed'] = False
+        
         d['message'] = str(ex)
+        print(d['message'])
         return d
 
 def obtenerAutoevaluacion(idAlumno, idActividad):
@@ -897,7 +903,7 @@ def sumaCoevaluacion(idGrupo, idActividad):
                 if i['nombreAspecto'] == aspecto.descripcion:
                     esta = True
                     lstAspectos[indice]['nota'] += notaQ
-                    lstAspectos[indice]['maxPuntaje'] += aspecto.puntaje_max  
+                    lstAspectos[indice]['maxPuntaje'] = aspecto.puntaje_max  
                     break
                 indice += 1
             if esta == False:

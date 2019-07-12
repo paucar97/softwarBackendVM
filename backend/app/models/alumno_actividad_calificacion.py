@@ -57,6 +57,7 @@ class Alumno_actividad_calificacion(db.Model):
 
     @classmethod
     def editarNotaAlumno(self, idActividad, idAlumno, idJpAnt, idJpN ,nota, flgFalta, flgCompleto):
+        print(idActividad, idAlumno, idJpAnt)
         alumnoActividad = Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_calificador = idJpAnt).first()
         alumnoActividad.nota = nota
         alumnoActividad.flg_falta = flgFalta
@@ -73,3 +74,12 @@ class Alumno_actividad_calificacion(db.Model):
     @classmethod
     def getNotaGrupo(self,idActividad,idAlumno,idRubrica):
         return Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno,id_rubrica = idRubrica).first()
+
+    @classmethod
+    def updateOneNota(self,idActividad,idAlumno,idRubrica,nota):
+        alumnoAspectoNota = Alumno_actividad_calificacion.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_rubrica = idRubrica).first()
+        #print("=ANTES=",alumnoAspectoNota.nota)
+        alumnoAspectoNota.nota = nota
+        #print("=DSP=",alumnoAspectoNota.nota)
+        db.session.commit()
+        return

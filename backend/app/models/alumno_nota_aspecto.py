@@ -44,7 +44,9 @@ class Alumno_nota_aspecto(db.Model):
     @classmethod
     def updateNota(self, idActividad, idRubrica, idAspecto, idAlumno, nota, comentario):
         alumnoAspectoNota = Alumno_nota_aspecto.query.filter_by(id_actividad = idActividad, id_alumno = idAlumno, id_rubrica = idRubrica, id_aspecto = idAspecto).first()
+        #print("=ANTES=",alumnoAspectoNota.nota)
         alumnoAspectoNota.nota = nota
+        #print("=DSP=",alumnoAspectoNota.nota)
         alumnoAspectoNota.comentario = comentario
         db.session.commit()
         return

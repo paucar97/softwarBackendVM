@@ -11,7 +11,7 @@ def getSessionServer():
     ssh_user = 'inf245'
     passwssh = "6CmINL2eRPo%baH"
     passw= 'GiME4OI9'
-    dbName = 'florestack'
+    dbName = 'sec2'
     localhost = '127.0.0.1'
     port = 3307
     host = "200.16.7.185"
@@ -22,9 +22,9 @@ def getSessionServer():
             remote_bind_address=(localhost, 3306)
     )
     tunnel.start()
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(user,passw,localhost,tunnel.local_bind_port,dbName)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(user,passw,localhost,tunnel.local_bind_port,dbName)
     #"""
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:holi123@localhost:3306/florestack'
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:holi123@localhost:3306/florestack'
     app.config['SQLALCHEMY_POOL_SIZE'] = 5
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 30
     app.config['SQLALCHEMY_POOL_RECYCLE']=31
