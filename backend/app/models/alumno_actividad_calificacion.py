@@ -18,7 +18,6 @@ class Alumno_actividad_calificacion(db.Model):
             [Alumno_actividad.id_actividad, Alumno_actividad.id_alumno]
         ),
     )
-
     
     id_calificador = db.Column('ID_CALIFICADOR',db.Integer, primary_key=True, nullable=False)
     nota = db.Column('NOTA',db.Float, nullable= True)
@@ -28,7 +27,8 @@ class Alumno_actividad_calificacion(db.Model):
     comentario_alumno = db.Column('COMENTARIO_ALUMNO',db.String(150),nullable = True)
     comentario_jp = db.Column('COMENTARIO_JP',db.String(150),nullable = True)
     flg_falta = db.Column('FLG_FALTA', db.Integer, default = 0)
-    
+    flg_nota_aceptada = db.Column('FLG_NOTA_ACEPTADA', db.Integer, nullable = True)
+
     def addOne(self, obj):
         db.session.add(obj)
         db.session.flush()
@@ -83,3 +83,13 @@ class Alumno_actividad_calificacion(db.Model):
         #print("=DSP=",alumnoAspectoNota.nota)
         db.session.commit()
         return
+
+    @classmethod
+    def aprobarMulticalificable(idActividad, idAlumno, idRubrica, idCalificador):
+        try:
+            auxCalificable = Alumno_actividad_calificacion.query.filter(and_(Alumno_actividad_calificacion.id_actividad == idActividad, Alumno_actividad_calificacion.id_alumno == idAlumno, Alumno_actividad_calificacion.id_calificador == idCalificador, Alumno_actividad_calificacion.id_rubrica == idRubrica)).first()
+            auxCalificable.flg_nota_aceptada = 1
+            db.session.commit()
+            return True, 'succeed' 
+        except Exception as ex:
+            return False, str(ex)

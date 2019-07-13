@@ -238,3 +238,20 @@ class Obtener_nota_alumno_publicada(Resource):
         tipo = data['tipo']
         idCalificador = data['idCalificador']
         return controller.obtenerNotaAlumnoPublicada(idAlumno, idActividad, tipo, idCalificador)
+
+class Obtener_notas_alumno_multicalificable(Resource):
+    def post(self):
+        data = request.get_json()
+        idAlumno = data['idAlumno']
+        idActividad = data['idActividad']
+        tipo = data['tipo']
+        return controller.obtenerTodasCalificacionesMulti(idAlumno, idActividad, tipo)
+
+class Elegir_nota_multicalificable(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idAlumno = data['idAlumno']
+        idRubrica = data['idRubrica']
+        idCalificador = data['idCalificador']
+        return controller.elegirNotaMulticalificable(idActividad, idAlumno, idRubrica, idCalificador)

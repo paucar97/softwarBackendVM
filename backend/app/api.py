@@ -183,3 +183,7 @@ api.add_resource(Obtener_nota_alumno_publicada, '/api/actividad/alumnos/obtener_
 
 # las caletas
 api.add_resource(Obtener_grupo,'/api/grupo/pertenece')
+
+api.add_resource(Obtener_notas_alumno_multicalificable, '/api/multicalificable/obtener_notas')
+api.add_resource(Elegir_nota_multicalificable, '/api/multicalificable/elegir_nota')
+
