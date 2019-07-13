@@ -252,6 +252,5 @@ class Elegir_nota_multicalificable(Resource):
         data = request.get_json()
         idActividad = data['idActividad']
         idAlumno = data['idAlumno']
-        idRubrica = data['idRubrica']
-        idCalificador = data['idCalificador']
-        return controller.elegirNotaMulticalificable(idActividad, idAlumno, idRubrica, idCalificador)
+        notaFinal = data['notaFinal']
+        return controller.elegirNotaMulticalificable(idActividad, idAlumno, notaFinal)

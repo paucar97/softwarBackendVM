@@ -186,4 +186,4 @@ api.add_resource(Obtener_grupo,'/api/grupo/pertenece')
 
 api.add_resource(Obtener_notas_alumno_multicalificable, '/api/multicalificable/obtener_notas')
 api.add_resource(Elegir_nota_multicalificable, '/api/multicalificable/elegir_nota')
-
+api.add_resource(Obtener_profesores_calificados, '/api/actividad/mostrar_profesores')

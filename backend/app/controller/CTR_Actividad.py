@@ -665,7 +665,7 @@ def listarActividad(idHorario):
     for actividad in listaActividad:
         d = actividad.json()
         try:
-            d['idRubrica'] = Rubrica.query.filter(and_(Rubrica.id_actividad == d['idActividad'], Rubrica.tipo == 4)).first().id_rubrica
+            d['idRubrica'] = Rubrica.query.filter(and_(Rubrica.id_actividad == d['idActividad'], Rubrica.tipo == 4, Rubrica.flg_activo == 1)).first().id_rubrica
         except:
             d['idRubrica'] = None    
         rpta.append(d)
