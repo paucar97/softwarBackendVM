@@ -244,8 +244,7 @@ class Obtener_notas_alumno_multicalificable(Resource):
         data = request.get_json()
         idAlumno = data['idAlumno']
         idActividad = data['idActividad']
-        tipo = data['tipo']
-        return controller.obtenerTodasCalificacionesMulti(idAlumno, idActividad, tipo)
+        return controller.obtenerTodasCalificacionesMulti(idAlumno, idActividad, 4)
 
 class Elegir_nota_multicalificable(Resource):
     def post(self):
@@ -254,3 +253,10 @@ class Elegir_nota_multicalificable(Resource):
         idAlumno = data['idAlumno']
         notaFinal = data['notaFinal']
         return controller.elegirNotaMulticalificable(idActividad, idAlumno, notaFinal)
+
+class Obtener_profesores_calificados(Resource):
+    def post(self):
+        data = request.get_json()
+        idActividad = data['idActividad']
+        idAlumno = data['idAlumno']
+        return controller.obtenerProfesoresPublicados(idActividad, idAlumno)

@@ -130,10 +130,3 @@ class Registrar_horas(Resource):
         idAlumno = data['idAlumno']
         listaCategorias = data['listaCategorias']
         return controller.registrarHoras(idRegistroEsfuerzo, idAlumno, listaCategorias)
-
-class Obtener_profesores_calificados(Resource):
-    def post(self):
-        data = request.get_json()
-        idActividad = data['idActividad']
-        idAlumno = data['idAlumno']
-        return controller.obtenerProfesoresPublicados(idActividad, idAlumno)
